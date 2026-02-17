@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sheru API Hub</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #050507;
+            --card-bg: #101014;
+            --card-border: #1f1f25;
+            --primary: #8c52ff; /* Neon Purple */
+            --accent: #00ffc8;  /* Cyber Cyan */
+            --danger: #ff4757;
+            --text-main: #ffffff;
+            --text-muted: #8b8b99;
+            --glass: rgba(16, 16, 20, 0.85);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--glass); backdrop-filter: blur(12px);
+            padding: 15px 20px; border-bottom: 1px solid var(--card-border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .brand { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: var(--primary); letter-spacing: -1px; font-size: 1.2rem; }
+        .balance-pill {
+            background: rgba(140, 82, 255, 0.15); border: 1px solid rgba(140, 82, 255, 0.3);
+            padding: 6px 14px; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
+            color: var(--accent); display: flex; align-items: center; gap: 6px;
+        }
+
+        /* --- TABS & SECTIONS --- */
+        .section { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- API CARDS (THE COOL BOX) --- */
+        .api-card {
+            background: var(--card-bg); border-radius: 16px; padding: 18px; margin-bottom: 16px;
+            border: 1px solid var(--card-border); position: relative; overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .api-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--primary); opacity: 0.5;
+        }
+        .api-card:active { transform: scale(0.98); background: #15151a; }
+        
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .api-name { font-weight: 700; font-size: 1.1rem; }
+        .api-badge { 
+            font-size: 0.7rem; padding: 4px 8px; border-radius: 6px; background: #222; 
+            text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); 
+        }
+        .api-badge.owned { background: rgba(0, 255, 200, 0.1); color: var(--accent); border: 1px solid rgba(0,255,200,0.2); }
+
+        .api-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
+        
+        .card-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
+        .price-tag { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text-main); }
+        .price-tag span { color: var(--primary); }
+
+        .btn {
+            padding: 10px 20px; border-radius: 12px; border: none; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(140, 82, 255, 0.3); }
+        .btn-outline { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); }
+        .btn-success { background: rgba(0, 255, 200, 0.15); color: var(--accent); border: 1px solid rgba(0,255,200,0.3); }
+
+        /* --- MODAL (Usage & Keys) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100;
+            display: none; align-items: flex-end; /* Bottom sheet on mobile */
+        }
+        .modal-overlay.open { display: flex; }
+        
+        .bottom-sheet {
+            background: #18181e; width: 100%; border-radius: 20px 20px 0 0;
+            padding: 25px; border-top: 1px solid var(--card-border);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 85vh; overflow-y: auto;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .sheet-title { font-size: 1.2rem; font-weight: 700; }
+        .close-btn { background: #2a2a35; border: none; color: white; width: 30px; height: 30px; border-radius: 50%; }
+
+        .code-box {
+            background: #0a0a0c; padding: 15px; border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9b7c6;
+            overflow-x: auto; border: 1px dashed #333; margin: 10px 0; position: relative;
+        }
+        .copy-icon { position: absolute; top: 10px; right: 10px; color: var(--text-muted); cursor: pointer; }
+
+        /* --- WALLET --- */
+        .wallet-card {
+            background: linear-gradient(135deg, #2a2a35 0%, #15151a 100%);
+            padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .big-balance { font-size: 2.8rem; font-weight: 800; margin: 10px 0; background: linear-gradient(to right, #fff, #b2bec3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- BOTTOM NAV --- */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; background: rgba(16, 16, 20, 0.95);
+            backdrop-filter: blur(10px); border-top: 1px solid var(--card-border);
+            display: flex; justify-content: space-around; padding: 12px 0; z-index: 50;
+        }
+        .nav-item {
+            color: var(--text-muted); display: flex; flex-direction: column; align-items: center;
+            font-size: 0.7rem; gap: 4px; transition: 0.2s; width: 33%;
+        }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 2px; }
+        .nav-item.active { color: var(--primary); transform: translateY(-2px); }
+        .nav-item.active i { text-shadow: 0 0 10px rgba(140, 82, 255, 0.6); }
+
+        /* --- TOAST --- */
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px);
+            background: #333; color: white; padding: 12px 24px; border-radius: 50px;
+            font-size: 0.9rem; z-index: 200; opacity: 0; transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;
+        }
+        .toast.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { background: rgba(0, 255, 200, 0.15); border: 1px solid var(--accent); color: var(--accent); backdrop-filter: blur(10px); }
+        .toast.error { background: rgba(255, 71, 87, 0.15); border: 1px solid var(--danger); color: var(--danger); }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="brand"><i class="ri-code-s-slash-line"></i> SHERU.API</div>
+        <div class="balance-pill">
+            <i class="ri-flashlight-fill"></i> <span id="headerBalance">...</span>
+        </div>
+    </div>
+
+    <div id="store" class="section active">
+        <h3 style="margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase;">Available Services</h3>
+        <div id="apiContainer">
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="ri-loader-4-line ri-spin" style="font-size: 2rem;"></i><br>Connecting to Neural Net...
+            </div>
+        </div>
+    </div>
+
+    <div id="wallet" class="section">
+        <div class="wallet-card">
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Total Balance</div>
+            <div class="big-balance"><span id="walletBalance">0</span></div>
+            <div style="font-size: 0.8rem; color: var(--accent);">🦁 SheruCoins</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
+                <button class="btn btn-primary" style="justify-content: center;" onclick="openDeposit()">
+                    <i class="ri-add-circle-line"></i> Add Funds
+                </button>
+                <button class="btn btn-outline" style="justify-content: center;" onclick="openWithdraw()">
+                    <i class="ri-bank-card-2-line"></i> Withdraw
+                </button>
+            </div>
+        </div>
+
+        <h4 style="margin-bottom: 15px;">Transaction History</h4>
+        <div id="txHistory" style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+            No transactions found.
+        </div>
+    </div>
+
+    <div id="profile" class="section">
+        <div class="api-card">
+            <h3>Invite & Earn 🤝</h3>
+            <p class="api-desc" style="margin-top: 10px;">
+                Share your link. Earn 25% of every deposit your friend makes. Lifetime commission.
+            </p>
+            <div class="code-box" id="refLinkBox" onclick="copyRef()">
+                Loading link... <i class="ri-file-copy-line copy-icon"></i>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                <div style="text-align: center;">
+                    <div style="font-weight: bold; font-size: 1.2rem; color: var(--primary);" id="totalRefs">0</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Total Refers</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-weight: bold; font-size: 1.2rem; color: var(--accent);" id="refEarnings">0</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Earned (Coins)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="apiModal">
+        <div class="bottom-sheet">
+            <div class="sheet-header">
+                <span class="sheet-title" id="modalTitle">API Details</span>
+                <button class="close-btn" onclick="closeModal('apiModal')"><i class="ri-close-line"></i></button>
+            </div>
+            
+            <div id="modalContent">
+                </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="ri-information-line"></i> <span id="toastMsg">Message</span>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('store', this)">
+            <i class="ri-apps-2-line"></i> Store
+        </div>
+        <div class="nav-item" onclick="switchTab('wallet', this)">
+            <i class="ri-wallet-3-line"></i> Wallet
+        </div>
+        <div class="nav-item" onclick="switchTab('profile', this)">
+            <i class="ri-user-smile-line"></i> Profile
+        </div>
+    </div>
+
+    <script>
+        // --- ⚙️ CONFIGURATION ---
+        // !!! IMPORTANT: Yahan apna Cloudflare URL dalo !!!
+        const BACKEND_URL = "https://sheru-api.narpat.workers.dev"; 
+        
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+
+        // Global State
+        let state = {
+            user: null,
+            services: [],
+            myKeys: []
+        };
+
+        // --- 🚀 INITIALIZATION ---
+        async function initApp() {
+            try {
+                // 1. Authenticate with Backend
+                const response = await fetch(`${BACKEND_URL}/api/auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        initData: tg.initData,
+                        startParam: tg.initDataUnsafe.start_param 
+                    })
+                });
+
+                if (!response.ok) throw new Error("Login Failed");
+                const data = await response.json();
+                state.user = data.user;
+
+                // 2. Load Dashboard Data
+                await loadDashboard();
+                updateUI();
+
+            } catch (e) {
+                showToast(e.message, 'error');
+                document.getElementById('apiContainer').innerHTML = `<div style="color:red; text-align:center;">Auth Error: Is backend running?</div>`;
+            }
+        }
+
+        async function loadDashboard() {
+            const res = await fetch(`${BACKEND_URL}/api/dashboard`, {
+                headers: { 'Authorization': tg.initData } // Simplified Auth
+            });
+            const data = await res.json();
+            if (data.success) {
+                state.services = data.catalog;
+                state.myKeys = data.my_keys;
+            }
+        }
+
+        // --- 🎨 UI RENDERING ---
+        function updateUI() {
+            // Header Balance
+            document.querySelectorAll('#headerBalance, #walletBalance').forEach(el => el.innerText = state.user.balance);
+            
+            // Refer Stats
+            document.getElementById('totalRefs').innerText = state.user.total_refs || 0;
+            document.getElementById('refLinkBox').innerHTML = `https://t.me/YourBotName?start=${state.user.tg_id} <i class="ri-file-copy-line copy-icon"></i>`;
+
+            // Render API List
+            const container = document.getElementById('apiContainer');
+            container.innerHTML = "";
+
+            state.services.forEach(service => {
+                const ownedKey = state.myKeys.find(k => k.name === service.name); // Simple match
+                
+                let actionBtn = "";
+                if (ownedKey) {
+                    actionBtn = `
+                        <button class="btn btn-success" style="width:100%" onclick="openApiDetails('${ownedKey.key_value}', '${service.name}')">
+                            <i class="ri-key-2-fill"></i> Access Key & Docs
+                        </button>`;
+                } else {
+                    actionBtn = `
+                        <button class="btn btn-primary" style="width:100%" onclick="buyService(${service.id}, ${service.price})">
+                            <i class="ri-shopping-cart-fill"></i> Get for ${service.price}
+                        </button>`;
+                }
+
+                const card = `
+                    <div class="api-card">
+                        <div class="card-top">
+                            <div class="api-name">${service.name}</div>
+                            <div class="api-badge ${ownedKey ? 'owned' : ''}">${ownedKey ? 'OWNED' : 'PREMIUM'}</div>
+                        </div>
+                        <div class="api-desc">${service.description}</div>
+                        ${actionBtn}
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // --- 💰 ACTIONS ---
+        async function buyService(id, price) {
+            if (state.user.balance < price) {
+                tg.HapticFeedback.notificationOccurred('error');
+                showToast("Insufficient Balance!", "error");
+                switchTab('wallet', document.querySelectorAll('.nav-item')[1]);
+                return;
+            }
+
+            if (!confirm(`Buy this API for ${price} Coins?`)) return;
+
+            // Show loading
+            tg.MainButton.showProgress();
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/buy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        initData: tg.initData,
+                        serviceId: id,
+                        price: price 
+                    })
+                });
+                
+                const result = await res.json();
+                tg.MainButton.hideProgress();
+
+                if (result.success) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                    showToast("Purchase Successful!", "success");
+                    // Reload data
+                    state.user.balance -= price; // Optimistic update
+                    await loadDashboard(); // Full update
+                    updateUI();
+                } else {
+                    throw new Error(result.error || "Failed");
+                }
+            } catch (e) {
+                tg.MainButton.hideProgress();
+                showToast(e.message, 'error');
+            }
+        }
+
+        function openApiDetails(key, name) {
+            tg.HapticFeedback.impactOccurred('light');
+            document.getElementById('modalTitle').innerText = name;
+            
+            const html = `
+                <div style="font-size:0.8rem; color:#888; margin-bottom:5px;">YOUR API KEY</div>
+                <div class="code-box" onclick="copyText('${key}')">
+                    ${key} <i class="ri-file-copy-line copy-icon"></i>
+                </div>
+
+                <div style="font-size:0.8rem; color:#888; margin-top:20px; margin-bottom:5px;">PYTHON USAGE</div>
+                <div class="code-box">
+import requests
+
+url = "https://sheru-api.amritw1.workers.dev"
+headers = {"Authorization": "${key}"}
+response = requests.get(url, headers=headers)
+print(response.json())
+                </div>
+
+                <div style="font-size:0.8rem; color:#888; margin-top:15px; margin-bottom:5px;">NODE.JS USAGE</div>
+                <div class="code-box">
+const axios = require('axios');
+
+axios.get('https://api.sheru.com/v1/execute', {
+    headers: { 'Authorization': '${key}' }
+}).then(console.log);
+                </div>
+            `;
+            
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('apiModal').classList.add('open');
+        }
+
+        // --- 🧩 UTILS ---
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function showToast(msg, type = 'normal') {
+            const t = document.getElementById('toast');
+            t.innerHTML = `<i class="ri-${type === 'error' ? 'error-warning' : 'checkbox-circle'}-line"></i> ${msg}`;
+            t.className = `toast active ${type}`;
+            setTimeout(() => t.className = 'toast', 3000);
+        }
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt);
+            tg.HapticFeedback.impactOccurred('medium');
+            showToast("Copied to clipboard!", "success");
+        }
+
+        function openDeposit() {
+             showToast("Use /deposit command in bot", "normal");
+        }
+
+        function openWithdraw() {
+            const amount = prompt("Enter amount to withdraw:");
+            if(amount) {
+                // Call /api/withdraw here
+                showToast("Request sent to server", "success");
+            }
+        }
+
+        // Start
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
