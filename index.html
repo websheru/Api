@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sheru Api</title>
+    <title>Sheru Nexus Native</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #09090b;
-            --surface: #121215;
-            --surface-light: #1c1c21;
-            --primary: #6366f1;
-            --accent: #10b981;
-            --gold: #fbbf24;
-            --text: #f4f4f5;
+            /* Deep Space Theme */
+            --bg: #050505;
+            --surface: #0f0f11;
+            --surface-light: #18181b;
+            --primary: #6366f1; /* Indigo */
+            --accent: #10b981;  /* Emerald */
+            --gold: #fbbf24;    /* Amber */
+            --danger: #ef4444;  /* Red */
+            --text: #ffffff;
             --text-muted: #71717a;
-            --border: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.06);
+            --nav-bg: rgba(15, 15, 17, 0.95);
             
-            /* Tiers Colors */
-            --tier-norm: #94a3b8;
-            --tier-high: #22d3ee;
+            /* Tiers */
+            --tier-norm: #64748b;
+            --tier-high: #06b6d4;
             --tier-prem: #d946ef;
             --tier-ultra: #f59e0b;
         }
@@ -34,7 +37,7 @@
             color: var(--text);
             font-family: 'Urbanist', sans-serif;
             overflow-x: hidden;
-            padding-bottom: 90px;
+            padding-bottom: 100px;
         }
 
         /* --- UTILS --- */
@@ -42,138 +45,121 @@
         .justify-between { justify-content: space-between; }
         .justify-center { justify-content: center; }
         .col { flex-direction: column; }
-        .gap-10 { gap: 10px; }
         .w-full { width: 100%; }
         .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
         
         /* --- ANIMATIONS --- */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        @keyframes borderRotate { 0% { border-color: var(--gold); } 50% { border-color: #fce7f3; } 100% { border-color: var(--gold); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         
-        .page { display: none; animation: fadeIn 0.3s ease-out; }
+        .page { display: none; animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .page.active { display: block; }
 
         /* --- HEADER --- */
         .header {
             position: sticky; top: 0; z-index: 50;
-            background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px);
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
             padding: 15px 20px; border-bottom: 1px solid var(--border);
         }
         .sheru-coin {
-            width: 32px; height: 32px; background: linear-gradient(135deg, #fcd34d, #d97706);
+            width: 34px; height: 34px; 
+            background: radial-gradient(circle, #fbbf24, #d97706);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); border: 2px solid #fff;
+            font-size: 1.2rem; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); border: 2px solid #fff;
         }
-        .balance-box {
-            background: var(--surface-light); padding: 6px 14px; border-radius: 30px;
-            border: 1px solid var(--border); font-weight: 700; font-size: 0.95rem;
-            display: flex; gap: 8px; align-items: center;
+        .balance-pill {
+            background: var(--surface-light); padding: 8px 16px; border-radius: 30px;
+            border: 1px solid var(--border); font-weight: 700; font-size: 0.9rem;
+            display: flex; gap: 8px; align-items: center; transition: 0.2s;
         }
+        .balance-pill:active { transform: scale(0.95); }
 
-        /* --- CARDS & GRID --- */
+        /* --- CARDS --- */
         .card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 18px; padding: 18px; margin-bottom: 12px; position: relative; overflow: hidden;
+            border-radius: 20px; padding: 20px; margin-bottom: 12px; position: relative; overflow: hidden;
+            transition: transform 0.2s;
         }
+        .card:active { transform: scale(0.98); }
         
-        /* --- TIER STYLES (The Cool Part) --- */
-        /* < 10 */
+        /* Tier Visuals */
         .card-normal { border-left: 3px solid var(--tier-norm); }
-        
-        /* 10 - 50 */
         .card-high { 
-            border: 1px solid rgba(34, 211, 238, 0.3);
-            background: linear-gradient(180deg, rgba(34, 211, 238, 0.05) 0%, var(--surface) 100%);
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.05), var(--surface));
+            border: 1px solid rgba(6, 182, 212, 0.3);
         }
-        .card-high .price-tag { color: var(--tier-high); text-shadow: 0 0 10px rgba(34, 211, 238, 0.4); }
-
-        /* 50 - 100 */
         .card-prem {
-            border: 1px solid rgba(217, 70, 239, 0.4);
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0.1) inset;
+            background: linear-gradient(180deg, rgba(217, 70, 239, 0.05), var(--surface));
+            border: 1px solid rgba(217, 70, 239, 0.3); box-shadow: 0 0 20px rgba(217, 70, 239, 0.05);
         }
-        .card-prem::after {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:2px;
-            background: linear-gradient(90deg, transparent, var(--tier-prem), transparent);
-        }
-
-        /* 100+ (Ultra) */
         .card-ultra {
             border: 1px solid var(--gold);
-            background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.1), transparent 60%), #121215;
-            animation: borderPulse 3s infinite;
+            background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.15), transparent 70%), #000;
         }
-        .card-ultra .icon-box { background: linear-gradient(135deg, #fcd34d, #fbbf24); color: black; }
-        .ultra-badge {
+        .ultra-tag {
             position: absolute; top: 0; right: 0; background: var(--gold); color: black;
-            font-size: 0.6rem; font-weight: 900; padding: 2px 8px; border-radius: 0 0 0 8px;
+            font-size: 0.6rem; font-weight: 900; padding: 4px 10px; border-radius: 0 0 0 10px;
         }
 
-        /* --- COMPONENTS --- */
-        .icon-box {
-            width: 45px; height: 45px; border-radius: 12px; background: var(--surface-light);
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text);
-            margin-bottom: 10px; transition: 0.2s;
-        }
-        
+        /* --- BUTTONS --- */
         .btn {
-            width: 100%; padding: 12px; border-radius: 12px; border: none;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px;
-            transition: 0.2s;
+            width: 100%; padding: 14px; border-radius: 14px; border: none;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+            transition: 0.2s; position: relative; overflow: hidden;
         }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
         .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
-        .btn-sell { background: linear-gradient(90deg, #8b5cf6, #6366f1); color: white; }
-
+        .btn-sell { background: linear-gradient(90deg, #7c3aed, #4f46e5); color: white; }
+        
         /* --- TABS --- */
-        .tabs {
-            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 5px;
-            scrollbar-width: none;
-        }
+        .tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 15px; scrollbar-width: none; }
         .chip {
-            padding: 8px 18px; border-radius: 50px; background: var(--surface-light);
+            padding: 10px 20px; border-radius: 12px; background: var(--surface);
             border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap;
             font-size: 0.85rem; font-weight: 600; transition: 0.2s;
         }
-        .chip.active { background: var(--text); color: black; border-color: white; }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* --- NAVBAR --- */
-        .nav {
+        /* --- BOTTOM NAV (Professional Dock) --- */
+        .nav-dock {
             position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: rgba(18, 18, 21, 0.9); backdrop-filter: blur(20px);
-            border: 1px solid var(--border); border-radius: 20px;
-            display: flex; justify-content: space-around; padding: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 100;
+            background: var(--nav-bg); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 24px;
+            display: flex; justify-content: space-between; padding: 15px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); z-index: 100;
         }
         .nav-item {
-            color: var(--text-muted); font-size: 1.4rem; transition: 0.2s; position: relative;
+            color: #52525b; font-size: 1.5rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
         }
-        .nav-item.active { color: var(--primary); transform: translateY(-3px); }
-        .nav-item.active::after {
-            content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-            width: 4px; height: 4px; background: var(--primary); border-radius: 50%;
+        .nav-item i { transition: 0.2s; }
+        .nav-item.active { color: var(--text); transform: translateY(-5px); }
+        .nav-item.active i { color: var(--primary); text-shadow: 0 0 15px rgba(99, 102, 241, 0.6); }
+        .nav-dot {
+            width: 4px; height: 4px; background: var(--primary); border-radius: 50%; opacity: 0; transition: 0.3s;
         }
+        .nav-item.active .nav-dot { opacity: 1; }
 
         /* --- SKELETON --- */
         .skeleton {
-            background: linear-gradient(90deg, #1c1c21 25%, #27272a 50%, #1c1c21 75%);
-            background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px;
+            background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+            background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 16px;
         }
+        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
         /* --- MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200;
         }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal-box {
-            background: #18181b; border: 1px solid var(--border); width: 85%; padding: 25px;
-            border-radius: 20px; text-align: center; transform: scale(0.9); transition: 0.3s;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: #0f0f11; border: 1px solid var(--border); width: 85%; padding: 30px 25px;
+            border-radius: 24px; text-align: center; transform: scale(0.95); transition: 0.3s;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
         }
         .modal-overlay.open .modal-box { transform: scale(1); }
 
@@ -182,129 +168,160 @@
 <body>
 
     <div class="header flex justify-between">
-        <div class="flex gap-10">
+        <div class="flex gap-3">
             <div class="sheru-coin">🦁</div>
-            <div style="font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px;">Sheru<span style="color:var(--primary)">Api</span></div>
+            <div style="font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px;">Sheru<span style="color:var(--primary)">Nexus</span></div>
         </div>
-        <div class="balance-box">
+        <div class="balance-pill">
             <span style="color:var(--gold)">🦁</span>
             <span id="headerBal">...</span>
         </div>
     </div>
 
     <div id="home" class="page active" style="padding: 20px;">
-        <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Welcome, <span id="userName" style="color:var(--primary)">User</span></h1>
-        <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Explore the ultimate API marketplace.</p>
+        <h1 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 5px;">Hello, <span id="userName" style="color:var(--primary)">User</span> 👋</h1>
+        <p style="color:var(--text-muted); margin-bottom: 25px; font-size: 0.9rem;">Welcome to the future of APIs.</p>
 
-        <div class="flex gap-10" style="margin-bottom: 20px;">
-            <div class="card w-full" style="text-align:center; padding: 15px;">
-                <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase;">APIs Available</div>
-                <div style="font-size:1.5rem; font-weight:800; margin-top:5px;" id="totalApis">0</div>
+        <div class="flex justify-between gap-3" style="margin-bottom: 20px;">
+            <div class="card w-full text-center" style="padding: 15px;">
+                <div style="color:var(--text-muted); font-size:0.65rem; font-weight:700; letter-spacing:1px;">TOTAL APIs</div>
+                <div style="font-size:1.6rem; font-weight:800; margin-top:5px;" id="totalApis">0</div>
             </div>
-            <div class="card w-full" style="text-align:center; padding: 15px;">
-                <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase;">Earnings</div>
-                <div style="font-size:1.5rem; font-weight:800; margin-top:5px; color:var(--gold);" id="totalEarn">0</div>
+            <div class="card w-full text-center" style="padding: 15px;">
+                <div style="color:var(--text-muted); font-size:0.65rem; font-weight:700; letter-spacing:1px;">EARNINGS</div>
+                <div style="font-size:1.6rem; font-weight:800; margin-top:5px; color:var(--gold);" id="totalEarn">0</div>
             </div>
         </div>
 
-        <div class="card" style="background: linear-gradient(135deg, #2e1065, #1e1b4b); border: 1px solid #4c1d95; position: relative;">
-            <h3 style="font-weight: 800; font-size: 1.2rem; margin-bottom: 5px;">Sell Your API?</h3>
-            <p style="color:#c4b5fd; font-size: 0.85rem; margin-bottom: 15px; width: 80%;">Publish your own API on Sheru Api and start earning today.</p>
-            <button class="btn btn-sell" onclick="openSellBot()" style="width: auto; padding: 8px 20px; font-size: 0.8rem;">Start Selling</button>
-            <i class="ri-rocket-2-fill" style="position: absolute; bottom: -10px; right: 10px; font-size: 5rem; opacity: 0.1; color: white;"></i>
+        <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f0f11); border: 1px solid #4338ca; position: relative; padding: 25px;">
+            <h3 style="font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; line-height: 1.2;">Sell Your <br> <span style="color:#a5b4fc">Own API?</span></h3>
+            <p style="color:#818cf8; font-size: 0.85rem; margin-bottom: 20px; width: 70%;">Join our marketplace and generate passive income.</p>
+            <button class="btn btn-sell" onclick="openSellBot()" style="width: auto; padding: 10px 24px; font-size: 0.85rem;">Start Selling <i class="ri-arrow-right-line"></i></button>
+            <i class="ri-code-box-line" style="position: absolute; bottom: -20px; right: 10px; font-size: 6rem; opacity: 0.05; color: white; transform: rotate(15deg);"></i>
         </div>
 
-        <h3 style="margin: 20px 0 10px; font-weight: 700; display:flex; gap:5px;"><i class="ri-fire-fill" style="color:#f97316"></i> Trending</h3>
+        <h3 style="margin: 25px 0 15px; font-weight: 800; display:flex; gap:8px; font-size: 1.1rem;"><i class="ri-fire-fill" style="color:#f97316"></i> Trending Now</h3>
         <div id="hotList">
             <div class="skeleton" style="height: 80px; margin-bottom: 10px;"></div>
         </div>
     </div>
 
     <div id="store" class="page" style="padding: 20px;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 15px; font-weight: 800;">API Store</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 800;">Store</h2>
 
         <div class="tabs">
             <div class="chip active" onclick="filter('all', this)">All</div>
             <div class="chip" onclick="filter('hacking', this)">Hacking</div>
             <div class="chip" onclick="filter('social', this)">Social</div>
-            <div class="chip" onclick="filter('ai', this)">AI Tools</div>
+            <div class="chip" onclick="filter('ai', this)">AI</div>
             <div class="chip" onclick="filter('other', this)">Other</div>
         </div>
 
         <div id="apiList" style="padding-bottom: 60px;">
-            <div class="skeleton" style="height: 120px; margin-bottom: 10px;"></div>
-            <div class="skeleton" style="height: 120px; margin-bottom: 10px;"></div>
+            <div class="skeleton" style="height: 140px; margin-bottom: 15px;"></div>
         </div>
     </div>
 
     <div id="refer" class="page" style="padding: 20px;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 15px; font-weight: 800;">Referrals</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 800;">Affiliate</h2>
         
-        <div class="card text-center" style="background: linear-gradient(180deg, var(--surface), #000);">
-            <div style="font-size: 0.9rem; color: var(--text-muted);">Total Earnings</div>
-            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 5px 0;">🦁 <span id="refPageEarn">0</span></div>
+        <div class="card text-center" style="background: linear-gradient(180deg, #18181b, #000); padding: 30px 20px;">
+            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight:600;">LIFETIME EARNINGS</div>
+            <div style="font-size: 3rem; font-weight: 900; color: var(--primary); margin: 10px 0;">🦁 <span id="refPageEarn">0</span></div>
             
-            <div style="background:#000; padding:10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); margin-top:15px;">
-                <span id="refLink" style="color:#666; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
-                <i class="ri-file-copy-line" style="color:var(--primary); cursor:pointer;" onclick="copyRef()"></i>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+                Earn <b style="color:var(--gold)">1 🦁</b> per invite<br>
+                + <b style="color:var(--accent)">25% Commission</b> on deposits!
+            </p>
+
+            <div style="background:#09090b; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border);">
+                <span id="refLink" style="color:#a1a1aa; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading Link...</span>
+                <div style="background:var(--surface-light); padding:8px; border-radius:8px; cursor:pointer;" onclick="copyRef()"><i class="ri-file-copy-line" style="color:var(--primary);"></i></div>
             </div>
         </div>
 
-        <h3 style="margin: 20px 0 10px; font-size:1rem;">History</h3>
+        <h3 style="margin: 25px 0 15px; font-size:1rem; font-weight:700;">Referral History</h3>
         <div id="refHistory">
-            <div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding: 20px;">No referrals yet</div>
+            <div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding: 40px; background:var(--surface); border-radius:20px; border:1px dashed var(--border);">No referrals yet.<br>Invite friends to start earning! 🚀</div>
         </div>
     </div>
 
     <div id="profile" class="page" style="padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
-            <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 50%; background: linear-gradient(to top right, var(--primary), #a855f7); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700;">
-                <i class="ri-user-smile-fill"></i>
+            <div style="width: 85px; height: 85px; margin: 0 auto 15px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; color:white; border: 4px solid var(--surface-light);">
+                <i class="ri-user-6-fill"></i>
             </div>
-            <h2 id="profileName" style="font-size: 1.5rem;">User</h2>
-            <div style="color:var(--text-muted); font-size: 0.8rem;">ID: <span id="userId">...</span></div>
+            <h2 id="profileName" style="font-size: 1.6rem; font-weight: 800;">User</h2>
+            <div style="color:var(--text-muted); font-size: 0.85rem; margin-top:5px;">ID: <span id="userId">...</span></div>
         </div>
 
-        <div class="card flex justify-between">
+        <div class="flex justify-between gap-3" style="margin-bottom: 20px;">
+            <div class="card w-full text-center" style="padding: 15px;">
+                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">JOINED</div>
+                <div style="font-weight:700; font-size:0.9rem; margin-top:4px;">Today</div>
+            </div>
+            <div class="card w-full text-center" style="padding: 15px;">
+                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">STATUS</div>
+                <div style="font-weight:700; font-size:0.9rem; margin-top:4px; color:var(--accent);">Active</div>
+            </div>
+            <div class="card w-full text-center" style="padding: 15px;">
+                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">INVITES</div>
+                <div style="font-weight:700; font-size:0.9rem; margin-top:4px;" id="profileInvites">0</div>
+            </div>
+        </div>
+
+        <div class="card flex justify-between" style="background:linear-gradient(135deg, #18181b, #09090b);">
             <div>
-                <div style="color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; font-weight:700;">Wallet Balance</div>
-                <div style="font-size: 1.8rem; font-weight: 800;">🦁 <span id="profileBal">0</span></div>
+                <div style="color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; font-weight:700;">Balance</div>
+                <div style="font-size: 2rem; font-weight: 900;">🦁 <span id="profileBal">0</span></div>
             </div>
             <div class="col gap-10">
-                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.8rem;" onclick="showModal('deposit')">Deposit</button>
-                <button class="btn btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;" onclick="showModal('withdraw')">Withdraw</button>
+                <button class="btn btn-primary" style="padding: 8px 18px; font-size: 0.8rem; height:auto;" onclick="showModal('deposit')">Deposit</button>
+                <button class="btn btn-ghost" style="padding: 8px 18px; font-size: 0.8rem; height:auto;" onclick="showModal('withdraw')">Withdraw</button>
             </div>
         </div>
 
-        <h3 style="margin: 20px 0 10px; font-size:1rem;">My Keys</h3>
+        <h3 style="margin: 25px 0 15px; font-size:1rem; font-weight:700;">My Keys</h3>
         <div id="myKeysList" style="padding-bottom: 80px;"></div>
     </div>
 
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
-            <div id="modalIcon" style="font-size: 3rem; margin-bottom: 10px;"></div>
-            <h3 id="modalTitle" style="font-size: 1.2rem; font-weight: 800; margin-bottom: 10px;">Alert</h3>
-            <p id="modalMsg" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;"></p>
+            <div id="modalIcon" style="font-size: 3.5rem; margin-bottom: 15px;"></div>
+            <h3 id="modalTitle" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 10px;">Alert</h3>
+            <p id="modalMsg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;"></p>
             <button class="btn btn-primary" onclick="closeModal()">Okay, Got it</button>
         </div>
     </div>
 
-    <div class="nav">
-        <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-fill"></i></div>
-        <div class="nav-item" onclick="nav('store', this)"><i class="ri-apps-2-fill"></i></div>
-        <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-fill"></i></div>
-        <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-5-fill"></i></div>
+    <div class="nav-dock">
+        <div class="nav-item active" onclick="nav('home', this)">
+            <i class="ri-home-smile-2-fill"></i>
+            <div class="nav-dot"></div>
+        </div>
+        <div class="nav-item" onclick="nav('store', this)">
+            <i class="ri-apps-2-fill"></i>
+            <div class="nav-dot"></div>
+        </div>
+        <div class="nav-item" onclick="nav('refer', this)">
+            <i class="ri-share-forward-box-fill"></i>
+            <div class="nav-dot"></div>
+        </div>
+        <div class="nav-item" onclick="nav('profile', this)">
+            <i class="ri-user-3-fill"></i>
+            <div class="nav-dot"></div>
+        </div>
     </div>
 
     <script>
         // --- CONFIG ---
-        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; // ⚠️ REPLACE
+        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; // ⚠️ REPLACE WITH YOUR WORKER
         const BOT_USERNAME = "SheruApiBot"; 
-        const SELL_BOT_USERNAME = "SheruSellBot"; // Jis bot pe sell karna h
+        const SELL_BOT_USERNAME = "SheruSellBot"; 
 
         const FREE_APIS = [
-            { id: 901, name: "QR Generator", price: 0, cat: "other", icon: "ri-qr-code-line", desc: "Create QR codes.", endpoint: "https://api.qrserver.com/v1/create-qr-code/?data=" },
-            { id: 902, name: "IP Info", price: 0, cat: "hacking", icon: "ri-map-pin-user-line", desc: "Track IP details.", endpoint: "https://ipapi.co/json/" }
+            { id: 901, name: "QR Generator", price: 0, cat: "other", icon: "ri-qr-code-line", desc: "Create unlimited QR codes instantly.", endpoint: "https://api.qrserver.com/v1/create-qr-code/?data=" },
+            { id: 902, name: "IP Info", price: 0, cat: "hacking", icon: "ri-map-pin-user-line", desc: "Track IP geolocation details.", endpoint: "https://ipapi.co/json/" }
         ];
 
         const tg = window.Telegram.WebApp;
@@ -329,7 +346,8 @@
                 let dData = await dRes.json();
                 
                 if(dData.success) {
-                    state.premium = dData.catalog.map(i => ({...i, cat: i.price > 50 ? 'hacking' : 'social'})); // Simulation
+                    // Simulating categories based on price for demo
+                    state.premium = dData.catalog.map(i => ({...i, cat: i.price > 50 ? 'hacking' : 'social'})); 
                     state.keys = dData.my_keys;
                 }
                 renderUI();
@@ -348,8 +366,9 @@
             document.getElementById('userId').innerText = state.user.tg_id;
             document.querySelectorAll('#headerBal, #profileBal').forEach(e => e.innerText = state.user.balance);
             
-            // Refer Data
-            const earnings = (state.user.total_refs || 0) * 25;
+            // Stats
+            document.getElementById('profileInvites').innerText = state.user.total_refs || 0;
+            const earnings = (state.user.total_refs || 0) * 25; // Calculation logic
             document.getElementById('totalEarn').innerText = earnings;
             document.getElementById('refPageEarn').innerText = earnings;
             document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
@@ -370,7 +389,7 @@
                 const isFree = api.price === 0;
                 const owned = state.keys.find(k => k.name === api.name);
                 
-                // Tier Logic
+                // Tier Logic & Styling
                 let tierClass = 'card-normal';
                 let btnColor = 'background:var(--surface-light); color:white; border:1px solid var(--border)';
                 let btnText = `Get for ${api.price}`;
@@ -379,29 +398,31 @@
                 if (api.price >= 50 && api.price < 100) tierClass = 'card-prem';
                 if (api.price >= 100) tierClass = 'card-ultra';
 
-                if (isFree) { btnText = "Free Access"; btnColor = "background:rgba(16, 185, 129, 0.2); color:#10b981; border:1px solid #10b981"; }
+                if (isFree) { btnText = "Free Access"; btnColor = "background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3)"; }
                 if (owned) { btnText = "Use API"; btnColor = "background:var(--primary); color:white;"; }
 
                 const html = `
                 <div class="card ${tierClass}">
-                    ${api.price >= 100 ? '<div class="ultra-badge">ULTRA</div>' : ''}
-                    <div class="flex justify-between items-start">
-                        <div class="icon-box"><i class="${api.icon || 'ri-terminal-box-line'}"></i></div>
+                    ${api.price >= 100 ? '<div class="ultra-tag">ULTRA</div>' : ''}
+                    <div class="flex justify-between items-start" style="margin-bottom:12px;">
+                        <div style="background:var(--surface-light); padding:10px; border-radius:12px; font-size:1.4rem;">
+                            <i class="${api.icon || 'ri-terminal-box-line'}"></i>
+                        </div>
                         <div style="font-weight:700; font-size:1.1rem; color:${isFree ? 'var(--accent)' : 'var(--text)'}">
                             ${isFree ? 'FREE' : '🦁 ' + api.price}
                         </div>
                     </div>
                     <h3 style="font-weight:700; font-size:1.1rem; margin-bottom:5px;">${api.name}</h3>
-                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px; line-height:1.4;">${api.desc || api.description}</p>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px; line-height:1.5;">${api.desc || api.description}</p>
                     
                     <button class="btn" style="${btnColor}" onclick="${owned || isFree ? `toggleDetails(${api.id})` : `buy(${api.id}, ${api.price})`}">
                         ${owned ? '<i class="ri-play-circle-line"></i>' : ''} ${btnText}
                     </button>
 
-                    <div id="details-${api.id}" style="display:none; margin-top:15px; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; border:1px solid var(--border);">
-                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Endpoint</div>
-                        <div style="font-family:monospace; font-size:0.8rem; color:var(--accent); word-break:break-all;" onclick="copy('${api.endpoint}')">${api.endpoint}</div>
-                        ${owned ? `<div style="margin-top:5px; font-size:0.7rem; color:var(--text-muted);">Key: ${owned.key_value}</div>` : ''}
+                    <div id="details-${api.id}" style="display:none; margin-top:15px; background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px dashed var(--border);">
+                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Endpoint</div>
+                        <div style="font-family:monospace; font-size:0.8rem; color:var(--accent); word-break:break-all; margin-top:4px;" onclick="copy('${api.endpoint}')">${api.endpoint}</div>
+                        ${owned ? `<div style="margin-top:10px; font-size:0.7rem; color:var(--text-muted); font-weight:700;">YOUR KEY</div><div style="font-family:monospace; font-size:0.8rem; color:white;">${owned.key_value}</div>` : ''}
                     </div>
                 </div>`;
                 container.innerHTML += html;
@@ -412,13 +433,17 @@
             const container = document.getElementById('hotList');
             container.innerHTML = "";
             list.slice(0, 2).forEach(api => {
+                // OnClick navigates to Store tab
                 container.innerHTML += `
-                <div class="card flex justify-between" style="padding:12px; margin-bottom:8px; border-left:3px solid var(--primary)">
-                    <div class="flex gap-10">
-                        <i class="ri-fire-fill" style="color:#f97316"></i>
-                        <div style="font-weight:700; font-size:0.9rem;">${api.name}</div>
+                <div class="card flex justify-between" onclick="nav('store', document.querySelector('.nav-item:nth-child(2)'))" style="padding:15px; margin-bottom:8px; border-left:3px solid var(--primary); cursor:pointer;">
+                    <div class="flex gap-4">
+                        <i class="ri-fire-fill" style="color:#f97316; font-size:1.2rem;"></i>
+                        <div>
+                            <div style="font-weight:700; font-size:0.95rem;">${api.name}</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Trending</div>
+                        </div>
                     </div>
-                    <div style="font-size:0.8rem; color:var(--text-muted);">Top Rated</div>
+                    <div style="background:var(--surface-light); padding:5px 10px; border-radius:8px; font-size:0.75rem; color:var(--text);">View</div>
                 </div>`;
             });
         }
@@ -430,7 +455,7 @@
                 list.innerHTML += `
                 <div class="card" style="padding:15px;">
                     <div style="font-weight:700; color:var(--primary); margin-bottom:5px;">${k.name}</div>
-                    <div style="background:black; padding:8px; border-radius:8px; font-family:monospace; font-size:0.85rem; color:var(--text-muted); word-break:break-all;" onclick="copy('${k.key_value}')">
+                    <div style="background:black; padding:10px; border-radius:10px; font-family:monospace; font-size:0.85rem; color:var(--text-muted); word-break:break-all;" onclick="copy('${k.key_value}')">
                         ${k.key_value}
                     </div>
                 </div>`;
@@ -488,7 +513,7 @@
             overlay.classList.add('open');
             
             if(type === 'deposit') {
-                icon.innerHTML = '🦁'; title.innerText = "Add Funds";
+                icon.innerHTML = '💎'; title.innerText = "Add Funds";
                 msg.innerHTML = "To deposit funds, please use the <b style='color:var(--primary)'>/deposit</b> command in the bot.";
             } else if(type === 'withdraw') {
                 icon.innerHTML = '🏦'; title.innerText = "Withdraw";
@@ -519,4 +544,3 @@
     </script>
 </body>
 </html>
- 
