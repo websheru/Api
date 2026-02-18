@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sheru Nexus Native</title>
+    <title>Sheru Nexus God Mode</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Deep Space Theme */
             --bg: #050505;
             --surface: #0f0f11;
             --surface-light: #18181b;
             --primary: #6366f1; /* Indigo */
-            --accent: #10b981;  /* Emerald */
+            --accent: #06b6d4;  /* Cyan */
             --gold: #fbbf24;    /* Amber */
-            --danger: #ef4444;  /* Red */
             --text: #ffffff;
-            --text-muted: #71717a;
-            --border: rgba(255,255,255,0.06);
+            --text-muted: #9ca3af;
+            --border: rgba(255,255,255,0.08);
             --nav-bg: rgba(15, 15, 17, 0.95);
-            
-            /* Tiers */
-            --tier-norm: #64748b;
-            --tier-high: #06b6d4;
-            --tier-prem: #d946ef;
-            --tier-ultra: #f59e0b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -43,504 +35,479 @@
         /* --- UTILS --- */
         .flex { display: flex; align-items: center; }
         .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
         .col { flex-direction: column; }
         .w-full { width: 100%; }
-        .text-center { text-align: center; }
         .font-bold { font-weight: 700; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.9rem; }
+        .text-gold { color: var(--gold); }
+        .text-accent { color: var(--accent); }
         
         /* --- ANIMATIONS --- */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        .page { display: none; animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .page { display: none; animation: fadeIn 0.3s ease-out; }
         .page.active { display: block; }
 
         /* --- HEADER --- */
         .header {
             position: sticky; top: 0; z-index: 50;
-            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px);
             padding: 15px 20px; border-bottom: 1px solid var(--border);
         }
-        .sheru-coin {
-            width: 34px; height: 34px; 
-            background: radial-gradient(circle, #fbbf24, #d97706);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); border: 2px solid #fff;
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.5px; }
+        .coin-box {
+            background: var(--surface-light); padding: 6px 12px; border-radius: 30px;
+            border: 1px solid var(--border); font-size: 0.9rem; font-weight: 700;
+            display: flex; gap: 6px; align-items: center;
         }
-        .balance-pill {
-            background: var(--surface-light); padding: 8px 16px; border-radius: 30px;
-            border: 1px solid var(--border); font-weight: 700; font-size: 0.9rem;
-            display: flex; gap: 8px; align-items: center; transition: 0.2s;
-        }
-        .balance-pill:active { transform: scale(0.95); }
 
-        /* --- CARDS --- */
+        /* --- ITEM CARD --- */
         .card {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px; margin-bottom: 12px; position: relative; overflow: hidden;
-            transition: transform 0.2s;
+            border-radius: 18px; margin-bottom: 12px; overflow: hidden;
+            transition: border-color 0.2s;
         }
-        .card:active { transform: scale(0.98); }
+        .card:active { transform: scale(0.99); }
         
-        /* Tier Visuals */
-        .card-normal { border-left: 3px solid var(--tier-norm); }
-        .card-high { 
-            background: linear-gradient(180deg, rgba(6, 182, 212, 0.05), var(--surface));
-            border: 1px solid rgba(6, 182, 212, 0.3);
+        .card-header {
+            padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
         }
-        .card-prem {
-            background: linear-gradient(180deg, rgba(217, 70, 239, 0.05), var(--surface));
-            border: 1px solid rgba(217, 70, 239, 0.3); box-shadow: 0 0 20px rgba(217, 70, 239, 0.05);
+        .card-icon {
+            width: 48px; height: 48px; border-radius: 12px; background: var(--surface-light);
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text);
         }
-        .card-ultra {
-            border: 1px solid var(--gold);
-            background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.15), transparent 70%), #000;
-        }
-        .ultra-tag {
-            position: absolute; top: 0; right: 0; background: var(--gold); color: black;
-            font-size: 0.6rem; font-weight: 900; padding: 4px 10px; border-radius: 0 0 0 10px;
-        }
+        
+        /* Badges */
+        .badge { font-size: 0.65rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; margin-left: 6px; }
+        .bg-api { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
+        .bg-script { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+        .bg-bot { background: rgba(251, 191, 36, 0.2); color: #fcd34d; }
 
-        /* --- BUTTONS --- */
-        .btn {
-            width: 100%; padding: 14px; border-radius: 14px; border: none;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
-            transition: 0.2s; position: relative; overflow: hidden;
+        /* Dropdown & Arrow */
+        .dropdown-content {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
+            background: #0a0a0c; border-top: 1px solid var(--border);
         }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
-        .btn-sell { background: linear-gradient(90deg, #7c3aed, #4f46e5); color: white; }
+        .content-inner { padding: 15px; }
         
+        .arrow-box {
+            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s; color: var(--text-muted);
+        }
+        .rotate-arrow { transform: rotate(180deg); color: var(--primary); }
+
+        /* Button */
+        .btn-buy {
+            background: var(--text); color: #000; border: none; padding: 8px 16px; 
+            border-radius: 10px; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;
+        }
+        .btn-buy:active { transform: scale(0.95); background: var(--primary); color: white; }
+
+        /* --- PREVIEW BOX --- */
+        .preview-box {
+            background: #000; border: 1px dashed var(--border); border-radius: 10px; padding: 12px;
+            font-family: monospace; font-size: 0.75rem; color: var(--accent); margin-bottom: 15px;
+            position: relative;
+        }
+        .copy-icon { position: absolute; top: 8px; right: 8px; color: var(--text-muted); cursor: pointer; }
+
         /* --- TABS --- */
-        .tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 15px; scrollbar-width: none; }
+        .tabs { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 10px; scrollbar-width: none; }
         .chip {
-            padding: 10px 20px; border-radius: 12px; background: var(--surface);
-            border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap;
-            font-size: 0.85rem; font-weight: 600; transition: 0.2s;
+            padding: 8px 18px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.85rem; font-weight: 600; white-space: nowrap; transition: 0.2s;
         }
         .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* --- BOTTOM NAV (Professional Dock) --- */
-        .nav-dock {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: var(--nav-bg); backdrop-filter: blur(25px);
-            border: 1px solid var(--border); border-radius: 24px;
-            display: flex; justify-content: space-between; padding: 15px 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); z-index: 100;
+        /* --- HISTORY LIST --- */
+        .history-row {
+            display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid var(--border);
         }
-        .nav-item {
-            color: #52525b; font-size: 1.5rem; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-        }
-        .nav-item i { transition: 0.2s; }
-        .nav-item.active { color: var(--text); transform: translateY(-5px); }
-        .nav-item.active i { color: var(--primary); text-shadow: 0 0 15px rgba(99, 102, 241, 0.6); }
-        .nav-dot {
-            width: 4px; height: 4px; background: var(--primary); border-radius: 50%; opacity: 0; transition: 0.3s;
-        }
-        .nav-item.active .nav-dot { opacity: 1; }
-
-        /* --- SKELETON --- */
-        .skeleton {
-            background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
-            background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 16px;
-        }
-        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .history-row:last-child { border-bottom: none; }
 
         /* --- MODAL --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200;
+            opacity: 0; pointer-events: none; transition: 0.3s;
         }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal-box {
-            background: #0f0f11; border: 1px solid var(--border); width: 85%; padding: 30px 25px;
-            border-radius: 24px; text-align: center; transform: scale(0.95); transition: 0.3s;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            background: var(--surface); border: 1px solid var(--border); width: 85%; padding: 25px;
+            border-radius: 20px; text-align: center; transform: scale(0.9); transition: 0.3s;
         }
         .modal-overlay.open .modal-box { transform: scale(1); }
+
+        /* --- NAV --- */
+        .nav-dock {
+            position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 100;
+            background: var(--nav-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 24px;
+            display: flex; justify-content: space-around; padding: 14px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .nav-item { color: #666; font-size: 1.5rem; transition: 0.2s; display: flex; flex-direction: column; align-items: center; }
+        .nav-item.active { color: var(--primary); transform: translateY(-4px); }
+        .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; opacity: 0; margin-top: 4px; }
+        .nav-item.active .dot { opacity: 1; }
 
     </style>
 </head>
 <body>
 
     <div class="header flex justify-between">
-        <div class="flex gap-3">
-            <div class="sheru-coin">🦁</div>
-            <div style="font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px;">Sheru<span style="color:var(--primary)">Nexus</span></div>
-        </div>
-        <div class="balance-pill">
-            <span style="color:var(--gold)">🦁</span>
-            <span id="headerBal">...</span>
+        <div class="logo">Sheru<span style="color:var(--primary)">Nexus</span></div>
+        <div class="coin-box">
+            <span class="text-gold">🦁</span> <span id="userBal">...</span>
         </div>
     </div>
 
     <div id="home" class="page active" style="padding: 20px;">
-        <h1 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 5px;">Hello, <span id="userName" style="color:var(--primary)">User</span> 👋</h1>
-        <p style="color:var(--text-muted); margin-bottom: 25px; font-size: 0.9rem;">Welcome to the future of APIs.</p>
-
-        <div class="flex justify-between gap-3" style="margin-bottom: 20px;">
-            <div class="card w-full text-center" style="padding: 15px;">
-                <div style="color:var(--text-muted); font-size:0.65rem; font-weight:700; letter-spacing:1px;">TOTAL APIs</div>
-                <div style="font-size:1.6rem; font-weight:800; margin-top:5px;" id="totalApis">0</div>
-            </div>
-            <div class="card w-full text-center" style="padding: 15px;">
-                <div style="color:var(--text-muted); font-size:0.65rem; font-weight:700; letter-spacing:1px;">EARNINGS</div>
-                <div style="font-size:1.6rem; font-weight:800; margin-top:5px; color:var(--gold);" id="totalEarn">0</div>
-            </div>
+        <div style="background: linear-gradient(135deg, #1e1b4b, #000); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; position:relative; overflow:hidden; margin-bottom: 25px;">
+            <h2 style="font-size:1.5rem; font-weight:800; line-height:1.2;">Monetize Your <br><span style="color:#a5b4fc">Code & APIs</span></h2>
+            <p style="font-size:0.85rem; color:#818cf8; margin-top:8px; width:70%;">Join our developer marketplace and earn passive income.</p>
+            <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" style="margin-top:15px; background:white; color:black; border:none; padding:8px 18px; border-radius:8px; font-weight:800; font-size:0.85rem;">Start Selling</button>
+            <i class="ri-code-box-line" style="position:absolute; right:-10px; bottom:-10px; font-size:6rem; opacity:0.1; color:white;"></i>
         </div>
 
-        <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f0f11); border: 1px solid #4338ca; position: relative; padding: 25px;">
-            <h3 style="font-weight: 800; font-size: 1.3rem; margin-bottom: 8px; line-height: 1.2;">Sell Your <br> <span style="color:#a5b4fc">Own API?</span></h3>
-            <p style="color:#818cf8; font-size: 0.85rem; margin-bottom: 20px; width: 70%;">Join our marketplace and generate passive income.</p>
-            <button class="btn btn-sell" onclick="openSellBot()" style="width: auto; padding: 10px 24px; font-size: 0.85rem;">Start Selling <i class="ri-arrow-right-line"></i></button>
-            <i class="ri-code-box-line" style="position: absolute; bottom: -20px; right: 10px; font-size: 6rem; opacity: 0.05; color: white; transform: rotate(15deg);"></i>
-        </div>
-
-        <h3 style="margin: 25px 0 15px; font-weight: 800; display:flex; gap:8px; font-size: 1.1rem;"><i class="ri-fire-fill" style="color:#f97316"></i> Trending Now</h3>
-        <div id="hotList">
-            <div class="skeleton" style="height: 80px; margin-bottom: 10px;"></div>
-        </div>
+        <h3 style="font-weight:800; font-size:1.1rem; display:flex; gap:5px; margin-bottom:10px;">
+            <i class="ri-fire-fill text-gold"></i> Hot Picks
+        </h3>
+        <div id="hotList"></div>
     </div>
 
-    <div id="store" class="page" style="padding: 20px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 800;">Store</h2>
-
+    <div id="store" class="page" style="padding-top: 10px;">
         <div class="tabs">
             <div class="chip active" onclick="filter('all', this)">All</div>
-            <div class="chip" onclick="filter('hacking', this)">Hacking</div>
-            <div class="chip" onclick="filter('social', this)">Social</div>
-            <div class="chip" onclick="filter('ai', this)">AI</div>
-            <div class="chip" onclick="filter('other', this)">Other</div>
+            <div class="chip" onclick="filter('script', this)">Scripts</div>
+            <div class="chip" onclick="filter('bot', this)">Bots</div>
+            <div class="chip" onclick="filter('api', this)">APIs</div>
         </div>
 
-        <div id="apiList" style="padding-bottom: 60px;">
-            <div class="skeleton" style="height: 140px; margin-bottom: 15px;"></div>
-        </div>
+        <div id="itemList" style="padding: 10px 20px 100px;"></div>
     </div>
 
     <div id="refer" class="page" style="padding: 20px;">
-        <h2 style="font-size: 1.8rem; margin-bottom: 20px; font-weight: 800;">Affiliate</h2>
-        
-        <div class="card text-center" style="background: linear-gradient(180deg, #18181b, #000); padding: 30px 20px;">
-            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight:600;">LIFETIME EARNINGS</div>
-            <div style="font-size: 3rem; font-weight: 900; color: var(--primary); margin: 10px 0;">🦁 <span id="refPageEarn">0</span></div>
-            
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
-                Earn <b style="color:var(--gold)">1 🦁</b> per invite<br>
-                + <b style="color:var(--accent)">25% Commission</b> on deposits!
+        <div style="text-align:center; padding: 30px; background:var(--surface); border-radius:20px; border:1px solid var(--border);">
+            <i class="ri-trophy-fill" style="font-size:3rem; color:var(--gold);"></i>
+            <h2 style="font-size:1.8rem; font-weight:900; margin:10px 0;">INVITE FRIENDS</h2>
+            <p style="color:var(--text-muted); font-size:0.9rem;">
+                Earn <b class="text-gold">1 🦁</b> per invite<br>+ <b class="text-accent">25% Commission</b> on deposits.
             </p>
-
-            <div style="background:#09090b; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border);">
-                <span id="refLink" style="color:#a1a1aa; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading Link...</span>
-                <div style="background:var(--surface-light); padding:8px; border-radius:8px; cursor:pointer;" onclick="copyRef()"><i class="ri-file-copy-line" style="color:var(--primary);"></i></div>
+            
+            <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                <span id="refLink" style="color:#666; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
+                <button onclick="shareReferral()" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:8px;"><i class="ri-share-forward-line"></i></button>
             </div>
         </div>
 
-        <h3 style="margin: 25px 0 15px; font-size:1rem; font-weight:700;">Referral History</h3>
-        <div id="refHistory">
-            <div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding: 40px; background:var(--surface); border-radius:20px; border:1px dashed var(--border);">No referrals yet.<br>Invite friends to start earning! 🚀</div>
+        <h3 style="margin: 25px 0 10px; font-weight:800;">Referral History</h3>
+        <div id="referHistory" style="padding-bottom:100px;">
+            <div class="text-center text-muted text-sm mt-5">No referrals yet.</div>
         </div>
     </div>
 
     <div id="profile" class="page" style="padding: 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <div style="width: 85px; height: 85px; margin: 0 auto 15px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; color:white; border: 4px solid var(--surface-light);">
-                <i class="ri-user-6-fill"></i>
+        <div style="background:var(--surface); padding:20px; border-radius:20px; border:1px solid var(--border); margin-bottom:20px;">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h2 class="text-xl font-bold" id="profileName">User</h2>
+                    <div class="text-xs text-muted">ID: <span id="userId">...</span></div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="text-xs text-muted font-bold">BALANCE</div>
+                    <div class="text-2xl font-black text-gold">🦁 <span id="profileBal">0</span></div>
+                </div>
             </div>
-            <h2 id="profileName" style="font-size: 1.6rem; font-weight: 800;">User</h2>
-            <div style="color:var(--text-muted); font-size: 0.85rem; margin-top:5px;">ID: <span id="userId">...</span></div>
-        </div>
-
-        <div class="flex justify-between gap-3" style="margin-bottom: 20px;">
-            <div class="card w-full text-center" style="padding: 15px;">
-                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">JOINED</div>
-                <div style="font-weight:700; font-size:0.9rem; margin-top:4px;">Today</div>
-            </div>
-            <div class="card w-full text-center" style="padding: 15px;">
-                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">STATUS</div>
-                <div style="font-weight:700; font-size:0.9rem; margin-top:4px; color:var(--accent);">Active</div>
-            </div>
-            <div class="card w-full text-center" style="padding: 15px;">
-                <div style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px;">INVITES</div>
-                <div style="font-weight:700; font-size:0.9rem; margin-top:4px;" id="profileInvites">0</div>
+            
+            <div class="flex gap-2 mt-5">
+                <button onclick="showAlert('deposit')" class="w-full" style="background:#fff; color:#000; border:none; padding:10px; border-radius:10px; font-weight:800;">Deposit</button>
+                <button onclick="showAlert('payout')" class="w-full" style="background:#222; color:#fff; border:1px solid #333; padding:10px; border-radius:10px; font-weight:800;">Payout</button>
             </div>
         </div>
 
-        <div class="card flex justify-between" style="background:linear-gradient(135deg, #18181b, #09090b);">
-            <div>
-                <div style="color:var(--text-muted); font-size:0.7rem; text-transform:uppercase; font-weight:700;">Balance</div>
-                <div style="font-size: 2rem; font-weight: 900;">🦁 <span id="profileBal">0</span></div>
-            </div>
-            <div class="col gap-10">
-                <button class="btn btn-primary" style="padding: 8px 18px; font-size: 0.8rem; height:auto;" onclick="showModal('deposit')">Deposit</button>
-                <button class="btn btn-ghost" style="padding: 8px 18px; font-size: 0.8rem; height:auto;" onclick="showModal('withdraw')">Withdraw</button>
-            </div>
-        </div>
-
-        <h3 style="margin: 25px 0 15px; font-size:1rem; font-weight:700;">My Keys</h3>
-        <div id="myKeysList" style="padding-bottom: 80px;"></div>
+        <h3 style="margin-bottom:10px; font-weight:800; font-size:1.1rem;">My Collection</h3>
+        <div id="myHistory" style="padding-bottom:100px;"></div>
     </div>
 
-    <div class="modal-overlay" id="customModal">
+    <div class="modal-overlay" id="alertModal">
         <div class="modal-box">
-            <div id="modalIcon" style="font-size: 3.5rem; margin-bottom: 15px;"></div>
+            <div id="modalIcon" style="font-size: 3rem; margin-bottom: 10px;"></div>
             <h3 id="modalTitle" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 10px;">Alert</h3>
             <p id="modalMsg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;"></p>
-            <button class="btn btn-primary" onclick="closeModal()">Okay, Got it</button>
+            <button onclick="closeModal()" style="width:100%; background:var(--primary); color:white; padding:12px; border:none; border-radius:12px; font-weight:bold;">Got it</button>
         </div>
     </div>
 
     <div class="nav-dock">
-        <div class="nav-item active" onclick="nav('home', this)">
-            <i class="ri-home-smile-2-fill"></i>
-            <div class="nav-dot"></div>
-        </div>
-        <div class="nav-item" onclick="nav('store', this)">
-            <i class="ri-apps-2-fill"></i>
-            <div class="nav-dot"></div>
-        </div>
-        <div class="nav-item" onclick="nav('refer', this)">
-            <i class="ri-share-forward-box-fill"></i>
-            <div class="nav-dot"></div>
-        </div>
-        <div class="nav-item" onclick="nav('profile', this)">
-            <i class="ri-user-3-fill"></i>
-            <div class="nav-dot"></div>
-        </div>
+        <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('store', this)"><i class="ri-layout-grid-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-3-line"></i><div class="dot"></div></div>
     </div>
 
     <script>
-        // --- CONFIG ---
-        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; // ⚠️ REPLACE WITH YOUR WORKER
-        const BOT_USERNAME = "SheruApiBot"; 
-        const SELL_BOT_USERNAME = "SheruSellBot"; 
+        // --- ⚙️ CONFIGURATION ---
+        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; // Needs to be active for Auth
+        const BOT_USERNAME = "SheruApiBot"; // Your Bot Username (No @)
 
-        const FREE_APIS = [
-            { id: 901, name: "QR Generator", price: 0, cat: "other", icon: "ri-qr-code-line", desc: "Create unlimited QR codes instantly.", endpoint: "https://api.qrserver.com/v1/create-qr-code/?data=" },
-            { id: 902, name: "IP Info", price: 0, cat: "hacking", icon: "ri-map-pin-user-line", desc: "Track IP geolocation details.", endpoint: "https://ipapi.co/json/" }
+        // --- 📂 LOCAL DATA (JSON) ---
+        // Server upload ki zarurat nahi, items yahan define karo.
+        const DATA = [
+            { 
+                id: 101, type: 'API', name: 'Instagram Downloader', price: 50, 
+                desc: 'Download Reels, Stories & Posts without login.',
+                icon: 'ri-instagram-line', 
+                demo_url: 'https://api.sheru.com/insta?url=...',
+                response: '{"status":"success", "url":"http://video.mp4"}'
+            },
+            { 
+                id: 102, type: 'SCRIPT', name: 'Python DDoS Script', price: 150, 
+                desc: 'Powerful L7 Attack script written in Python 3.',
+                icon: 'ri-skull-line', 
+                demo_url: 'Source Code File (25KB)',
+                response: '# This is a preview of the code...'
+            },
+            { 
+                id: 103, type: 'BOT', name: 'Auto Filter Bot', price: 200, 
+                desc: 'Telegram movie filter bot source code with database.',
+                icon: 'ri-robot-2-line', 
+                demo_url: 'Bot Source Code (Zip)',
+                response: 'Structure: /plugins, /database, main.py'
+            },
+            { 
+                id: 104, type: 'API', name: 'ChatGPT-4 Free', price: 80, 
+                desc: 'Access GPT-4 models without OpenAI key.',
+                icon: 'ri-openai-line', 
+                demo_url: 'https://api.sheru.com/gpt?q=Hi',
+                response: '{"reply": "Hello! How can I help you?"}'
+            }
         ];
 
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.enableClosingConfirmation();
 
-        let state = { user: null, premium: [], keys: [] };
+        let state = { user: null, owned: [] };
 
+        // --- 🚀 INIT ---
         async function init() {
             try {
-                // Auth
-                let res = await fetch(`${BACKEND_URL}/api/auth`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                // 1. Auth with Backend (Only for Balance/User Info)
+                let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ initData: tg.initData })
                 });
-                let data = await res.json();
-                state.user = data.user;
+                let auth = await authRes.json();
+                state.user = auth.user;
 
-                // Data
-                let dRes = await fetch(`${BACKEND_URL}/api/dashboard`, { headers: { 'Authorization': tg.initData } });
-                let dData = await dRes.json();
-                
-                if(dData.success) {
-                    // Simulating categories based on price for demo
-                    state.premium = dData.catalog.map(i => ({...i, cat: i.price > 50 ? 'hacking' : 'social'})); 
-                    state.keys = dData.my_keys;
+                // 2. Mock Owned Items (In real app, fetch from DB)
+                // For now, let's say user owns item 101 if balance > 500
+                if(state.user.balance > 500) state.owned.push(101);
+
+                // 3. Deep Link Handler (Popup logic)
+                const startParam = tg.initDataUnsafe.start_param;
+                if(startParam && startParam.startsWith('item_')) {
+                    const itemId = parseInt(startParam.split('_')[1]);
+                    // Auto switch to store and open item
+                    setTimeout(() => {
+                        nav('store', document.querySelectorAll('.nav-item')[1]);
+                        toggleDetails(`store-${itemId}`);
+                    }, 500);
                 }
-                renderUI();
 
-            } catch(e) { 
-                // Offline fallback
+                renderUI();
+            } catch (e) {
+                console.error(e);
+                // Offline Fallback
                 state.user = { first_name: "Guest", balance: 0, tg_id: 0, total_refs: 0 };
-                renderUI(); 
+                renderUI();
             }
         }
 
+        // --- 🎨 RENDER ---
         function renderUI() {
-            // User Data
-            document.getElementById('userName').innerText = state.user.first_name;
+            // Header Stats
+            document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance);
             document.getElementById('profileName').innerText = state.user.first_name;
             document.getElementById('userId').innerText = state.user.tg_id;
-            document.querySelectorAll('#headerBal, #profileBal').forEach(e => e.innerText = state.user.balance);
             
-            // Stats
-            document.getElementById('profileInvites').innerText = state.user.total_refs || 0;
-            const earnings = (state.user.total_refs || 0) * 25; // Calculation logic
-            document.getElementById('totalEarn').innerText = earnings;
-            document.getElementById('refPageEarn').innerText = earnings;
+            // Refer Link
             document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
 
-            const allApis = [...state.premium, ...FREE_APIS];
-            document.getElementById('totalApis').innerText = allApis.length;
-
-            renderStore(allApis);
-            renderHot(allApis);
-            renderKeys();
+            // Render Lists (Unique IDs to fix dropdown bug)
+            renderList(DATA, 'itemList', 'store');
+            renderList(DATA.slice(0, 2), 'hotList', 'home');
+            
+            renderHistory();
         }
 
-        function renderStore(list) {
-            const container = document.getElementById('apiList');
+        function renderList(list, containerId, context) {
+            const container = document.getElementById(containerId);
             container.innerHTML = "";
 
-            list.forEach(api => {
-                const isFree = api.price === 0;
-                const owned = state.keys.find(k => k.name === api.name);
-                
-                // Tier Logic & Styling
-                let tierClass = 'card-normal';
-                let btnColor = 'background:var(--surface-light); color:white; border:1px solid var(--border)';
-                let btnText = `Get for ${api.price}`;
-                
-                if (api.price >= 10 && api.price < 50) tierClass = 'card-high';
-                if (api.price >= 50 && api.price < 100) tierClass = 'card-prem';
-                if (api.price >= 100) tierClass = 'card-ultra';
+            list.forEach(item => {
+                const isOwned = state.owned.includes(item.id);
+                const uniqueId = `${context}-${item.id}`; // FIX: Unique ID for every card
 
-                if (isFree) { btnText = "Free Access"; btnColor = "background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3)"; }
-                if (owned) { btnText = "Use API"; btnColor = "background:var(--primary); color:white;"; }
-
+                let badgeColor = item.type === 'API' ? 'bg-api' : (item.type === 'SCRIPT' ? 'bg-script' : 'bg-bot');
+                
                 const html = `
-                <div class="card ${tierClass}">
-                    ${api.price >= 100 ? '<div class="ultra-tag">ULTRA</div>' : ''}
-                    <div class="flex justify-between items-start" style="margin-bottom:12px;">
-                        <div style="background:var(--surface-light); padding:10px; border-radius:12px; font-size:1.4rem;">
-                            <i class="${api.icon || 'ri-terminal-box-line'}"></i>
+                <div class="card">
+                    <div class="card-header" onclick="toggleDetails('${uniqueId}')">
+                        <div class="flex gap-3">
+                            <div class="card-icon"><i class="${item.icon}"></i></div>
+                            <div>
+                                <div class="flex gap-2">
+                                    <div class="font-bold" style="font-size:0.95rem;">${item.name}</div>
+                                    <span class="badge ${badgeColor}">${item.type}</span>
+                                </div>
+                                <div class="text-muted text-xs" style="margin-top:2px;">
+                                    Click for details
+                                </div>
+                            </div>
                         </div>
-                        <div style="font-weight:700; font-size:1.1rem; color:${isFree ? 'var(--accent)' : 'var(--text)'}">
-                            ${isFree ? 'FREE' : '🦁 ' + api.price}
+                        
+                        <div class="flex gap-3">
+                            <button class="btn-buy" onclick="event.stopPropagation(); buy('${item.type}', ${item.id})">
+                                ${isOwned ? '<i class="ri-check-double-line text-accent"></i> Owned' : `<span class="text-gold">🦁</span> ${item.price}`}
+                            </button>
+                            <div class="arrow-box" id="arrow-${uniqueId}">
+                                <i class="ri-arrow-down-s-line" style="font-size:1.2rem;"></i>
+                            </div>
                         </div>
                     </div>
-                    <h3 style="font-weight:700; font-size:1.1rem; margin-bottom:5px;">${api.name}</h3>
-                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px; line-height:1.5;">${api.desc || api.description}</p>
-                    
-                    <button class="btn" style="${btnColor}" onclick="${owned || isFree ? `toggleDetails(${api.id})` : `buy(${api.id}, ${api.price})`}">
-                        ${owned ? '<i class="ri-play-circle-line"></i>' : ''} ${btnText}
-                    </button>
 
-                    <div id="details-${api.id}" style="display:none; margin-top:15px; background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px dashed var(--border);">
-                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Endpoint</div>
-                        <div style="font-family:monospace; font-size:0.8rem; color:var(--accent); word-break:break-all; margin-top:4px;" onclick="copy('${api.endpoint}')">${api.endpoint}</div>
-                        ${owned ? `<div style="margin-top:10px; font-size:0.7rem; color:var(--text-muted); font-weight:700;">YOUR KEY</div><div style="font-family:monospace; font-size:0.8rem; color:white;">${owned.key_value}</div>` : ''}
+                    <div id="details-${uniqueId}" class="dropdown-content">
+                        <div class="content-inner">
+                            <div class="flex justify-between mb-3" style="background:#151515; padding:10px; border-radius:8px;">
+                                <div class="text-center">
+                                    <div class="text-xs text-muted font-bold">TYPE</div>
+                                    <div class="font-bold text-sm text-accent">${item.type}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-muted font-bold">VALIDITY</div>
+                                    <div class="font-bold text-sm">Lifetime</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-muted font-bold">SUPPORT</div>
+                                    <div class="font-bold text-sm text-gold">24/7</div>
+                                </div>
+                            </div>
+
+                            <p class="text-muted text-sm mb-3">${item.desc}</p>
+
+                            <div class="text-xs text-muted font-bold mb-1">DEMO / ENDPOINT</div>
+                            <div class="preview-box" onclick="copy('${item.demo_url}')">
+                                ${item.demo_url}
+                                <i class="ri-file-copy-line copy-icon"></i>
+                            </div>
+
+                            <div class="text-xs text-muted font-bold mb-1">RESPONSE PREVIEW</div>
+                            <div class="preview-box" style="color:#10b981;">
+                                ${item.response}
+                            </div>
+
+                            <div style="display:flex; justify-content:flex-end;">
+                                <button onclick="shareItem(${item.id})" style="background:transparent; color:var(--text-muted); border:none; display:flex; gap:5px; align-items:center;">
+                                    <i class="ri-share-forward-line"></i> Share
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>`;
                 container.innerHTML += html;
             });
         }
 
-        function renderHot(list) {
-            const container = document.getElementById('hotList');
-            container.innerHTML = "";
-            list.slice(0, 2).forEach(api => {
-                // OnClick navigates to Store tab
-                container.innerHTML += `
-                <div class="card flex justify-between" onclick="nav('store', document.querySelector('.nav-item:nth-child(2)'))" style="padding:15px; margin-bottom:8px; border-left:3px solid var(--primary); cursor:pointer;">
-                    <div class="flex gap-4">
-                        <i class="ri-fire-fill" style="color:#f97316; font-size:1.2rem;"></i>
-                        <div>
-                            <div style="font-weight:700; font-size:0.95rem;">${api.name}</div>
-                            <div style="font-size:0.75rem; color:var(--text-muted);">Trending</div>
-                        </div>
-                    </div>
-                    <div style="background:var(--surface-light); padding:5px 10px; border-radius:8px; font-size:0.75rem; color:var(--text);">View</div>
-                </div>`;
-            });
+        function renderHistory() {
+            // Fake History for UI
+            const container = document.getElementById('myHistory');
+            if(state.owned.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted text-sm mt-5">You haven't bought anything yet.</div>`;
+                return;
+            }
+            // Logic to show owned items would go here
         }
 
-        function renderKeys() {
-            const list = document.getElementById('myKeysList');
-            list.innerHTML = "";
-            state.keys.forEach(k => {
-                list.innerHTML += `
-                <div class="card" style="padding:15px;">
-                    <div style="font-weight:700; color:var(--primary); margin-bottom:5px;">${k.name}</div>
-                    <div style="background:black; padding:10px; border-radius:10px; font-family:monospace; font-size:0.85rem; color:var(--text-muted); word-break:break-all;" onclick="copy('${k.key_value}')">
-                        ${k.key_value}
-                    </div>
-                </div>`;
-            });
+        // --- ⚡ ACTIONS ---
+        
+        function toggleDetails(uniqueId) {
+            // FIX: Works perfectly now because IDs are unique
+            const el = document.getElementById(`details-${uniqueId}`);
+            const arrow = document.getElementById(`arrow-${uniqueId}`);
+            
+            if (el.style.maxHeight) {
+                el.style.maxHeight = null;
+                arrow.classList.remove('rotate-arrow');
+            } else {
+                // Close others first (Optional UI polish)
+                document.querySelectorAll('.dropdown-content').forEach(d => d.style.maxHeight = null);
+                document.querySelectorAll('.arrow-box').forEach(a => a.classList.remove('rotate-arrow'));
+                
+                el.style.maxHeight = el.scrollHeight + "px";
+                arrow.classList.add('rotate-arrow');
+            }
         }
 
-        // --- FILTER ---
-        function filter(cat, el) {
+        function buy(type, id) {
+            // Logic: Close WebApp -> Send User to Bot -> Trigger Start Param
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=${type.toLowerCase()}_${id}`);
+            tg.close(); // IMPORTANT: Minimize app so user sees the bot
+        }
+
+        function filter(type, btn) {
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
+            btn.classList.add('active');
             
-            const all = [...state.premium, ...FREE_APIS];
-            let filtered = [];
-            
-            if(cat === 'all') filtered = all;
-            else if(cat === 'hacking') filtered = all.filter(a => a.cat === 'hacking' || a.name.toLowerCase().includes('hack'));
-            else if(cat === 'social') filtered = all.filter(a => a.cat === 'social' || a.name.toLowerCase().includes('insta'));
-            else filtered = all.filter(a => a.cat === cat);
-            
-            renderStore(filtered);
+            const filtered = type === 'all' ? DATA : DATA.filter(i => i.type.toLowerCase() === type);
+            renderList(filtered, 'itemList', 'store');
         }
 
-        // --- ACTIONS ---
-        function toggleDetails(id) {
-            const el = document.getElementById(`details-${id}`);
-            el.style.display = el.style.display === 'none' ? 'block' : 'none';
-        }
-
-        async function buy(id, price) {
-            if(state.user.balance < price) { showModal('deposit'); return; }
-            if(!confirm("Purchase this API?")) return;
+        function nav(pageId, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
             
-            try {
-                let res = await fetch(`${BACKEND_URL}/api/buy`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ initData: tg.initData, serviceId: id, price: price })
-                });
-                let data = await res.json();
-                if(data.success) {
-                    state.user.balance -= price;
-                    init(); 
-                    showModal('success');
-                } else { alert(data.error); }
-            } catch(e) { console.log(e); }
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        // --- MODAL & NAV ---
-        function showModal(type) {
-            const overlay = document.getElementById('customModal');
+        // --- 🔗 SHARING & ALERTS ---
+
+        function shareItem(id) {
+            // Generates link: t.me/Bot/app?startapp=item_101
+            const link = `https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`;
+            tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=Check out this cool item on Sheru Nexus!`);
+        }
+
+        function shareReferral() {
+            const link = document.getElementById('refLink').innerText;
+            tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=Join and earn rewards!`);
+        }
+
+        function showAlert(type) {
+            const modal = document.getElementById('alertModal');
             const icon = document.getElementById('modalIcon');
             const title = document.getElementById('modalTitle');
             const msg = document.getElementById('modalMsg');
 
-            overlay.classList.add('open');
-            
+            modal.classList.add('open');
+
             if(type === 'deposit') {
                 icon.innerHTML = '💎'; title.innerText = "Add Funds";
-                msg.innerHTML = "To deposit funds, please use the <b style='color:var(--primary)'>/deposit</b> command in the bot.";
-            } else if(type === 'withdraw') {
+                msg.innerHTML = "To add funds, please close this app and use the <b class='text-accent'>/deposit</b> command in the bot chat.";
+            } else if(type === 'payout') {
                 icon.innerHTML = '🏦'; title.innerText = "Withdraw";
-                msg.innerHTML = "To withdraw, use the <b style='color:var(--accent)'>/withdraw</b> command in the bot.";
-            } else if(type === 'success') {
-                icon.innerHTML = '✅'; title.innerText = "Purchased!";
-                msg.innerHTML = "API Key has been added to your profile.";
+                msg.innerHTML = "To withdraw earnings, use the <b class='text-gold'>/payout</b> command in the bot chat.";
             }
         }
-        function closeModal() { document.getElementById('customModal').classList.remove('open'); }
 
-        function openSellBot() { tg.close(); window.open(`https://t.me/${SELL_BOT_USERNAME}`); }
-
-        function nav(pageId, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        function copyRef() {
-            navigator.clipboard.writeText(document.getElementById('refLink').innerText);
-            alert("Copied!");
-        }
-        function copy(txt) { navigator.clipboard.writeText(txt); alert("Copied!"); }
+        function closeModal() { document.getElementById('alertModal').classList.remove('open'); }
+        function copy(txt) { navigator.clipboard.writeText(txt); tg.showAlert("Copied!"); }
 
         window.onload = init;
+
     </script>
 </body>
 </html>
