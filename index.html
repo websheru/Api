@@ -9,114 +9,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* --- THEME VARS --- */
         :root {
             --bg-color: #030304;
             --card-bg: #0f0f11;
-            --glass-bg: rgba(20, 20, 22, 0.7);
             --primary: #6366f1;
             --primary-glow: rgba(99, 102, 241, 0.4);
             --accent: #22d3ee;
             --gold: #fbbf24;
+            --danger: #ef4444;
             --text: #ffffff;
             --text-sec: #94a3b8;
-            --border: rgba(255, 255, 255, 0.06);
-            --nav-glass: rgba(10, 10, 10, 0.85);
+            --border: rgba(255, 255, 255, 0.08);
+            --nav-glass: rgba(10, 10, 12, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            font-size: 14px;
+            background-color: var(--bg-color); color: var(--text);
+            font-family: 'Outfit', sans-serif; overflow-x: hidden; font-size: 14px;
         }
 
-        /* --- MOBILE CONTAINER (Responsiveness Fix) --- */
+        /* --- CONTAINER --- */
         .app-container {
-            max-width: 480px; /* Mobile width limit */
-            margin: 0 auto;
-            background: var(--bg-color);
-            min-height: 100vh;
-            position: relative;
-            padding-bottom: 100px;
+            max-width: 480px; margin: 0 auto; background: var(--bg-color);
+            min-height: 100vh; padding-bottom: 100px; position: relative;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
         /* --- HEADER --- */
         .header {
             position: sticky; top: 0; z-index: 50;
-            background: rgba(3, 3, 4, 0.8); backdrop-filter: blur(20px);
-            padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(3, 3, 4, 0.85); backdrop-filter: blur(20px);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
         }
-        .logo { 
-            font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; 
-            background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
         .balance-pill {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border);
             padding: 6px 14px; border-radius: 50px; font-weight: 700;
             display: flex; gap: 6px; align-items: center; font-size: 0.9rem;
         }
 
-        /* --- CARDS & UI --- */
+        /* --- CARDS & LISTS --- */
         .hero-card {
-            background: linear-gradient(135deg, #4f46e5, #0f0f11 80%);
-            border-radius: 24px; padding: 25px; margin: 20px;
-            position: relative; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+            background: linear-gradient(135deg, #4f46e5, #0f0f11 90%);
+            border-radius: 24px; padding: 25px; margin: 20px; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
         }
         .hero-btn {
             background: #fff; color: #000; border: none; padding: 10px 20px;
-            border-radius: 12px; font-weight: 700; font-size: 0.9rem; margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+            border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer;
         }
 
         .section-title {
-            padding: 0 20px; margin-bottom: 12px; margin-top: 25px;
-            font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px;
+            padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800;
+            display: flex; align-items: center; gap: 8px; color: var(--text);
         }
 
-        /* --- LIST ITEMS --- */
+        /* --- ITEM CARD --- */
         .list-item {
             background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px;
-            border: 1px solid var(--border); overflow: hidden;
-            transition: transform 0.2s, background 0.2s;
+            border: 1px solid var(--border); overflow: hidden; transition: 0.2s;
         }
-        .list-item:active { transform: scale(0.98); background: #161618; }
+        .list-item:active { transform: scale(0.98); }
 
-        .item-main {
-            padding: 15px; display: flex; align-items: center; justify-content: space-between;
-        }
+        .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        
         .item-icon {
-            width: 45px; height: 45px; border-radius: 14px;
-            background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; color: var(--text); flex-shrink: 0;
+            width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text);
         }
         
-        .badge {
-            font-size: 0.6rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; }
         .b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
         .b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
+        .b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
 
         .btn-price {
             background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px;
-            font-weight: 800; font-size: 0.85rem; display: flex; gap: 4px; border:none;
+            font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center;
         }
         .btn-owned {
-            background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);
+            background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none;
+        }
+        .btn-renew {
+            background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         /* --- DROPDOWN --- */
         .item-body {
-            max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            background: #08080a; border-top: 1px solid var(--border);
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
+            background: #0a0a0c; border-top: 1px solid var(--border);
         }
         .body-pad { padding: 20px; }
         
@@ -128,18 +113,14 @@
         .console {
             background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px;
             font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 10px;
-            position: relative;
+            position: relative; word-break: break-all;
         }
 
         /* --- TABS --- */
-        .tabs-container {
-            padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px;
-            scrollbar-width: none;
-        }
+        .tabs-container { padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; }
         .tab-chip {
             padding: 10px 20px; border-radius: 14px; background: var(--card-bg);
-            border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap;
-            transition: 0.3s;
+            border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap; transition: 0.3s;
         }
         .tab-chip.active {
             background: var(--primary); color: white; border-color: var(--primary);
@@ -149,41 +130,36 @@
         /* --- BOTTOM NAV --- */
         .nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 440px;
+            width: 90%; max-width: 440px; z-index: 100;
             background: var(--nav-glass); backdrop-filter: blur(25px);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
             display: flex; justify-content: space-around; padding: 14px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); z-index: 100;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
-        .nav-item {
-            color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center;
-        }
+        .nav-item { color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .nav-item.active { color: var(--text); transform: translateY(-4px); }
-        .nav-item.active i { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
-        .dot {
-            width: 4px; height: 4px; background: var(--primary); border-radius: 50%;
-            margin-top: 4px; opacity: 0; transition: 0.3s;
-        }
+        .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; margin-top: 4px; opacity: 0; transition: 0.3s; }
         .nav-item.active .dot { opacity: 1; }
 
-        /* --- PAGE TRANSITIONS --- */
+        /* --- PAGE LOGIC --- */
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- MODAL --- */
         .modal-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
             display: none; align-items: center; justify-content: center;
         }
         .modal-card {
             background: #121214; border: 1px solid var(--border); width: 85%; max-width: 350px;
             padding: 30px 20px; border-radius: 24px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s;
         }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+        /* Loading Skeleton */
         .skeleton {
             background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%);
             background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px;
@@ -207,19 +183,19 @@
     <div id="home" class="page active">
         <div class="hero-card">
             <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Monetize Your <br><span style="color:#a5b4fc">Code & APIs</span></h2>
-            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Join the developer marketplace.</p>
+            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Join the #1 developer marketplace.</p>
             <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">Start Selling</button>
             <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
         </div>
 
         <div class="section-title"><i class="ri-fire-fill" style="color:orange"></i> Trending</div>
         <div id="hotList">
-            <div style="padding:0 20px;"><div class="skeleton" style="height:70px; margin-bottom:10px;"></div></div>
+            <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
         </div>
     </div>
 
     <div id="store" class="page">
-        <div class="section-title" style="margin-top:20px;">Store</div>
+        <div class="section-title" style="margin-top:20px;">Marketplace</div>
         <div class="tabs-container">
             <div class="tab-chip active" onclick="filter('all', this)">All</div>
             <div class="tab-chip" onclick="filter('script', this)">Scripts</div>
@@ -247,7 +223,9 @@
         </div>
 
         <div class="section-title">History</div>
-        <div id="referHistory" style="padding:0 20px 100px;"></div>
+        <div id="referHistory" style="padding:0 20px 100px;">
+            <div style="text-align:center; color:#555; padding:20px;">No referrals yet.</div>
+        </div>
     </div>
 
     <div id="profile" class="page">
@@ -276,8 +254,10 @@
             </div>
         </div>
 
-        <div class="section-title">My Collection</div>
-        <div id="myHistory" style="padding:0 20px 100px;"></div>
+        <div class="section-title">My Collection <span style="font-size:0.7rem; color:var(--text-sec); margin-left:auto; font-weight:normal;">Purchased from Store</span></div>
+        <div id="myHistory" style="padding:0 20px 100px;">
+            <div class="skeleton" style="height:80px;"></div>
+        </div>
     </div>
 
 </div>
@@ -299,89 +279,111 @@
 </div>
 
 <script>
-    // CONFIG
-    const BACKEND_URL = "https://sheru-api.amritw1.workers.dev";
-    const BOT_USERNAME = "SheruApiBot";
-
-    // DATA (Add type manually: API, SCRIPT, BOT)
-    const DATA = [
-        { id: 101, type: 'API', name: 'Instagram Pro', price: 50, desc: 'HD Reels & Story Downloader.', icon: 'ri-instagram-line', demo: 'https://api.sheru.com/insta?url=', res: '{"url":"video.mp4"}' },
-        { id: 102, type: 'SCRIPT', name: 'DDoS Attack Tool', price: 150, desc: 'Python L7 script. High Power.', icon: 'ri-skull-line', demo: 'file.py', res: '# Source Code Preview...' },
-        { id: 103, type: 'BOT', name: 'Filter Bot V3', price: 200, desc: 'Auto-filter movie bot code.', icon: 'ri-robot-2-line', demo: 'bot.zip', res: 'config.py, main.py' },
-        { id: 104, type: 'API', name: 'ChatGPT-4', price: 80, desc: 'Uncensored AI Text Gen.', icon: 'ri-openai-line', demo: 'https://api.sheru.com/gpt?text=', res: '{"text":"Hello!"}' }
-    ];
+    // --- ⚙️ CONFIGURATION ---
+    const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; // Your Worker
+    const JSON_URL = "/data.json"; // ⚠️ REPLACE WITH YOUR RAW JSON LINK
+    const BOT_USERNAME = "SheruApiBot"; // Your Bot
 
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    let state = { user: null, owned: [] };
+    let state = { user: null, catalog: [], keys: [] };
 
+    // --- 🚀 INIT ---
     async function init() {
         try {
-            // Auth
-            let res = await fetch(`${BACKEND_URL}/api/auth`, {
+            // 1. Fetch Store Catalog from Local JSON (Fast & Direct)
+            let jsonRes = await fetch(JSON_URL);
+            if(jsonRes.ok) {
+                state.catalog = await jsonRes.json();
+            } else {
+                console.error("JSON Fetch Failed");
+            }
+
+            // 2. Auth & User Data from Backend
+            let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ initData: tg.initData })
             });
-            let data = await res.json();
-            state.user = data.user;
+            let authData = await authRes.json();
+            state.user = authData.user;
 
-            // Fake Owned Data Check
-            if(state.user.balance > 500) state.owned.push(101);
+            // 3. Fetch Dashboard (My Collection & History)
+            let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
+                headers: { 'Authorization': tg.initData }
+            });
+            let dashData = await dashRes.json();
+            if(dashData.success) {
+                state.keys = dashData.my_keys; // Contains purchased IDs & expiry
+            }
 
-            // Deep Link
+            // 4. Handle Deep Links (Popup item)
             const startParam = tg.initDataUnsafe.start_param;
             if(startParam && startParam.startsWith('item_')) {
                 const id = parseInt(startParam.split('_')[1]);
                 setTimeout(() => {
                     nav('store', document.querySelectorAll('.nav-item')[1]);
                     toggleDetails(`store-${id}`);
-                }, 500);
+                }, 600);
             }
 
             renderUI();
+
         } catch(e) {
+            console.error(e);
+            // Fallback UI
             state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
             renderUI();
         }
     }
 
+    // --- 🎨 RENDER ---
     function renderUI() {
+        // Update Headers
         document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance);
         document.getElementById('profileName').innerText = state.user.first_name;
         document.getElementById('userId').innerText = state.user.tg_id;
         document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
 
-        renderList(DATA, 'itemList', 'store');
-        renderList(DATA.slice(0, 2), 'hotList', 'home');
-        renderHistory();
+        // Render Lists
+        renderList(state.catalog, 'itemList', 'store');
+        renderList(state.catalog.slice(0, 3), 'hotList', 'home');
+        
+        renderCollection(); // Custom Logic for Renewal
         renderReferrals();
     }
 
+    // Render Store Items (From JSON)
     function renderList(list, containerId, ctx) {
         const container = document.getElementById(containerId);
         container.innerHTML = "";
         
+        if(!list || list.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No items found.</div>`;
+            return;
+        }
+
         list.forEach(item => {
-            const owned = state.owned.includes(item.id);
+            // Check ownership by ID mapping
+            const ownedItem = state.keys.find(k => k.item_id === item.id);
             const uid = `${ctx}-${item.id}`;
-            const badgeClass = item.type === 'API' ? 'b-api' : 'b-script';
+            const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
             
-            const btnHtml = owned 
-                ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-line"></i></button>`
+            const btnHtml = ownedItem 
+                ? `<button class="btn-price btn-owned">Owned <i class="ri-check-line"></i></button>`
                 : `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
 
             container.innerHTML += `
             <div class="list-item">
                 <div class="item-main" onclick="toggleDetails('${uid}')">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon"><i class="${item.icon}"></i></div>
+                        <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
                         <div>
                             <div style="display:flex; align-items:center;">
                                 <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
                                 <span class="badge ${badgeClass}">${item.type}</span>
                             </div>
-                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Click for details</div>
+                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:10px; align-items:center;">
@@ -394,7 +396,7 @@
                     <div class="body-pad">
                         <div class="info-grid">
                             <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
-                            <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">Lifetime</div></div>
+                            <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
                             <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
                         </div>
                         <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
@@ -418,14 +420,56 @@
         });
     }
 
-    function renderHistory() {
+    // Render My Collection (Logic: Check Expiry from DB)
+    function renderCollection() {
         const div = document.getElementById('myHistory');
-        if(state.owned.length === 0) { div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">Nothing here yet.</div>`; return; }
-        // Render logic...
+        if(state.keys.length === 0) { 
+            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">You haven't purchased anything yet.</div>`; 
+            return; 
+        }
+
+        div.innerHTML = "";
+        state.keys.forEach(key => {
+            // Find item details from Catalog (JSON) using stored item_id
+            const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
+            
+            // Expiry Logic
+            let expiryHtml = `<span style="color:#4ade80">Lifetime</span>`;
+            let actionBtn = `<button class="btn-price" style="background:#222; color:var(--accent); border:1px solid #333;" onclick="copy('${key.key_value}')">Copy Key</button>`;
+            
+            // Assuming DB has 'expiry_date' field (e.g. timestamp or string)
+            if(key.expiry_date && key.expiry_date !== 'Lifetime') {
+                const exp = new Date(key.expiry_date);
+                const now = new Date();
+                const isExpired = now > exp;
+                
+                expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
+                
+                if(isExpired) {
+                    actionBtn = `<button class="btn-price btn-renew" onclick="renew(${key.item_id})">Renew 🔄</button>`;
+                }
+            }
+
+            div.innerHTML += `
+            <div class="list-item">
+                <div class="item-main" style="cursor:default;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="item-icon"><i class="${itemDetails.icon}"></i></div>
+                        <div>
+                            <div style="font-weight:700; font-size:0.95rem;">${itemDetails.name}</div>
+                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
+                        </div>
+                    </div>
+                    ${actionBtn}
+                </div>
+                <div style="padding:0 15px 15px;">
+                    <div class="console" style="margin-top:0; color:#fff;" onclick="copy('${key.key_value}')">${key.key_value}</div>
+                </div>
+            </div>`;
+        });
     }
 
     function renderReferrals() {
-        // Fake referrals for UI
         const div = document.getElementById('referHistory');
         const count = state.user.total_refs || 0;
         if(count === 0) return;
@@ -442,7 +486,7 @@
         }
     }
 
-    // ACTIONS
+    // --- ACTIONS ---
     function toggleDetails(uid) {
         const body = document.getElementById(`body-${uid}`);
         const arrow = document.getElementById(`arrow-${uid}`);
@@ -451,10 +495,8 @@
             arrow.style.transform = "rotate(0deg)";
             arrow.style.color = "#666";
         } else {
-            // Close others (Accordion effect)
             document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
             document.querySelectorAll('[id^="arrow-"]').forEach(el => { el.style.transform = "rotate(0deg)"; el.style.color = "#666"; });
-            
             body.style.maxHeight = body.scrollHeight + "px";
             arrow.style.transform = "rotate(180deg)";
             arrow.style.color = "var(--primary)";
@@ -464,15 +506,19 @@
     function buy(id, price, event) {
         event.stopPropagation();
         if(state.user.balance < price) { showAlert('deposit'); return; }
-        // Logic: Send to bot
         tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
+        tg.close();
+    }
+
+    function renew(id) {
+        tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
         tg.close();
     }
 
     function filter(type, btn) {
         document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
-        const list = type === 'all' ? DATA : DATA.filter(i => i.type.toLowerCase() === type);
+        const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
         renderList(list, 'itemList', 'store');
     }
 
