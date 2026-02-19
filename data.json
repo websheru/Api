@@ -1,0 +1,50 @@
+[
+  {
+    "id": 101,
+    "type": "API",
+    "name": "Instagram Pro",
+    "price": 50,
+    "desc": "HD Reels & Story Downloader without login.",
+    "icon": "ri-instagram-line",
+    "validity": "Lifetime",
+    "owner_id": "admin",
+    "demo": "https://api.sheru.com/insta?url=URL_HERE",
+    "res": "{\"status\":\"success\",\"url\":\"https://video.mp4\",\"type\":\"video\"}"
+  },
+  {
+    "id": 102,
+    "type": "SCRIPT",
+    "name": "DDoS Attack Tool",
+    "price": 150,
+    "desc": "Powerful Python L7 attack script. High Power.",
+    "icon": "ri-skull-line",
+    "validity": "Lifetime",
+    "owner_id": 567891234,
+    "demo": "Source Code Preview (Python)",
+    "res": "# SA-SHERU-PRO\nimport socket\n# Full script after purchase..."
+  },
+  {
+    "id": 103,
+    "type": "BOT",
+    "name": "Filter Bot V3",
+    "price": 200,
+    "desc": "Full Telegram movie filter bot source code with DB.",
+    "icon": "ri-robot-2-line",
+    "validity": "Lifetime",
+    "owner_id": 987654321,
+    "demo": "Bot Structure (ZIP/RAR)",
+    "res": "Project: FilterBot\n- plugins/\n- database/\n- config.py\n- main.py"
+  },
+  {
+    "id": 104,
+    "type": "API",
+    "name": "ChatGPT-4",
+    "price": 80,
+    "desc": "Uncensored AI Text Generation Model.",
+    "icon": "ri-openai-line",
+    "validity": "Lifetime",
+    "owner_id": "admin",
+    "demo": "https://api.sheru.com/gpt?text=Hello",
+    "res": "{\"reply\":\"Hello! I am Sheru AI. How can I assist you?\",\"model\":\"gpt-4\"}"
+  }
+]
