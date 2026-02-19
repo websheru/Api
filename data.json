@@ -20,7 +20,7 @@
     "icon": "ri-skull-line",
     "validity": "Lifetime",
     "owner_id": 2121268775,
-    "file_id":2,
+    "file_id":3,
     "demo": "Source Code Preview (Python)",
     "res": "# SA-SHERU-PRO\nimport socket\n# Full script after purchase..."
   },
@@ -28,7 +28,7 @@
     "id": 103,
     "type": "BOT",
     "name": "Filter Bot V3",
-    "price": 200,
+    "price": 3,
     "desc": "Full Telegram movie filter bot source code with DB.",
     "icon": "ri-robot-2-line",
     "validity": "Lifetime",
