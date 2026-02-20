@@ -4,95 +4,509 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sheru Nexus God Mode</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME VARS --- */
-        :root {
-            --bg-color: #030304;
-            --card-bg: #0f0f11;
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.4);
-            --accent: #22d3ee;
-            --gold: #fbbf24;
-            --danger: #ef4444;
-            --text: #ffffff;
-            --text-sec: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --nav-glass: rgba(10, 10, 12, 0.9);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); color: var(--text); font-family: 'Outfit', sans-serif; overflow-x: hidden; font-size: 14px; }
-        
-        /* --- CONTAINER --- */
-        .app-container { max-width: 480px; margin: 0 auto; background: var(--bg-color); min-height: 100vh; padding-bottom: 100px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
-        
-        /* --- HEADER --- */
-        .header { position: sticky; top: 0; z-index: 50; background: rgba(3, 3, 4, 0.85); backdrop-filter: blur(20px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
-        .balance-pill { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 6px 14px; border-radius: 50px; font-weight: 700; display: flex; gap: 6px; align-items: center; font-size: 0.9rem; }
-        
-        /* --- CARDS & LISTS --- */
-        .hero-card { background: linear-gradient(135deg, #4f46e5, #0f0f11 90%); border-radius: 24px; padding: 25px; margin: 20px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25); }
-        .hero-btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer; transition: 0.3s; }
-        .hero-btn:active { transform: scale(0.95); }
-        .section-title { padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; color: var(--text); }
-        
-        /* --- ITEM CARD --- */
-        .list-item { background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.2s; }
-        .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .item-main:active { background: rgba(255,255,255,0.02); }
-        .item-icon { width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text); }
-        
-        .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; }
-        .b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
-        .b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
-        .b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
-        
-        .btn-price { background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center; cursor: pointer; transition: 0.2s; }
-        .btn-price:active { transform: scale(0.95); }
-        .btn-owned { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none; }
-        .btn-renew { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .btn-free { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+      /* --- THEME VARS & RESET --- */
+:root {
+    --bg-color: #030304;
+    --card-bg: #0f0f11;
+    --primary: #6366f1;
+    --primary-glow: rgba(99, 102, 241, 0.4);
+    --accent: #22d3ee;
+    --gold: #fbbf24;
+    --danger: #ef4444;
+    --success: #4ade80;
+    --text: #ffffff;
+    --text-sec: #94a3b8;
+    --border: rgba(255, 255, 255, 0.08);
+    --nav-glass: rgba(10, 10, 12, 0.9);
+}
 
-        /* --- DROPDOWN --- */
-        .item-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; background: #0a0a0c; border-top: 1px solid var(--border); }
-        .body-pad { padding: 20px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .info-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 10px; text-align: center; }
-        .info-lbl { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; margin-bottom: 4px; }
-        .info-val { font-weight: 700; font-size: 0.9rem; }
-        .console { background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 10px; position: relative; word-break: break-all; }
-        .copy-icon { cursor: pointer; font-size: 1.1rem; color: var(--text-sec); transition: 0.2s; }
-        .copy-icon:active { color: var(--accent); transform: scale(0.9); }
-        
-        /* --- TABS --- */
-        .tabs-container { padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; }
-        .tab-chip { padding: 10px 20px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap; transition: 0.3s; cursor: pointer; }
-        .tab-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 5px 15px var(--primary-glow); }
-        
-        /* --- BOTTOM NAV --- */
-        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 440px; z-index: 100; background: var(--nav-glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; display: flex; justify-content: space-around; padding: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .nav-item { color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .nav-item.active { color: var(--text); transform: translateY(-4px); }
-        .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; margin-top: 4px; opacity: 0; transition: 0.3s; }
-        .nav-item.active .dot { opacity: 1; }
-        
-        /* --- PAGE LOGIC --- */
-        .page { display: none; animation: fadeIn 0.4s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* --- MODAL --- */
-        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
-        .modal-card { background: #121214; border: 1px solid var(--border); width: 85%; max-width: 350px; padding: 30px 20px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s; }
-        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        /* Loading Skeleton */
-        .skeleton { background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%); background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px; }
-        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    font-size: 14px;
+}
+
+/* --- CONTAINER --- */
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg-color);
+    min-height: 100vh;
+    padding-bottom: 100px;
+    position: relative;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+/* --- HEADER --- */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(3, 3, 4, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+}
+
+.balance-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: 700;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+/* --- HERO & TITLES --- */
+.hero-card {
+    background: linear-gradient(135deg, #4f46e5, #0f0f11 90%);
+    border-radius: 24px;
+    padding: 25px;
+    margin: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+}
+
+.hero-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.hero-btn:active {
+    transform: scale(0.95);
+}
+
+.section-title {
+    padding: 0 20px;
+    margin: 25px 0 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+}
+
+/* --- LIST ITEMS --- */
+.list-item {
+    background: var(--card-bg);
+    border-radius: 18px;
+    margin: 0 20px 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.item-main {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+}
+
+.item-main:active {
+    background: rgba(255,255,255,0.02);
+}
+
+.item-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--text);
+    flex-shrink: 0;
+}
+
+/* --- BADGES --- */
+.badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-left: 8px;
+}
+
+.b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
+.b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
+.b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
+
+/* --- BUTTONS --- */
+.btn-price {
+    background: var(--text);
+    color: #000;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    border: none;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-price:active {
+    transform: scale(0.95);
+}
+
+.btn-owned {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    pointer-events: none;
+}
+
+.btn-renew {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-free {
+    background: rgba(34, 211, 238, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.btn-demo {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+/* --- DROPDOWN BODY --- */
+.item-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #0a0a0c;
+    border-top: 1px solid transparent;
+}
+
+.item-body.expanded {
+    border-top: 1px solid var(--border);
+}
+
+.body-pad {
+    padding: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.info-box {
+    background: rgba(255,255,255,0.03);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.info-lbl {
+    font-size: 0.65rem;
+    color: var(--text-sec);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.info-val {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* --- CONSOLE & COPY BLOCKS --- */
+.console {
+    background: #000;
+    border: 1px dashed #333;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-top: 5px;
+    position: relative;
+    word-break: break-all;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.copy-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--text);
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    flex-shrink: 0;
+}
+
+.copy-btn:active {
+    background: var(--primary);
+    transform: scale(0.9);
+}
+
+/* --- SECURE COLLECTION KEYS --- */
+.secure-key-box {
+    background: #000;
+    border: 1px solid #222;
+    padding: 12px 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.key-content {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--success);
+    letter-spacing: 1px;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.key-hidden {
+    filter: blur(5px);
+    user-select: none;
+}
+
+.key-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 10px;
+}
+
+.action-icon {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: var(--text-sec);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.action-icon:active {
+    background: rgba(255,255,255,0.15);
+    color: var(--text);
+}
+
+/* --- TABS --- */
+.tabs-container {
+    padding: 0 20px 10px;
+    overflow-x: auto;
+    display: flex;
+    gap: 10px;
+    scrollbar-width: none;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-chip {
+    padding: 10px 20px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-sec);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: 0.3s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tab-chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* --- BOTTOM NAV --- */
+.nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 440px;
+    z-index: 100;
+    background: var(--nav-glass);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    display: flex;
+    justify-content: space-around;
+    padding: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.nav-item {
+    color: #555;
+    font-size: 1.5rem;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item.active {
+    color: var(--text);
+    transform: translateY(-4px);
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin-top: 4px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.nav-item.active .dot {
+    opacity: 1;
+}
+
+/* --- PAGE LOGIC --- */
+.page {
+    display: none;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- MODAL --- */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    background: #121214;
+    border: 1px solid var(--border);
+    width: 85%;
+    max-width: 350px;
+    padding: 30px 20px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* --- LOADING SKELETON --- */
+.skeleton {
+    background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%);
+    background-size: 200% 100%;
+    animation: shine 1.5s infinite linear;
+    border-radius: 12px;
+}
+
+@keyframes shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
     </style>
 </head>
 <body>
@@ -112,6 +526,7 @@
                 <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">Start Selling</button>
                 <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
             </div>
+            
             <div class="section-title"><i class="ri-fire-fill" style="color:orange"></i> Trending</div>
             <div id="hotList">
                 <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
@@ -121,29 +536,44 @@
         <div id="store" class="page">
             <div class="section-title" style="margin-top:20px;">Premium Marketplace</div>
             <div class="tabs-container">
-                <div class="tab-chip active" onclick="filter('all', this)">All</div>
-                <div class="tab-chip" onclick="filter('script', this)">Scripts</div>
-                <div class="tab-chip" onclick="filter('bot', this)">Bots</div>
-                <div class="tab-chip" onclick="filter('api', this)">APIs</div>
+                <div class="tab-chip active" onclick="filter('all', this, 'store')">All</div>
+                <div class="tab-chip" onclick="filter('script', this, 'store')">Scripts</div>
+                <div class="tab-chip" onclick="filter('bot', this, 'store')">Bots</div>
+                <div class="tab-chip" onclick="filter('api', this, 'store')">APIs</div>
             </div>
-            <div id="itemList" style="margin-top:15px;">
-                <div style="padding:0 20px;"><div class="skeleton" style="height:80px; margin-bottom:10px;"></div></div>
+            <div id="itemList" style="margin-top:15px; padding-bottom:100px;">
+                <div style="padding:0 20px;">
+                    <div class="skeleton" style="height:80px; margin-bottom:10px;"></div>
+                    <div class="skeleton" style="height:80px;"></div>
+                </div>
             </div>
+        </div>
 
-            <div class="section-title" style="margin-top:30px;"><i class="ri-gift-2-line" style="color:var(--accent)"></i> Free Resources</div>
-            <p style="padding:0 20px; color:var(--text-sec); font-size:0.8rem; margin-top:-5px; margin-bottom:10px;">Direct access, no balance required.</p>
-            <div id="freeList" style="margin-top:10px;">
-                <div style="padding:0 20px;"><div class="skeleton" style="height:80px;"></div></div>
+        <div id="free" class="page">
+            <div class="section-title" style="margin-top:20px;"><i class="ri-gift-2-fill" style="color:var(--accent)"></i> Free Zone</div>
+            <p style="padding:0 20px; color:var(--text-sec); font-size:0.85rem; margin-bottom:15px;">High-quality open-source items, 100% Free.</p>
+            <div class="tabs-container">
+                <div class="tab-chip active" onclick="filter('all', this, 'free')">All</div>
+                <div class="tab-chip" onclick="filter('script', this, 'free')">Scripts</div>
+                <div class="tab-chip" onclick="filter('bot', this, 'free')">Bots</div>
+                <div class="tab-chip" onclick="filter('api', this, 'free')">APIs</div>
+            </div>
+            <div id="freeList" style="margin-top:15px; padding-bottom:100px;">
+                <div style="padding:0 20px;">
+                    <div class="skeleton" style="height:80px; margin-bottom:10px;"></div>
+                    <div class="skeleton" style="height:80px;"></div>
+                </div>
             </div>
         </div>
 
         <div id="refer" class="page">
             <div style="margin:20px; padding:30px 20px; background:var(--card-bg); border-radius:24px; text-align:center; border:1px solid var(--border);">
                 <div style="width:60px; height:60px; background:rgba(251, 191, 36, 0.1); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold);">
-                    <i class="ri-gift-fill"></i>
+                    <i class="ri-money-dollar-circle-fill"></i>
                 </div>
                 <h2 style="font-size:1.8rem; font-weight:800; color:white;">Invite & Earn</h2>
                 <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of deposits.</p>
+                
                 <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                     <span id="refLink" style="color:var(--text-sec); font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
                     <button onclick="shareReferral()" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;"><i class="ri-file-copy-line"></i></button>
@@ -179,7 +609,8 @@
                     </div>
                 </div>
             </div>
-            <div class="section-title">My Collection <span style="font-size:0.7rem; color:var(--text-sec); margin-left:auto; font-weight:normal;">Purchased from Store</span></div>
+            
+            <div class="section-title">My Collection <span style="font-size:0.7rem; color:var(--text-sec); margin-left:auto; font-weight:normal;">Purchased APIs/Bots</span></div>
             <div id="myHistory" style="padding:0 20px 100px;">
                 <div class="skeleton" style="height:80px;"></div>
             </div>
@@ -197,418 +628,470 @@
 
     <div class="nav">
         <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
-        <div class="nav-item" onclick="nav('store', this)"><i class="ri-dashboard-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('store', this)"><i class="ri-shopping-cart-2-line"></i><div class="dot"></div></div>
+        
+        <div class="nav-item" onclick="nav('free', this)"><i class="ri-gift-2-line"></i><div class="dot"></div></div>
+        
         <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
         <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-3-line"></i><div class="dot"></div></div>
     </div>
 
     <script>
-        // --- ⚙️ CONFIGURATION ---
-        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; 
-        const JSON_URL = "data.json"; 
-        const FREE_JSON_URL = "sheru.json"; // NEW JSON for Free resources
-        const BOT_USERNAME = "SheruApiBot"; 
+      
+      // --- ⚙️ CONFIGURATION ---
+const BACKEND_URL = "https://sheru-api.amritw1.workers.dev";
+const STORE_JSON_URL = "data.json";
+const FREE_JSON_URL = "sheru.json";
+const BOT_USERNAME = "SheruApiBot";
+const tg = window.Telegram.WebApp;
+
+tg.expand();
+
+let state = {
+    user: null,
+    catalog: [],
+    freeCatalog: [],
+    keys: []
+};
+
+// --- 🚀 INIT ---
+async function init() {
+    try {
+        // 1. Fetch Store (Premium) Catalog
+        let storeRes = await fetch(STORE_JSON_URL).catch(() => null);
+        if (storeRes && storeRes.ok) {
+            state.catalog = await storeRes.json();
+        }
+
+        // 2. Fetch Free Zone Catalog
+        let freeRes = await fetch(FREE_JSON_URL).catch(() => null);
+        if (freeRes && freeRes.ok) {
+            state.freeCatalog = await freeRes.json();
+        }
+
+        // 3. Auth & User Data
+        let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ initData: tg.initData })
+        }).catch(() => null);
         
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        if (authRes && authRes.ok) {
+            let authData = await authRes.json();
+            state.user = authData.user;
+        } else {
+            throw new Error("Auth Failed");
+        }
+
+        // 4. Fetch Dashboard (My Collection)
+        let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
+            headers: { 'Authorization': tg.initData }
+        }).catch(() => null);
         
-        let state = { user: null, catalog: [], freeCatalog: [], keys: [] };
-
-        // --- 🚀 INIT ---
-        async function init() {
-            try {
-                // 1. Fetch Store Catalog (Paid)
-                let jsonRes = await fetch(JSON_URL).catch(()=>null);
-                if(jsonRes && jsonRes.ok) state.catalog = await jsonRes.json();
-
-                // 2. Fetch Free Catalog (sheru.json)
-                let freeRes = await fetch(FREE_JSON_URL).catch(()=>null);
-                if(freeRes && freeRes.ok) state.freeCatalog = await freeRes.json();
-
-                // 3. Auth & User Data from Backend
-                let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ initData: tg.initData || tg.initDataUnsafe })
-                }).catch(()=>null);
-                
-                if(authRes && authRes.ok) {
-                    let authData = await authRes.json();
-                    state.user = authData.user;
-                }
-
-                // 4. Fetch Dashboard (My Collection)
-                let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
-                    headers: { 'Authorization': tg.initData }
-                }).catch(()=>null);
-                
-                if(dashRes && dashRes.ok) {
-                    let dashData = await dashRes.json();
-                    if(dashData.success) state.keys = dashData.my_keys; 
-                }
-
-                // 5. Handle Deep Links
-                const startParam = tg.initDataUnsafe.start_param;
-                if(startParam && startParam.startsWith('item_')) {
-                    const id = parseInt(startParam.split('_')[1]);
-                    setTimeout(() => {
-                        nav('store', document.querySelectorAll('.nav-item')[1]);
-                        toggleDetails(`store-${id}`);
-                    }, 600);
-                }
-
-                renderUI();
-            } catch(e) {
-                console.error("Init Error:", e);
-                if(!state.user) state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
-                renderUI();
+        if (dashRes && dashRes.ok) {
+            let dashData = await dashRes.json();
+            if (dashData.success) {
+                state.keys = dashData.my_keys;
             }
         }
 
-        // --- 🎨 RENDER ---
-        function renderUI() {
-            document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance || 0);
-            document.getElementById('profileName').innerText = state.user.first_name || "Guest";
-            document.getElementById('userId').innerText = state.user.tg_id || "0000";
-            document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
-
-            renderList(state.catalog, 'itemList', 'store');
-            renderList(state.catalog.slice(0, 3), 'hotList', 'home');
-            renderFreeList(state.freeCatalog, 'freeList', 'free'); // Render Free items
-            renderCollection();
-            renderReferrals();
+        // 5. Deep Links Handling
+        const startParam = tg.initDataUnsafe?.start_param;
+        if (startParam && startParam.startsWith('item_')) {
+            const id = parseInt(startParam.split('_')[1]);
+            setTimeout(() => {
+                nav('store', document.querySelectorAll('.nav-item')[1]);
+                toggleDetails(`store-${id}`);
+            }, 600);
         }
 
-        // Render Paid Store Items
-        function renderList(list, containerId, ctx) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            if(!list || list.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No items found.</div>`;
-                return;
-            }
+        renderUI();
+    } catch (e) {
+        console.error(e);
+        state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
+        renderUI();
+    }
+}
 
-            list.forEach(item => {
-                const ownedItem = state.keys.find(k => k.item_id === item.id);
-                const uid = `${ctx}-${item.id}`;
-                const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
-                const btnHtml = ownedItem 
-                    ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-line"></i></button>` 
-                    : `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
+// --- 🎨 RENDER ---
+function renderUI() {
+    // Headers & Profile
+    document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance);
+    document.getElementById('profileName').innerText = state.user.first_name;
+    document.getElementById('userId').innerText = state.user.tg_id;
+    document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
 
-                // Dynamic Body based on type
-                let typeSpecificBody = '';
-                if(item.type === 'BOT') {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; text-align:center;">
-                            <button onclick="window.open('${item.demo}', '_blank'); event.stopPropagation();" class="hero-btn" style="background:var(--accent); color:#000; width:100%; border-radius:10px;">
-                                View Demo Bot <i class="ri-robot-line"></i>
-                            </button>
-                        </div>`;
-                } else if(item.type === 'SCRIPT') {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-sec);">
-                            ${item.details || 'Complete source code and documentation included.'}
-                        </div>`;
-                } else {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT / DEMO</div>
-                        <div class="console" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85%;">${item.demo}</span>
-                            <i class="ri-file-copy-line copy-icon" onclick="copyText('${item.demo}', event)"></i>
-                        </div>
-                        <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">RESPONSE PREVIEW</div>
-                        <div class="console" style="color:#4ade80;">${item.res || '{ "status": "success" }'}</div>`;
-                }
+    // Render Lists
+    renderList(state.catalog, 'itemList', 'store');
+    renderList(state.catalog.slice(0, 3), 'hotList', 'home');
+    renderFreeList(state.freeCatalog, 'freeList', 'free');
+    
+    renderCollection();
+    renderReferrals();
+}
 
-                container.innerHTML += `
-                <div class="list-item">
-                    <div class="item-main" onclick="toggleDetails('${uid}')">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
-                            <div>
-                                <div style="display:flex; align-items:center;">
-                                    <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
-                                    <span class="badge ${badgeClass}" style="margin-left:5px;">${item.type}</span>
-                                </div>
-                                <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            ${btnHtml}
-                            <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
-                        </div>
-                    </div>
-                    <div id="body-${uid}" class="item-body">
-                        <div class="body-pad">
-                            <div class="info-grid">
-                                <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
-                                <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
-                                <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
-                            </div>
-                            <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
-                            ${typeSpecificBody}
-                            <div style="text-align:right; margin-top:15px;">
-                                <button onclick="shareItem(${item.id}, event)" style="background:transparent; color:var(--text-sec); border:none; display:flex; align-items:center; gap:5px; margin-left:auto; cursor:pointer;">
-                                    <i class="ri-share-forward-line"></i> Share
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+// Render Premium Store Items
+function renderList(list, containerId, ctx) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    if (!list || list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No items found.</div>`;
+        return;
+    }
+
+    list.forEach(item => {
+        const ownedItem = state.keys.find(k => k.item_id === item.id);
+        const uid = `${ctx}-${item.id}`;
+        const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
+        
+        const btnHtml = ownedItem 
+            ? `<button class="btn-price btn-owned" onclick="prevent(event)">Owned <i class="ri-check-line"></i></button>`
+            : `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
+
+        // Dynamic Demo/Details Section
+        let demoSection = "";
+        if (item.demo) {
+            if (item.type === 'BOT') {
+                demoSection = `
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.75rem; font-weight:700; color:var(--text-sec);">LIVE PREVIEW</span>
+                    <button class="btn-demo" onclick="openLink('${item.demo}', event)">
+                        <i class="ri-robot-2-line"></i> Demo Bot
+                    </button>
                 </div>`;
-            });
-        }
-
-        // Render Free Items (sheru.json)
-        function renderFreeList(list, containerId, ctx) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            if(!list || list.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No free resources available right now.</div>`;
-                return;
-            }
-
-            list.forEach((item, index) => {
-                const uid = `${ctx}-${item.id || index}`;
-                const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
-
-                let typeSpecificBody = '';
-                if(item.type === 'BOT') {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; text-align:center;">
-                            <button onclick="window.open('${item.demo}', '_blank'); event.stopPropagation();" class="hero-btn" style="background:var(--accent); color:#000; width:100%; border-radius:10px;">
-                                View Demo Bot <i class="ri-robot-line"></i>
-                            </button>
-                        </div>`;
-                } else if(item.type === 'SCRIPT') {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-sec);">
-                            ${item.details || 'Free source code. No demo available.'}
-                        </div>`;
-                } else {
-                    typeSpecificBody = `
-                        <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT / DEMO</div>
-                        <div class="console" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85%;">${item.demo}</span>
-                            <i class="ri-file-copy-line copy-icon" onclick="copyText('${item.demo}', event)"></i>
-                        </div>`;
-                }
-
-                container.innerHTML += `
-                <div class="list-item">
-                    <div class="item-main" onclick="toggleDetails('${uid}')">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div class="item-icon"><i class="${item.icon || 'ri-open-source-line'}"></i></div>
-                            <div>
-                                <div style="display:flex; align-items:center;">
-                                    <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
-                                    <span class="badge ${badgeClass}" style="margin-left:5px;">${item.type}</span>
-                                </div>
-                                <div style="font-size:0.75rem; color:#4ade80; margin-top:2px;">Free Forever</div>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <button class="btn-price btn-free" onclick="window.open('${item.link}', '_blank'); event.stopPropagation();">Get Free <i class="ri-download-cloud-2-line"></i></button>
-                            <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
-                        </div>
-                    </div>
-                    <div id="body-${uid}" class="item-body">
-                        <div class="body-pad">
-                            <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
-                            ${typeSpecificBody}
-                        </div>
-                    </div>
+            } else if (item.type === 'SCRIPT') {
+                demoSection = `
+                <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">HOW IT WORKS / DETAILS</div>
+                <div class="console">
+                    <span style="flex-grow:1;">${item.demo}</span>
                 </div>`;
-            });
-        }
-
-        // Render My Collection (Hidden Default + Copy Fix)
-        function renderCollection() {
-            const div = document.getElementById('myHistory');
-            if(state.keys.length === 0) {
-                div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">You haven't purchased anything yet.</div>`;
-                return;
-            }
-            div.innerHTML = "";
-            state.keys.forEach((key, index) => {
-                const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
-                const uniqueKeyId = `mykey-${key.item_id}-${index}`; // Unique ID for every single item
-
-                let expiryHtml = `<span style="color:#4ade80">Lifetime</span>`;
-                let actionBtn = `<div style="font-size:0.8rem; color:var(--text-sec);">Active</div>`;
-
-                if(key.expiry_date && key.expiry_date !== 'Lifetime') {
-                    const exp = new Date(key.expiry_date);
-                    const now = new Date();
-                    const isExpired = now > exp;
-                    expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
-                    if(isExpired) {
-                        actionBtn = `<button class="btn-price btn-renew" onclick="renew(${key.item_id}, event)">Renew 🔄</button>`;
-                    }
-                }
-
-                div.innerHTML += `
-                <div class="list-item">
-                    <div class="item-main" style="cursor:default;">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div class="item-icon"><i class="${itemDetails.icon}"></i></div>
-                            <div>
-                                <div style="font-weight:700; font-size:0.95rem;">${itemDetails.name}</div>
-                                <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
-                            </div>
-                        </div>
-                        ${actionBtn}
-                    </div>
-                    <div style="padding:0 15px 15px;">
-                        <div class="console" style="margin-top:0; color:#fff; display:flex; justify-content:space-between; align-items:center;">
-                            <span id="text-${uniqueKeyId}" data-val="${key.key_value}" style="letter-spacing:2px; font-size:0.9rem;">••••••••••••••••</span>
-                            <div style="display:flex; gap:15px; color:var(--text-sec);">
-                                <i class="ri-eye-off-line copy-icon" id="eye-${uniqueKeyId}" onclick="toggleKey('${uniqueKeyId}', event)"></i>
-                                <i class="ri-file-copy-line copy-icon" style="color:var(--accent);" onclick="copyText('${key.key_value}', event)"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            });
-        }
-
-        function renderReferrals() {
-            const div = document.getElementById('referHistory');
-            const count = state.user?.total_refs || 0;
-            if(count === 0) return;
-            div.innerHTML = "";
-            for(let i=0; i<count; i++) {
-                div.innerHTML += `
-                <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid var(--border);">
-                    <div style="display:flex; gap:10px; align-items:center;">
-                        <div style="width:30px; height:30px; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">👤</div>
-                        <div><div style="font-weight:700;">User #${4932+i}</div><div style="font-size:0.7rem; color:#666;">Joined via Link</div></div>
-                    </div>
-                    <div style="color:var(--gold); font-weight:800;">+1 🦁</div>
+            } else { // API
+                demoSection = `
+                <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT / URL</div>
+                <div class="console">
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-grow:1;">${item.demo}</span>
+                    <button class="copy-btn" onclick="copyText('${item.demo}', event)"><i class="ri-file-copy-line"></i></button>
                 </div>`;
             }
         }
 
-        // --- ACTIONS & LOGIC ---
-        function toggleDetails(uid) {
-            const body = document.getElementById(`body-${uid}`);
-            const arrow = document.getElementById(`arrow-${uid}`);
-            
-            if(body.style.maxHeight) {
-                body.style.maxHeight = null;
-                arrow.style.transform = "rotate(0deg)";
-                arrow.style.color = "#666";
+        let resSection = item.res ? `
+            <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">RESPONSE PREVIEW</div>
+            <div class="console" style="color:#4ade80;">${item.res}</div>
+        ` : "";
+
+        container.innerHTML += `
+        <div class="list-item">
+            <div class="item-main" onclick="toggleDetails('${uid}')">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
+                    <div>
+                        <div style="display:flex; align-items:center;">
+                            <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                            <span class="badge ${badgeClass}">${item.type}</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    ${btnHtml}
+                    <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
+                </div>
+            </div>
+            <div id="body-${uid}" class="item-body">
+                <div class="body-pad">
+                    <div class="info-grid">
+                        <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
+                        <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
+                        <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
+                    </div>
+                    <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                    ${demoSection}
+                    ${resSection}
+                    <div style="text-align:right; margin-top:15px;">
+                        <button onclick="shareItem(${item.id}, event)" style="background:transparent; color:var(--text-sec); border:none; display:flex; align-items:center; gap:5px; margin-left:auto; cursor:pointer;">
+                            <i class="ri-share-forward-line"></i> Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+// Render Free Zone Items
+function renderFreeList(list, containerId, ctx) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    if (!list || list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No free items currently available.</div>`;
+        return;
+    }
+
+    list.forEach(item => {
+        const uid = `${ctx}-${item.id}`;
+        const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
+        
+        const btnHtml = `<button class="btn-price btn-free" onclick="openLink('${item.link}', event)">Get Free <i class="ri-download-cloud-2-line"></i></button>`;
+
+        let demoSection = "";
+        if (item.demo) {
+            if (item.type === 'BOT') {
+                demoSection = `
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.75rem; font-weight:700; color:var(--text-sec);">LIVE PREVIEW</span>
+                    <button class="btn-demo" onclick="openLink('${item.demo}', event)">
+                        <i class="ri-robot-2-line"></i> Demo Bot
+                    </button>
+                </div>`;
             } else {
-                // Close all others
-                document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
-                document.querySelectorAll('[id^="arrow-"]').forEach(el => {
-                    el.style.transform = "rotate(0deg)";
-                    el.style.color = "#666";
-                });
-                // Open clicked
-                body.style.maxHeight = body.scrollHeight + "px";
-                arrow.style.transform = "rotate(180deg)";
-                arrow.style.color = "var(--primary)";
+                demoSection = `
+                <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">INFO / LINK</div>
+                <div class="console">
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-grow:1;">${item.demo}</span>
+                    <button class="copy-btn" onclick="copyText('${item.demo}', event)"><i class="ri-file-copy-line"></i></button>
+                </div>`;
             }
         }
 
-        // Hidden Key Toggle
-        function toggleKey(id, event) {
-            if(event) event.stopPropagation();
-            const textEl = document.getElementById(`text-${id}`);
-            const eyeIcon = document.getElementById(`eye-${id}`);
-            
-            if(textEl.innerText === '••••••••••••••••') {
-                textEl.innerText = textEl.getAttribute('data-val');
-                textEl.style.letterSpacing = 'normal';
-                eyeIcon.classList.remove('ri-eye-off-line');
-                eyeIcon.classList.add('ri-eye-line');
-                eyeIcon.style.color = 'var(--primary)';
-            } else {
-                textEl.innerText = '••••••••••••••••';
-                textEl.style.letterSpacing = '2px';
-                eyeIcon.classList.remove('ri-eye-line');
-                eyeIcon.classList.add('ri-eye-off-line');
-                eyeIcon.style.color = 'var(--text-sec)';
+        container.innerHTML += `
+        <div class="list-item">
+            <div class="item-main" onclick="toggleDetails('${uid}')">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
+                    <div>
+                        <div style="display:flex; align-items:center;">
+                            <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                            <span class="badge ${badgeClass}">${item.type}</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:var(--success); margin-top:2px;">100% Free</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    ${btnHtml}
+                    <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
+                </div>
+            </div>
+            <div id="body-${uid}" class="item-body">
+                <div class="body-pad">
+                    <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                    ${demoSection}
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+// Render Secured Collection
+function renderCollection() {
+    const div = document.getElementById('myHistory');
+    
+    if (state.keys.length === 0) {
+        div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">You haven't purchased anything yet.</div>`;
+        return;
+    }
+    
+    div.innerHTML = "";
+    state.keys.forEach((key, index) => {
+        const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
+        const uid = `col-${key.item_id}-${index}`; // Unique ID fixes the toggle bug
+        
+        let expiryHtml = `<span style="color:var(--success)">Lifetime</span>`;
+        let actionBtn = "";
+
+        if (key.expiry_date && key.expiry_date !== 'Lifetime') {
+            const exp = new Date(key.expiry_date);
+            const now = new Date();
+            const isExpired = now > exp;
+            expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
+            if (isExpired) {
+                actionBtn = `<button class="btn-price btn-renew" onclick="renew(${key.item_id}, event)">Renew 🔄</button>`;
             }
         }
 
-        // Copy Text with Stop Propagation
-        function copyText(txt, event) {
-            if(event) event.stopPropagation();
-            navigator.clipboard.writeText(txt).then(() => {
-                if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                // Optional: visual feedback
-                if(event && event.target) {
-                    const originalColor = event.target.style.color;
-                    event.target.style.color = '#4ade80';
-                    setTimeout(() => event.target.style.color = originalColor, 1000);
-                }
-            });
-        }
+        div.innerHTML += `
+        <div class="list-item">
+            <div class="item-main" style="cursor:default;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div class="item-icon"><i class="${itemDetails.icon}"></i></div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.95rem;">${itemDetails.name}</div>
+                        <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
+                    </div>
+                </div>
+                ${actionBtn}
+            </div>
+            <div style="padding:0 15px 15px;">
+                <div style="font-size:0.7rem; font-weight:700; color:var(--text-sec); margin-left:5px;">ACCESS KEY / DATA</div>
+                <div class="secure-key-box">
+                    <div class="key-content key-hidden" id="key-val-${uid}">${key.key_value}</div>
+                    <div class="key-actions">
+                        <button class="action-icon" onclick="toggleVisibility('${uid}')">
+                            <i class="ri-eye-off-line" id="eye-icon-${uid}"></i>
+                        </button>
+                        <button class="action-icon" onclick="copyText('${key.key_value}', event)">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+}
 
-        function buy(id, price, event) {
-            if(event) event.stopPropagation();
-            if(state.user.balance < price) {
-                showAlert('deposit');
-                return;
-            }
-            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
-            tg.close();
-        }
+function renderReferrals() {
+    const div = document.getElementById('referHistory');
+    const count = state.user.total_refs || 0;
+    if (count === 0) return;
+    
+    div.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+        div.innerHTML += `
+        <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid var(--border);">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="width:30px; height:30px; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">👤</div>
+                <div><div style="font-weight:700;">User #${4932 + i}</div><div style="font-size:0.7rem; color:#666;">Joined via Link</div></div>
+            </div>
+            <div style="color:var(--gold); font-weight:800;">+1 🦁</div>
+        </div>`;
+    }
+}
 
-        function renew(id, event) {
-            if(event) event.stopPropagation();
-            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
-            tg.close();
-        }
+// --- ACTIONS & LOGIC ---
 
-        function filter(type, btn) {
-            document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
-            const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
-            renderList(list, 'itemList', 'store');
-        }
+// Fixed Toggle Accordion
+function toggleDetails(uid) {
+    const body = document.getElementById(`body-${uid}`);
+    const arrow = document.getElementById(`arrow-${uid}`);
+    const isExpanding = !body.classList.contains('expanded');
 
-        function nav(page, btn) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(page).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            btn.classList.add('active');
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-        }
+    // Close all other dropdowns
+    document.querySelectorAll('.item-body').forEach(el => {
+        el.style.maxHeight = null;
+        el.classList.remove('expanded');
+    });
+    document.querySelectorAll('[id^="arrow-"]').forEach(el => {
+        el.style.transform = "rotate(0deg)";
+        el.style.color = "#666";
+    });
 
-        function showAlert(type) {
-            const m = document.getElementById('alertModal');
-            const t = document.getElementById('modalTitle');
-            const msg = document.getElementById('modalMsg');
-            const icon = document.getElementById('modalIcon');
-            m.style.display = "flex";
-            if(type === 'deposit') {
-                icon.innerText = "💎";
-                t.innerText = "Add Funds";
-                msg.innerHTML = "To add funds, send <b style='color:var(--accent)'>/deposit</b> in the bot.";
-            } else if(type === 'payout') {
-                icon.innerText = "🏦";
-                t.innerText = "Withdraw";
-                msg.innerHTML = "To withdraw, send <b style='color:var(--gold)'>/payout</b> in the bot.";
-            }
-        }
+    // Open clicked if it wasn't already open
+    if (isExpanding) {
+        body.classList.add('expanded');
+        body.style.maxHeight = body.scrollHeight + "px";
+        arrow.style.transform = "rotate(180deg)";
+        arrow.style.color = "var(--primary)";
+    }
+}
 
-        function closeModal() {
-            document.getElementById('alertModal').style.display = "none";
-        }
+// Fixed Eye Icon Visibility Toggle
+function toggleVisibility(uid) {
+    const el = document.getElementById(`key-val-${uid}`);
+    const icon = document.getElementById(`eye-icon-${uid}`);
+    
+    if (el.classList.contains('key-hidden')) {
+        el.classList.remove('key-hidden');
+        icon.classList.replace('ri-eye-off-line', 'ri-eye-line');
+        icon.style.color = "var(--accent)";
+    } else {
+        el.classList.add('key-hidden');
+        icon.classList.replace('ri-eye-line', 'ri-eye-off-line');
+        icon.style.color = "var(--text-sec)";
+    }
+}
 
-        function shareItem(id, event) {
-            if(event) event.stopPropagation();
-            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`);
-        }
+// Fixed Copy Function
+function copyText(txt, event) {
+    if (event) event.stopPropagation();
+    navigator.clipboard.writeText(txt).then(() => {
+        if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }).catch(err => console.error("Copy failed", err));
+}
 
-        function shareReferral() {
-            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=Join & Earn!`);
-        }
+function openLink(url, event) {
+    if (event) event.stopPropagation();
+    tg.openLink(url);
+}
 
-        window.onload = init;
+function prevent(event) {
+    event.stopPropagation();
+}
+
+function buy(id, price, event) {
+    event.stopPropagation();
+    if (state.user.balance < price) {
+        showAlert('deposit');
+        return;
+    }
+    tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
+    tg.close();
+}
+
+function renew(id, event) {
+    if (event) event.stopPropagation();
+    tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
+    tg.close();
+}
+
+// Fixed Filtering (Supports multiple zones)
+function filter(type, btn, section) {
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (section === 'store') {
+        const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
+        renderList(list, 'itemList', 'store');
+    } else if (section === 'free') {
+        const list = type === 'all' ? state.freeCatalog : state.freeCatalog.filter(i => i.type.toLowerCase() === type);
+        renderFreeList(list, 'freeList', 'free');
+    }
+}
+
+function nav(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
+    
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    btn.classList.add('active');
+    
+    if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+}
+
+function showAlert(type) {
+    const m = document.getElementById('alertModal');
+    const t = document.getElementById('modalTitle');
+    const msg = document.getElementById('modalMsg');
+    const icon = document.getElementById('modalIcon');
+    
+    m.style.display = "flex";
+    if (type === 'deposit') {
+        icon.innerText = "💎";
+        t.innerText = "Add Funds";
+        msg.innerHTML = "To add funds, send <b style='color:var(--accent)'>/deposit</b> in the bot.";
+    } else if (type === 'payout') {
+        icon.innerText = "🏦";
+        t.innerText = "Withdraw";
+        msg.innerHTML = "To withdraw, send <b style='color:var(--gold)'>/payout</b> in the bot.";
+    }
+}
+
+function closeModal() {
+    document.getElementById('alertModal').style.display = "none";
+}
+
+function shareItem(id, event) {
+    if (event) event.stopPropagation();
+    tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`);
+}
+
+function shareReferral() {
+    tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=Join & Earn!`);
+}
+
+window.onload = init;
     </script>
 </body>
 </html>
