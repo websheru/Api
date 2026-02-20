@@ -7,8 +7,9 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
-
+    
     <style>
+        /* --- THEME VARS --- */
         :root {
             --bg-color: #030304;
             --card-bg: #0f0f11;
@@ -17,660 +18,597 @@
             --accent: #22d3ee;
             --gold: #fbbf24;
             --danger: #ef4444;
-            --success: #10b981;
             --text: #ffffff;
             --text-sec: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
             --nav-glass: rgba(10, 10, 12, 0.9);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text); font-family: 'Outfit', sans-serif; overflow-x: hidden; font-size: 14px; }
         
-        body {
-            background-color: var(--bg-color); color: var(--text);
-            font-family: 'Outfit', sans-serif; overflow-x: hidden; font-size: 14px;
-        }
-
-        .flex { display: flex; }
-        .justify-between { justify-content: space-between; }
-        .items-center { align-items: center; }
-        .gap-2 { gap: 8px; } .gap-3 { gap: 12px; }
-        .w-full { width: 100%; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; }
-        .text-accent { color: var(--accent); } .text-gold { color: var(--gold); }
-        .text-green { color: var(--success); } .text-sec { color: var(--text-sec); }
-        .font-mono { font-family: monospace; } .font-bold { font-weight: 700; }
-
-        .app-container {
-            max-width: 480px; margin: 0 auto; background: var(--bg-color);
-            min-height: 100vh; padding-bottom: 100px; position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        .header {
-            position: sticky; top: 0; z-index: 50;
-            background: rgba(3, 3, 4, 0.85); backdrop-filter: blur(20px);
-            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
+        /* --- CONTAINER --- */
+        .app-container { max-width: 480px; margin: 0 auto; background: var(--bg-color); min-height: 100vh; padding-bottom: 100px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        
+        /* --- HEADER --- */
+        .header { position: sticky; top: 0; z-index: 50; background: rgba(3, 3, 4, 0.85); backdrop-filter: blur(20px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
         .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
-        .balance-pill {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 6px 14px; border-radius: 50px; font-weight: 700;
-            display: flex; gap: 6px; align-items: center; font-size: 0.9rem;
-        }
-
-        .hero-card {
-            background: linear-gradient(135deg, #4f46e5, #0f0f11 90%);
-            border-radius: 24px; padding: 25px; margin: 20px; position: relative; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
-        }
-        .hero-btn {
-            background: #fff; color: #000; border: none; padding: 10px 20px;
-            border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer;
-            z-index: 2; position: relative;
-        }
-
-        .section-title {
-            padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800;
-            display: flex; align-items: center; gap: 8px; color: var(--text);
-        }
-
-        .list-item {
-            background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px;
-            border: 1px solid var(--border); overflow: hidden; transition: 0.2s;
-        }
-
-        .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .balance-pill { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 6px 14px; border-radius: 50px; font-weight: 700; display: flex; gap: 6px; align-items: center; font-size: 0.9rem; }
         
-        .item-icon {
-            width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.05);
-            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text);
-            flex-shrink: 0;
-        }
+        /* --- CARDS & LISTS --- */
+        .hero-card { background: linear-gradient(135deg, #4f46e5, #0f0f11 90%); border-radius: 24px; padding: 25px; margin: 20px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25); }
+        .hero-btn { background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer; transition: 0.3s; }
+        .hero-btn:active { transform: scale(0.95); }
+        .section-title { padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; color: var(--text); }
+        
+        /* --- ITEM CARD --- */
+        .list-item { background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.2s; }
+        .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .item-main:active { background: rgba(255,255,255,0.02); }
+        .item-icon { width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text); }
         
         .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; }
         .b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
         .b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
         .b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
-        .b-free { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
-
-        .btn-price {
-            background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px;
-            font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center; cursor: pointer;
-        }
-        .btn-owned { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none; }
-        .btn-free-action { background: var(--success); color: #000; }
-        .btn-renew { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .btn-demo { background: rgba(255,255,255,0.05); color: var(--accent); border: 1px solid var(--accent); padding: 8px 15px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; width: 100%; display: flex; justify-content: center; gap: 8px; align-items: center; margin-bottom: 15px; cursor: pointer; }
-
-        .item-body {
-            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
-            background: #0a0a0c; border-top: 1px solid var(--border);
-        }
-        .body-pad { padding: 20px; }
         
+        .btn-price { background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center; cursor: pointer; transition: 0.2s; }
+        .btn-price:active { transform: scale(0.95); }
+        .btn-owned { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none; }
+        .btn-renew { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-free { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+
+        /* --- DROPDOWN --- */
+        .item-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; background: #0a0a0c; border-top: 1px solid var(--border); }
+        .body-pad { padding: 20px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .info-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 10px; text-align: center; }
-        .info-lbl { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
-        .info-val { font-weight: 700; font-size: 0.85rem; }
-
-        .console {
-            background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px;
-            font-family: monospace; font-size: 0.8rem; margin-top: 5px; position: relative; word-break: break-all;
-        }
-
-        .action-icon {
-            cursor: pointer; padding: 5px; border-radius: 5px; transition: 0.2s; font-size: 1.1rem;
-        }
-        .action-icon:active { background: rgba(255,255,255,0.1); transform: scale(0.9); }
-
-        .key-box {
-            background: #050505; border: 1px solid #222; border-radius: 10px; padding: 12px;
-            display: flex; justify-content: space-between; align-items: center; margin-top: 10px;
-        }
-
+        .info-lbl { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; margin-bottom: 4px; }
+        .info-val { font-weight: 700; font-size: 0.9rem; }
+        .console { background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 10px; position: relative; word-break: break-all; }
+        .copy-icon { cursor: pointer; font-size: 1.1rem; color: var(--text-sec); transition: 0.2s; }
+        .copy-icon:active { color: var(--accent); transform: scale(0.9); }
+        
+        /* --- TABS --- */
         .tabs-container { padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; }
-        .tab-chip {
-            padding: 10px 18px; border-radius: 14px; background: var(--card-bg);
-            border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; font-size: 0.85rem;
-            white-space: nowrap; transition: 0.3s; cursor: pointer;
-        }
+        .tab-chip { padding: 10px 20px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap; transition: 0.3s; cursor: pointer; }
         .tab-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 5px 15px var(--primary-glow); }
-        .tab-chip-free { border-color: rgba(16, 185, 129, 0.3); color: #10b981; }
-        .tab-chip-free.active { background: var(--success); border-color: var(--success); color: #000; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
-
-        .nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 440px; z-index: 100;
-            background: var(--nav-glass); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-            display: flex; justify-content: space-around; padding: 14px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-        }
+        
+        /* --- BOTTOM NAV --- */
+        .nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 440px; z-index: 100; background: var(--nav-glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; display: flex; justify-content: space-around; padding: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         .nav-item { color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .nav-item.active { color: var(--text); transform: translateY(-4px); }
         .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; margin-top: 4px; opacity: 0; transition: 0.3s; }
         .nav-item.active .dot { opacity: 1; }
-
+        
+        /* --- PAGE LOGIC --- */
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .modal-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            display: none; align-items: center; justify-content: center;
-        }
-        .modal-card {
-            background: #121214; border: 1px solid var(--border); width: 85%; max-width: 350px;
-            padding: 30px 20px; border-radius: 24px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s;
-        }
+        
+        /* --- MODAL --- */
+        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
+        .modal-card { background: #121214; border: 1px solid var(--border); width: 85%; max-width: 350px; padding: 30px 20px; border-radius: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s; }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .skeleton {
-            background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%);
-            background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px;
-        }
+        
+        /* Loading Skeleton */
+        .skeleton { background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%); background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px; }
         @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body>
-
-<div class="app-container">
-
-    <div class="header">
-        <div class="logo">Sheru<span style="color:var(--primary)">Nexus</span></div>
-        <div class="balance-pill">
-            <span style="color:var(--gold)">🦁</span>
-            <span id="userBal">...</span>
-        </div>
-    </div>
-
-    <div id="home" class="page active">
-        <div class="hero-card">
-            <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Monetize Your <br><span style="color:#a5b4fc">Code & APIs</span></h2>
-            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Join the #1 developer marketplace.</p>
-            <button onclick="openLink('https://t.me/SheruSellBot', event)" class="hero-btn">Start Selling</button>
-            <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
-        </div>
-
-        <div class="section-title"><i class="ri-fire-fill" style="color:orange"></i> Trending Now</div>
-        <div id="hotList">
-            <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
-        </div>
-    </div>
-
-    <div id="store" class="page">
-        <div class="section-title" style="margin-top:20px;">Marketplace</div>
-        <div class="tabs-container">
-            <div class="tab-chip active" onclick="filterData('all', this)">All</div>
-            <div class="tab-chip tab-chip-free" onclick="filterData('free', this)"><i class="ri-gift-line"></i> Free Zone</div>
-            <div class="tab-chip" onclick="filterData('api', this)">APIs</div>
-            <div class="tab-chip" onclick="filterData('bot', this)">Bots</div>
-            <div class="tab-chip" onclick="filterData('script', this)">Scripts</div>
-        </div>
-
-        <div id="itemList" style="margin-top:15px; padding-bottom: 120px;">
-            <div style="padding:0 20px;"><div class="skeleton" style="height:80px; margin-bottom:10px;"></div><div class="skeleton" style="height:80px;"></div></div>
-        </div>
-    </div>
-
-    <div id="refer" class="page">
-        <div style="margin:20px; padding:30px 20px; background:var(--card-bg); border-radius:24px; text-align:center; border:1px solid var(--border);">
-            <div style="width:60px; height:60px; background:rgba(251, 191, 36, 0.1); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold);">
-                <i class="ri-gift-fill"></i>
-            </div>
-            <h2 style="font-size:1.8rem; font-weight:800; color:white;">Invite & Earn</h2>
-            <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of deposits.</p>
-            
-            <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                <span id="refLink" style="color:var(--text-sec); font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
-                <i class="ri-file-copy-line action-icon text-primary" onclick="copyText(document.getElementById('refLink').innerText, event)"></i>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">Sheru<span style="color:var(--primary)">Nexus</span></div>
+            <div class="balance-pill">
+                <span style="color:var(--gold)">🦁</span>
+                <span id="userBal">...</span>
             </div>
         </div>
 
-        <div class="section-title">History</div>
-        <div id="referHistory" style="padding:0 20px 100px;">
-            <div style="text-align:center; color:#555; padding:20px;">No referrals yet.</div>
+        <div id="home" class="page active">
+            <div class="hero-card">
+                <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Monetize Your <br><span style="color:#a5b4fc">Code & APIs</span></h2>
+                <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Join the #1 developer marketplace.</p>
+                <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">Start Selling</button>
+                <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
+            </div>
+            <div class="section-title"><i class="ri-fire-fill" style="color:orange"></i> Trending</div>
+            <div id="hotList">
+                <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
+            </div>
         </div>
-    </div>
 
-    <div id="profile" class="page">
-        <div style="margin:20px; padding:20px; background:var(--card-bg); border-radius:24px; border:1px solid var(--border);">
-            <div class="flex justify-between items-center">
-                <div class="flex gap-3 items-center">
-                    <div style="width:55px; height:55px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:white; box-shadow:0 5px 15px var(--primary-glow);">
-                        <i class="ri-user-smile-fill"></i>
+        <div id="store" class="page">
+            <div class="section-title" style="margin-top:20px;">Premium Marketplace</div>
+            <div class="tabs-container">
+                <div class="tab-chip active" onclick="filter('all', this)">All</div>
+                <div class="tab-chip" onclick="filter('script', this)">Scripts</div>
+                <div class="tab-chip" onclick="filter('bot', this)">Bots</div>
+                <div class="tab-chip" onclick="filter('api', this)">APIs</div>
+            </div>
+            <div id="itemList" style="margin-top:15px;">
+                <div style="padding:0 20px;"><div class="skeleton" style="height:80px; margin-bottom:10px;"></div></div>
+            </div>
+
+            <div class="section-title" style="margin-top:30px;"><i class="ri-gift-2-line" style="color:var(--accent)"></i> Free Resources</div>
+            <p style="padding:0 20px; color:var(--text-sec); font-size:0.8rem; margin-top:-5px; margin-bottom:10px;">Direct access, no balance required.</p>
+            <div id="freeList" style="margin-top:10px;">
+                <div style="padding:0 20px;"><div class="skeleton" style="height:80px;"></div></div>
+            </div>
+        </div>
+
+        <div id="refer" class="page">
+            <div style="margin:20px; padding:30px 20px; background:var(--card-bg); border-radius:24px; text-align:center; border:1px solid var(--border);">
+                <div style="width:60px; height:60px; background:rgba(251, 191, 36, 0.1); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold);">
+                    <i class="ri-gift-fill"></i>
+                </div>
+                <h2 style="font-size:1.8rem; font-weight:800; color:white;">Invite & Earn</h2>
+                <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of deposits.</p>
+                <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                    <span id="refLink" style="color:var(--text-sec); font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
+                    <button onclick="shareReferral()" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;"><i class="ri-file-copy-line"></i></button>
+                </div>
+            </div>
+            <div class="section-title">History</div>
+            <div id="referHistory" style="padding:0 20px 100px;">
+                <div style="text-align:center; color:#555; padding:20px;">No referrals yet.</div>
+            </div>
+        </div>
+
+        <div id="profile" class="page">
+            <div style="margin:20px; padding:20px; background:var(--card-bg); border-radius:24px; border:1px solid var(--border);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <div style="width:55px; height:55px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:white; box-shadow:0 5px 15px var(--primary-glow);">
+                            <i class="ri-user-smile-fill"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size:1.2rem; font-weight:800;" id="profileName">User</h2>
+                            <div style="font-size:0.8rem; color:var(--text-sec);">ID: <span id="userId">...</span></div>
+                        </div>
                     </div>
+                </div>
+                <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <h2 style="font-size:1.2rem; font-weight:800;" id="profileName">User</h2>
-                        <div style="font-size:0.8rem; color:var(--text-sec);">ID: <span id="userId">...</span></div>
+                        <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">BALANCE</div>
+                        <div style="font-size:1.8rem; font-weight:900;">🦁 <span id="profileBal">0</span></div>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="showAlert('deposit')" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Deposit</button>
+                        <button onclick="showAlert('payout')" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Payout</button>
                     </div>
                 </div>
             </div>
-            
-            <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">BALANCE</div>
-                    <div style="font-size:1.8rem; font-weight:900;">🦁 <span id="profileBal">0</span></div>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="showAlert('deposit')" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700;">Deposit</button>
-                    <button onclick="showAlert('payout')" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700;">Payout</button>
-                </div>
+            <div class="section-title">My Collection <span style="font-size:0.7rem; color:var(--text-sec); margin-left:auto; font-weight:normal;">Purchased from Store</span></div>
+            <div id="myHistory" style="padding:0 20px 100px;">
+                <div class="skeleton" style="height:80px;"></div>
             </div>
         </div>
+    </div>
 
-        <div class="section-title">My Collection <span style="font-size:0.7rem; color:var(--text-sec); margin-left:auto; font-weight:normal;">Purchased Items</span></div>
-        <div id="myHistory" style="padding:0 20px 120px;">
-            <div class="skeleton" style="height:80px;"></div>
+    <div class="modal-bg" id="alertModal">
+        <div class="modal-card">
+            <div style="font-size:3rem; margin-bottom:15px;" id="modalIcon">🔔</div>
+            <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:10px;" id="modalTitle">Alert</h3>
+            <p style="color:var(--text-sec); line-height:1.5; margin-bottom:25px;" id="modalMsg">Message here</p>
+            <button onclick="closeModal()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:14px; font-weight:700; cursor:pointer;">Okay</button>
         </div>
     </div>
 
-</div>
-
-<div class="modal-bg" id="alertModal">
-    <div class="modal-card">
-        <div style="font-size:3rem; margin-bottom:15px;" id="modalIcon">🔔</div>
-        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:10px;" id="modalTitle">Alert</h3>
-        <p style="color:var(--text-sec); line-height:1.5; margin-bottom:25px;" id="modalMsg">Message here</p>
-        <button onclick="closeModal()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:14px; font-weight:700;">Okay</button>
+    <div class="nav">
+        <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('store', this)"><i class="ri-dashboard-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
+        <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-3-line"></i><div class="dot"></div></div>
     </div>
-</div>
 
-<div class="nav">
-    <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('store', this)"><i class="ri-dashboard-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('profile', this)"><i class="ri-briefcase-4-line"></i><div class="dot"></div></div>
-</div>
-
-<script>
-    // --- ⚙️ CONFIGURATION ---
-    const BACKEND_URL = "https://sheru-api.amritw1.workers.dev";
-    const JSON_PREMIUM = "data.json"; 
-    const JSON_FREE = "sheru.json";   
-    const BOT_USERNAME = "SheruApiBot";
-
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-
-    let state = { user: null, catalog: [], keys: [], referrals: [] };
-
-    // --- 🚀 INIT ---
-    async function init() {
-        try {
-            // 1. Fetch JSONs Concurrently
-            const [premRes, freeRes] = await Promise.all([
-                fetch(JSON_PREMIUM).catch(() => ({ok:false})),
-                fetch(JSON_FREE).catch(() => ({ok:false}))
-            ]);
-
-            let premData = [];
-            let freeData = [];
-
-            if(premRes.ok) premData = await premRes.json();
-            if(freeRes.ok) {
-                const fData = await freeRes.json();
-                // Format free data
-                freeData = fData.map(item => ({ ...item, isFree: true, price: 'Free' }));
-            }
-
-            state.catalog = [...premData, ...freeData];
-
-            // 2. Fetch User & Dash Data
-            let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ initData: tg.initData })
-            });
-            let authData = await authRes.json();
-            
-            if(authData.success) {
-                state.user = authData.user;
-                let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, { headers: { 'Authorization': tg.initData } });
-                let dashData = await dashRes.json();
-                if(dashData.success) {
-                    state.keys = dashData.my_keys || [];
-                    state.referrals = dashData.referrals || [];
-                }
-            } else {
-                throw new Error("Auth Failed");
-            }
-
-            // 3. Handle Deep Links
-            const startParam = tg.initDataUnsafe.start_param;
-            if(startParam && startParam.startsWith('item_')) {
-                const id = startParam.split('_')[1]; // ID can be string for free items
-                setTimeout(() => {
-                    nav('store', document.querySelectorAll('.nav-item')[1]);
-                    toggleDetails(`store-${id}`);
-                }, 600);
-            }
-
-            renderUI();
-
-        } catch(e) {
-            console.error(e);
-            state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
-            renderUI();
-        }
-    }
-
-    // --- 🎨 RENDER UTILS ---
-    function renderUI() {
-        document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance || 0);
-        document.getElementById('profileName').innerText = state.user.first_name || 'User';
-        document.getElementById('userId').innerText = state.user.tg_id || 'N/A';
-        document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id || ''}`;
-
-        renderList(state.catalog, 'itemList', 'store');
-        renderList(state.catalog.filter(i => !i.isFree).slice(0, 3), 'hotList', 'home');
-        renderCollection();
-        renderReferrals();
-    }
-
-    // Store List Render
-    function renderList(list, containerId, ctx) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
+    <script>
+        // --- ⚙️ CONFIGURATION ---
+        const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; 
+        const JSON_URL = "data.json"; 
+        const FREE_JSON_URL = "sheru.json"; // NEW JSON for Free resources
+        const BOT_USERNAME = "SheruApiBot"; 
         
-        if(list.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sec);">No items found in this category.</div>`;
-            return;
-        }
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        let state = { user: null, catalog: [], freeCatalog: [], keys: [] };
 
-        list.forEach(item => {
-            const isOwned = state.keys.find(k => String(k.item_id) === String(item.id));
-            const uid = `${ctx}-${item.id}`;
-            
-            let badgeClass = 'b-api';
-            if(item.isFree) badgeClass = 'b-free';
-            else if(item.type === 'BOT') badgeClass = 'b-bot';
-            else if(item.type === 'SCRIPT') badgeClass = 'b-script';
+        // --- 🚀 INIT ---
+        async function init() {
+            try {
+                // 1. Fetch Store Catalog (Paid)
+                let jsonRes = await fetch(JSON_URL).catch(()=>null);
+                if(jsonRes && jsonRes.ok) state.catalog = await jsonRes.json();
 
-            // Button Logic
-            let btnHtml = '';
-            if (item.isFree) {
-                btnHtml = `<button class="btn-price btn-free-action" onclick="openLink('${item.link}', event)">Get Free <i class="ri-external-link-line"></i></button>`;
-            } else if (isOwned) {
-                btnHtml = `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-double-line"></i></button>`;
-            } else {
-                btnHtml = `<button class="btn-price" onclick="buy('${item.id}', ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
-            }
+                // 2. Fetch Free Catalog (sheru.json)
+                let freeRes = await fetch(FREE_JSON_URL).catch(()=>null);
+                if(freeRes && freeRes.ok) state.freeCatalog = await freeRes.json();
 
-            // Dropdown Content Logic
-            let detailsHtml = '';
-            if (item.type === 'API') {
-                detailsHtml = `
-                    <div class="info-lbl mt-3">ENDPOINT / URL</div>
-                    <div class="console text-accent flex justify-between items-center">
-                        <span style="overflow:hidden; text-overflow:ellipsis;">${item.demo || 'N/A'}</span>
-                        <i class="ri-file-copy-line action-icon" onclick="copyText('${item.demo}', event)"></i>
-                    </div>
-                    <div class="info-lbl mt-3">RESPONSE PREVIEW</div>
-                    <div class="console text-green">${item.res || 'N/A'}</div>
-                `;
-            } else if (item.type === 'BOT') {
-                detailsHtml = `
-                    ${item.demo ? `<button onclick="openLink('${item.demo}', event)" class="btn-demo"><i class="ri-robot-2-line"></i> View Demo Bot</button>` : ''}
-                    <div class="info-lbl mt-2">BOT FEATURES & DETAILS</div>
-                    <div class="console text-green">${item.res || 'Detailed breakdown provided after access.'}</div>
-                `;
-            } else if (item.type === 'SCRIPT') {
-                detailsHtml = `
-                    <div class="info-lbl mt-3">SCRIPT DETAILS & USAGE</div>
-                    <div class="console text-green">${item.res || 'Documentation provided with script.'}</div>
-                `;
-            }
-
-            container.innerHTML += `
-            <div class="list-item">
-                <div class="item-main" onclick="toggleDetails('${uid}')">
-                    <div class="flex items-center gap-3">
-                        <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <div class="font-bold" style="font-size:0.95rem;">${item.name}</div>
-                                <span class="badge ${badgeClass}">${item.isFree ? 'FREE' : item.type}</span>
-                            </div>
-                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        ${btnHtml}
-                        <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line text-sec" style="font-size:1.2rem;"></i></div>
-                    </div>
-                </div>
+                // 3. Auth & User Data from Backend
+                let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ initData: tg.initData || tg.initDataUnsafe })
+                }).catch(()=>null);
                 
-                <div id="body-${uid}" class="item-body">
-                    <div class="body-pad">
-                        <div class="info-grid">
-                            <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val text-accent">${item.type}</div></div>
-                            <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
-                            <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val text-gold">24/7</div></div>
-                        </div>
-                        <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
-                        
-                        ${detailsHtml}
+                if(authRes && authRes.ok) {
+                    let authData = await authRes.json();
+                    state.user = authData.user;
+                }
 
-                        <div style="text-align:right; margin-top:15px;">
-                            <button onclick="shareItem('${item.id}', event)" style="background:transparent; color:var(--text-sec); border:none; display:flex; align-items:center; gap:5px; margin-left:auto; cursor:pointer;">
-                                <i class="ri-share-forward-line"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        });
-    }
+                // 4. Fetch Dashboard (My Collection)
+                let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
+                    headers: { 'Authorization': tg.initData }
+                }).catch(()=>null);
+                
+                if(dashRes && dashRes.ok) {
+                    let dashData = await dashRes.json();
+                    if(dashData.success) state.keys = dashData.my_keys; 
+                }
 
-    // Collection Render (Hidden Keys, Eye Toggle, SVG Copy)
-    function renderCollection() {
-        const div = document.getElementById('myHistory');
-        if(state.keys.length === 0) { 
-            div.innerHTML = `<div style="text-align:center; color:var(--text-sec); padding:30px;">Your bag is empty.</div>`; 
-            return; 
+                // 5. Handle Deep Links
+                const startParam = tg.initDataUnsafe.start_param;
+                if(startParam && startParam.startsWith('item_')) {
+                    const id = parseInt(startParam.split('_')[1]);
+                    setTimeout(() => {
+                        nav('store', document.querySelectorAll('.nav-item')[1]);
+                        toggleDetails(`store-${id}`);
+                    }, 600);
+                }
+
+                renderUI();
+            } catch(e) {
+                console.error("Init Error:", e);
+                if(!state.user) state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
+                renderUI();
+            }
         }
 
-        div.innerHTML = "";
-        state.keys.forEach((key, index) => {
-            const item = state.catalog.find(i => String(i.id) === String(key.item_id)) || { name: "Unknown Premium Item", icon: "ri-box-3-line" };
-            
-            let expiryHtml = `<span style="color:var(--success)">Lifetime Access</span>`;
-            let isExpired = false;
-            
-            if(key.expiry_date && key.expiry_date !== 'Lifetime') {
-                const exp = new Date(key.expiry_date);
-                isExpired = new Date() > exp;
-                expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
+        // --- 🎨 RENDER ---
+        function renderUI() {
+            document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance || 0);
+            document.getElementById('profileName').innerText = state.user.first_name || "Guest";
+            document.getElementById('userId').innerText = state.user.tg_id || "0000";
+            document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
+
+            renderList(state.catalog, 'itemList', 'store');
+            renderList(state.catalog.slice(0, 3), 'hotList', 'home');
+            renderFreeList(state.freeCatalog, 'freeList', 'free'); // Render Free items
+            renderCollection();
+            renderReferrals();
+        }
+
+        // Render Paid Store Items
+        function renderList(list, containerId, ctx) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            if(!list || list.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No items found.</div>`;
+                return;
             }
 
-            // The actual secret data
-            const actualData = key.key_value;
-            const hiddenData = "••••••••••••••••";
-            const isFile = actualData === "FILE_ACCESS";
-            
-            const displayData = isFile ? "FILE_DELIVERED_IN_BOT" : hiddenData;
+            list.forEach(item => {
+                const ownedItem = state.keys.find(k => k.item_id === item.id);
+                const uid = `${ctx}-${item.id}`;
+                const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
+                const btnHtml = ownedItem 
+                    ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-line"></i></button>` 
+                    : `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
 
-            div.innerHTML += `
-            <div class="list-item" style="padding:15px;">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="item-icon"><i class="${item.icon}"></i></div>
-                        <div>
-                            <div class="font-bold">${item.name}</div>
-                            <div style="font-size:0.75rem; margin-top:2px;">${expiryHtml}</div>
+                // Dynamic Body based on type
+                let typeSpecificBody = '';
+                if(item.type === 'BOT') {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; text-align:center;">
+                            <button onclick="window.open('${item.demo}', '_blank'); event.stopPropagation();" class="hero-btn" style="background:var(--accent); color:#000; width:100%; border-radius:10px;">
+                                View Demo Bot <i class="ri-robot-line"></i>
+                            </button>
+                        </div>`;
+                } else if(item.type === 'SCRIPT') {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-sec);">
+                            ${item.details || 'Complete source code and documentation included.'}
+                        </div>`;
+                } else {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT / DEMO</div>
+                        <div class="console" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85%;">${item.demo}</span>
+                            <i class="ri-file-copy-line copy-icon" onclick="copyText('${item.demo}', event)"></i>
+                        </div>
+                        <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">RESPONSE PREVIEW</div>
+                        <div class="console" style="color:#4ade80;">${item.res || '{ "status": "success" }'}</div>`;
+                }
+
+                container.innerHTML += `
+                <div class="list-item">
+                    <div class="item-main" onclick="toggleDetails('${uid}')">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
+                            <div>
+                                <div style="display:flex; align-items:center;">
+                                    <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                                    <span class="badge ${badgeClass}" style="margin-left:5px;">${item.type}</span>
+                                </div>
+                                <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            ${btnHtml}
+                            <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
                         </div>
                     </div>
-                    ${isExpired ? `<button class="btn-price btn-renew" onclick="renew('${key.item_id}')">Renew 🔄</button>` : ''}
-                </div>
-
-                <div class="key-box">
-                    <span id="coll-val-${index}" data-full="${actualData}" class="font-mono ${isFile ? 'text-sec' : 'text-accent'}" style="font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">
-                        ${displayData}
-                    </span>
-                    
-                    <div class="flex gap-2">
-                        ${!isFile ? `<i id="coll-eye-${index}" class="ri-eye-line action-icon text-sec" onclick="toggleVisibility(${index}, event)"></i>` : ''}
-                        <i class="ri-file-copy-line action-icon text-sec" onclick="copyText('${actualData}', event)"></i>
+                    <div id="body-${uid}" class="item-body">
+                        <div class="body-pad">
+                            <div class="info-grid">
+                                <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
+                                <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
+                                <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
+                            </div>
+                            <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                            ${typeSpecificBody}
+                            <div style="text-align:right; margin-top:15px;">
+                                <button onclick="shareItem(${item.id}, event)" style="background:transparent; color:var(--text-sec); border:none; display:flex; align-items:center; gap:5px; margin-left:auto; cursor:pointer;">
+                                    <i class="ri-share-forward-line"></i> Share
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>`;
-        });
-    }
-
-    function renderReferrals() {
-        const div = document.getElementById('referHistory');
-        if(!state.referrals || state.referrals.length === 0) {
-            div.innerHTML = `<div style="text-align:center; color:var(--text-sec); padding:30px;">No friends invited yet.</div>`;
-            return;
-        }
-        div.innerHTML = "";
-        state.referrals.forEach(ref => {
-            const dateStr = new Date(ref.created_at).toLocaleDateString();
-            div.innerHTML += `
-            <div class="flex justify-between items-center" style="padding:12px; border-bottom:1px solid var(--border);">
-                <div class="flex items-center gap-3">
-                    <div style="width:35px; height:35px; background:rgba(255,255,255,0.05); border-radius:50%; display:flex; align-items:center; justify-content:center;"><i class="ri-user-line"></i></div>
-                    <div><div class="font-bold">${ref.first_name || 'User'}</div><div style="font-size:0.7rem; color:var(--text-sec);">Joined: ${dateStr}</div></div>
-                </div>
-                <div class="text-gold font-bold">+1 🦁</div>
-            </div>`;
-        });
-    }
-
-    // --- ⚡ INTERACTIONS & LOGIC ---
-
-    function toggleVisibility(idx, event) {
-        event.stopPropagation();
-        const span = document.getElementById(`coll-val-${idx}`);
-        const icon = document.getElementById(`coll-eye-${idx}`);
-        const actual = span.getAttribute('data-full');
-
-        if(span.innerText.includes('•')) {
-            span.innerText = actual;
-            icon.classList.replace('ri-eye-line', 'ri-eye-off-line');
-            icon.classList.replace('text-sec', 'text-primary');
-        } else {
-            span.innerText = "••••••••••••••••";
-            icon.classList.replace('ri-eye-off-line', 'ri-eye-line');
-            icon.classList.replace('text-primary', 'text-sec');
-        }
-    }
-
-    function copyText(txt, event) {
-        if(event) event.stopPropagation();
-        if(txt === "FILE_ACCESS") {
-            showAlert('error', 'Files are delivered directly in the Bot chat. Check your Telegram history.');
-            return;
-        }
-        navigator.clipboard.writeText(txt);
-        tg.HapticFeedback.notificationOccurred('success');
-        showAlert('success', 'Copied to clipboard!');
-    }
-
-    function toggleDetails(uid) {
-        const body = document.getElementById(`body-${uid}`);
-        const arrow = document.getElementById(`arrow-${uid}`);
-        if(body.style.maxHeight) {
-            body.style.maxHeight = null;
-            arrow.style.transform = "rotate(0deg)";
-            arrow.classList.replace('text-primary', 'text-sec');
-        } else {
-            document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
-            document.querySelectorAll('[id^="arrow-"]').forEach(el => { 
-                el.style.transform = "rotate(0deg)"; 
-                el.classList.replace('text-primary', 'text-sec');
+                </div>`;
             });
-            body.style.maxHeight = body.scrollHeight + "px";
-            arrow.style.transform = "rotate(180deg)";
-            arrow.classList.replace('text-sec', 'text-primary');
         }
-    }
 
-    function buy(id, price, event) {
-        event.stopPropagation();
-        if(state.user.balance < price) { showAlert('deposit'); return; }
-        tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
-        tg.close();
-    }
+        // Render Free Items (sheru.json)
+        function renderFreeList(list, containerId, ctx) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            if(!list || list.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No free resources available right now.</div>`;
+                return;
+            }
 
-    function renew(id) {
-        tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
-        tg.close();
-    }
+            list.forEach((item, index) => {
+                const uid = `${ctx}-${item.id || index}`;
+                const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
 
-    function openLink(url, event) {
-        if(event) event.stopPropagation();
-        if(url.includes('t.me')) {
-            tg.openTelegramLink(url);
-        } else {
-            tg.openLink(url);
+                let typeSpecificBody = '';
+                if(item.type === 'BOT') {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; text-align:center;">
+                            <button onclick="window.open('${item.demo}', '_blank'); event.stopPropagation();" class="hero-btn" style="background:var(--accent); color:#000; width:100%; border-radius:10px;">
+                                View Demo Bot <i class="ri-robot-line"></i>
+                            </button>
+                        </div>`;
+                } else if(item.type === 'SCRIPT') {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; font-size:0.8rem; color:var(--text-sec);">
+                            ${item.details || 'Free source code. No demo available.'}
+                        </div>`;
+                } else {
+                    typeSpecificBody = `
+                        <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT / DEMO</div>
+                        <div class="console" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85%;">${item.demo}</span>
+                            <i class="ri-file-copy-line copy-icon" onclick="copyText('${item.demo}', event)"></i>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                <div class="list-item">
+                    <div class="item-main" onclick="toggleDetails('${uid}')">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="item-icon"><i class="${item.icon || 'ri-open-source-line'}"></i></div>
+                            <div>
+                                <div style="display:flex; align-items:center;">
+                                    <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                                    <span class="badge ${badgeClass}" style="margin-left:5px;">${item.type}</span>
+                                </div>
+                                <div style="font-size:0.75rem; color:#4ade80; margin-top:2px;">Free Forever</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <button class="btn-price btn-free" onclick="window.open('${item.link}', '_blank'); event.stopPropagation();">Get Free <i class="ri-download-cloud-2-line"></i></button>
+                            <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
+                        </div>
+                    </div>
+                    <div id="body-${uid}" class="item-body">
+                        <div class="body-pad">
+                            <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                            ${typeSpecificBody}
+                        </div>
+                    </div>
+                </div>`;
+            });
         }
-    }
 
-    function filterData(type, btn) {
-        document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        tg.HapticFeedback.impactOccurred('light');
-        
-        let filtered = [];
-        if(type === 'all') {
-            filtered = state.catalog;
-        } else if (type === 'free') {
-            filtered = state.catalog.filter(i => i.isFree);
-        } else {
-            filtered = state.catalog.filter(i => !i.isFree && i.type.toLowerCase() === type);
+        // Render My Collection (Hidden Default + Copy Fix)
+        function renderCollection() {
+            const div = document.getElementById('myHistory');
+            if(state.keys.length === 0) {
+                div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">You haven't purchased anything yet.</div>`;
+                return;
+            }
+            div.innerHTML = "";
+            state.keys.forEach((key, index) => {
+                const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
+                const uniqueKeyId = `mykey-${key.item_id}-${index}`; // Unique ID for every single item
+
+                let expiryHtml = `<span style="color:#4ade80">Lifetime</span>`;
+                let actionBtn = `<div style="font-size:0.8rem; color:var(--text-sec);">Active</div>`;
+
+                if(key.expiry_date && key.expiry_date !== 'Lifetime') {
+                    const exp = new Date(key.expiry_date);
+                    const now = new Date();
+                    const isExpired = now > exp;
+                    expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
+                    if(isExpired) {
+                        actionBtn = `<button class="btn-price btn-renew" onclick="renew(${key.item_id}, event)">Renew 🔄</button>`;
+                    }
+                }
+
+                div.innerHTML += `
+                <div class="list-item">
+                    <div class="item-main" style="cursor:default;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="item-icon"><i class="${itemDetails.icon}"></i></div>
+                            <div>
+                                <div style="font-weight:700; font-size:0.95rem;">${itemDetails.name}</div>
+                                <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
+                            </div>
+                        </div>
+                        ${actionBtn}
+                    </div>
+                    <div style="padding:0 15px 15px;">
+                        <div class="console" style="margin-top:0; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                            <span id="text-${uniqueKeyId}" data-val="${key.key_value}" style="letter-spacing:2px; font-size:0.9rem;">••••••••••••••••</span>
+                            <div style="display:flex; gap:15px; color:var(--text-sec);">
+                                <i class="ri-eye-off-line copy-icon" id="eye-${uniqueKeyId}" onclick="toggleKey('${uniqueKeyId}', event)"></i>
+                                <i class="ri-file-copy-line copy-icon" style="color:var(--accent);" onclick="copyText('${key.key_value}', event)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
         }
-        renderList(filtered, 'itemList', 'store');
-    }
 
-    function nav(page, btn) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(page).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        btn.classList.add('active');
-        tg.HapticFeedback.impactOccurred('light');
-        window.scrollTo(0,0);
-    }
-
-    function shareItem(id, event) { 
-        if(event) event.stopPropagation();
-        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`); 
-    }
-    
-    function shareReferral() { 
-        const link = document.getElementById('refLink').innerText;
-        tg.openTelegramLink(`https://t.me/share/url?url=${link}&text=Join Sheru Nexus for Premium Developer Tools!`); 
-    }
-
-    function showAlert(type, customMsg = null) {
-        const m = document.getElementById('alertModal');
-        const t = document.getElementById('modalTitle');
-        const msg = document.getElementById('modalMsg');
-        const icon = document.getElementById('modalIcon');
-        
-        m.style.display = "flex";
-        tg.HapticFeedback.notificationOccurred(type === 'error' ? 'error' : 'warning');
-        
-        if(customMsg) {
-            icon.innerText = type === 'success' ? "✅" : "⚠️";
-            t.innerText = type === 'success' ? "Success" : "Notice";
-            msg.innerHTML = customMsg;
-        } else if(type === 'deposit') {
-            icon.innerText = "💎"; t.innerText = "Add Stars";
-            msg.innerHTML = "To top up your balance, go to the bot chat and use <b class='text-accent'>/deposit</b>";
-        } else if(type === 'payout') {
-            icon.innerText = "🏦"; t.innerText = "Withdraw";
-            msg.innerHTML = "To withdraw funds, go to the bot chat and use <b class='text-gold'>/payout</b>";
+        function renderReferrals() {
+            const div = document.getElementById('referHistory');
+            const count = state.user?.total_refs || 0;
+            if(count === 0) return;
+            div.innerHTML = "";
+            for(let i=0; i<count; i++) {
+                div.innerHTML += `
+                <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <div style="width:30px; height:30px; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">👤</div>
+                        <div><div style="font-weight:700;">User #${4932+i}</div><div style="font-size:0.7rem; color:#666;">Joined via Link</div></div>
+                    </div>
+                    <div style="color:var(--gold); font-weight:800;">+1 🦁</div>
+                </div>`;
+            }
         }
-    }
-    function closeModal() { document.getElementById('alertModal').style.display = "none"; }
 
-    window.onload = init;
+        // --- ACTIONS & LOGIC ---
+        function toggleDetails(uid) {
+            const body = document.getElementById(`body-${uid}`);
+            const arrow = document.getElementById(`arrow-${uid}`);
+            
+            if(body.style.maxHeight) {
+                body.style.maxHeight = null;
+                arrow.style.transform = "rotate(0deg)";
+                arrow.style.color = "#666";
+            } else {
+                // Close all others
+                document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
+                document.querySelectorAll('[id^="arrow-"]').forEach(el => {
+                    el.style.transform = "rotate(0deg)";
+                    el.style.color = "#666";
+                });
+                // Open clicked
+                body.style.maxHeight = body.scrollHeight + "px";
+                arrow.style.transform = "rotate(180deg)";
+                arrow.style.color = "var(--primary)";
+            }
+        }
 
-</script>
+        // Hidden Key Toggle
+        function toggleKey(id, event) {
+            if(event) event.stopPropagation();
+            const textEl = document.getElementById(`text-${id}`);
+            const eyeIcon = document.getElementById(`eye-${id}`);
+            
+            if(textEl.innerText === '••••••••••••••••') {
+                textEl.innerText = textEl.getAttribute('data-val');
+                textEl.style.letterSpacing = 'normal';
+                eyeIcon.classList.remove('ri-eye-off-line');
+                eyeIcon.classList.add('ri-eye-line');
+                eyeIcon.style.color = 'var(--primary)';
+            } else {
+                textEl.innerText = '••••••••••••••••';
+                textEl.style.letterSpacing = '2px';
+                eyeIcon.classList.remove('ri-eye-line');
+                eyeIcon.classList.add('ri-eye-off-line');
+                eyeIcon.style.color = 'var(--text-sec)';
+            }
+        }
+
+        // Copy Text with Stop Propagation
+        function copyText(txt, event) {
+            if(event) event.stopPropagation();
+            navigator.clipboard.writeText(txt).then(() => {
+                if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                // Optional: visual feedback
+                if(event && event.target) {
+                    const originalColor = event.target.style.color;
+                    event.target.style.color = '#4ade80';
+                    setTimeout(() => event.target.style.color = originalColor, 1000);
+                }
+            });
+        }
+
+        function buy(id, price, event) {
+            if(event) event.stopPropagation();
+            if(state.user.balance < price) {
+                showAlert('deposit');
+                return;
+            }
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
+            tg.close();
+        }
+
+        function renew(id, event) {
+            if(event) event.stopPropagation();
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
+            tg.close();
+        }
+
+        function filter(type, btn) {
+            document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
+            renderList(list, 'itemList', 'store');
+        }
+
+        function nav(page, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            btn.classList.add('active');
+            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function showAlert(type) {
+            const m = document.getElementById('alertModal');
+            const t = document.getElementById('modalTitle');
+            const msg = document.getElementById('modalMsg');
+            const icon = document.getElementById('modalIcon');
+            m.style.display = "flex";
+            if(type === 'deposit') {
+                icon.innerText = "💎";
+                t.innerText = "Add Funds";
+                msg.innerHTML = "To add funds, send <b style='color:var(--accent)'>/deposit</b> in the bot.";
+            } else if(type === 'payout') {
+                icon.innerText = "🏦";
+                t.innerText = "Withdraw";
+                msg.innerHTML = "To withdraw, send <b style='color:var(--gold)'>/payout</b> in the bot.";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('alertModal').style.display = "none";
+        }
+
+        function shareItem(id, event) {
+            if(event) event.stopPropagation();
+            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`);
+        }
+
+        function shareReferral() {
+            tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=Join & Earn!`);
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
-
