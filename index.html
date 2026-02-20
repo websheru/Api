@@ -18,11 +18,11 @@
             --accent: #22d3ee;
             --gold: #fbbf24;
             --danger: #ef4444;
-            --success: #10b981;
+            --success: #4ade80;
             --text: #ffffff;
             --text-sec: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
-            --nav-glass: rgba(10, 10, 12, 0.9);
+            --nav-glass: rgba(10, 10, 12, 0.95);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -62,11 +62,13 @@
         .hero-btn {
             background: #fff; color: #000; border: none; padding: 10px 20px;
             border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;
         }
+        .hero-btn:active { transform: scale(0.95); }
 
         .section-title {
             padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800;
-            display: flex; align-items: center; justify-content: space-between; color: var(--text);
+            display: flex; align-items: center; gap: 8px; color: var(--text);
         }
 
         /* --- ITEM CARD --- */
@@ -74,7 +76,7 @@
             background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px;
             border: 1px solid var(--border); overflow: hidden; transition: 0.2s;
         }
-        .list-item:active { transform: scale(0.98); }
+        .list-item:active { border-color: rgba(255,255,255,0.2); }
 
         .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         
@@ -87,22 +89,19 @@
         .b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
         .b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
         .b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
-        .b-free { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .b-free { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); }
 
         .btn-price {
             background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px;
-            font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center;
+            font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center; transition: 0.2s; cursor: pointer;
         }
+        .btn-price:active { transform: scale(0.95); }
         .btn-owned { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none; }
         .btn-renew { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .btn-free { background: linear-gradient(90deg, #10b981, #059669); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
-        .btn-demo { background: rgba(255,255,255,0.1); color: #fff; width: 100%; border-radius: 10px; padding: 10px; font-weight: 700; border: 1px solid var(--border); display:flex; justify-content:center; gap:8px; margin-top:10px;}
+        .btn-free { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.4); }
 
         /* --- DROPDOWN --- */
-        .item-body {
-            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out;
-            background: #0a0a0c; border-top: 1px solid var(--border);
-        }
+        .item-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; background: #0a0a0c; border-top: 1px solid var(--border); }
         .body-pad { padding: 20px; }
         
         .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
@@ -112,45 +111,44 @@
 
         .console {
             background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px;
-            font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 10px;
-            position: relative; word-break: break-all;
+            font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 5px;
+            word-break: break-all; display: flex; justify-content: space-between; align-items: center;
         }
-        .copy-icon { position: absolute; right: 10px; top: 12px; color: var(--text-sec); font-size: 1.2rem; cursor: pointer; transition: 0.2s;}
-        .copy-icon:active { color: var(--success); transform: scale(0.9); }
+        .icon-btn { font-size: 1.1rem; color: var(--text-sec); cursor: pointer; transition: 0.2s; padding: 5px; }
+        .icon-btn:active { color: var(--primary); transform: scale(0.9); }
 
-        /* --- HIDDEN KEY BOX (Security) --- */
-        .hidden-key-box {
-            background: #000; border: 1px solid #222; padding: 12px 15px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center; margin-top: 10px;
+        /* Secret Key Box */
+        .key-box {
+            background: #050505; border: 1px solid var(--primary); padding: 12px 15px;
+            border-radius: 10px; display: flex; justify-content: space-between; align-items: center;
         }
-        .hidden-key-text { font-family: monospace; font-size: 0.9rem; color: var(--success); letter-spacing: 2px; }
-        .key-actions i { font-size: 1.3rem; color: var(--text-sec); margin-left: 10px; cursor: pointer; transition: 0.2s; }
-        .key-actions i:active { color: white; }
+        .key-text { font-family: monospace; font-size: 0.9rem; font-weight: bold; color: var(--text); letter-spacing: 1px; }
 
         /* --- TABS --- */
         .tabs-container { padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; }
         .tab-chip {
-            padding: 10px 20px; border-radius: 14px; background: var(--card-bg);
+            padding: 10px 20px; border-radius: 14px; background: var(--card-bg); cursor: pointer;
             border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap; transition: 0.3s;
         }
         .tab-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 5px 15px var(--primary-glow); }
 
-        /* --- BOTTOM NAV --- */
+        /* --- BOTTOM NAV (5 Items now) --- */
         .nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 440px; z-index: 100;
+            width: 95%; max-width: 460px; z-index: 100;
             background: var(--nav-glass); backdrop-filter: blur(25px);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-            display: flex; justify-content: space-around; padding: 14px;
+            display: flex; justify-content: space-around; padding: 12px 5px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
-        .nav-item { color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        .nav-item { color: #555; font-size: 1.4rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 5px 15px; }
         .nav-item.active { color: var(--text); transform: translateY(-4px); }
+        .nav-item.active i { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
         .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; margin-top: 4px; opacity: 0; transition: 0.3s; }
         .nav-item.active .dot { opacity: 1; }
 
         /* --- PAGE LOGIC --- */
-        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -158,17 +156,16 @@
         .modal-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 200;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            display: none; align-items: center; justify-content: center;
+            display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.2s;
         }
+        .modal-bg.show { display: flex; opacity: 1; }
         .modal-card {
             background: #121214; border: 1px solid var(--border); width: 85%; max-width: 350px;
             padding: 30px 20px; border-radius: 24px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7); animation: popUp 0.3s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7); transform: scale(0.9); transition: 0.2s;
         }
-        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-bg.show .modal-card { transform: scale(1); }
 
-        .skeleton { background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%); background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px; }
-        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body>
@@ -185,53 +182,54 @@
 
     <div id="home" class="page active">
         <div class="hero-card">
-            <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Monetize Your <br><span style="color:#a5b4fc">Code & APIs</span></h2>
-            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Join the #1 developer marketplace.</p>
-            <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">Start Selling</button>
-            <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
+            <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Welcome to <br><span style="color:#a5b4fc">God Mode</span></h2>
+            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">The Ultimate Digital Store.</p>
+            <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">
+                <i class="ri-rocket-fill"></i> Start Selling
+            </button>
+            <i class="ri-vip-crown-fill" style="position:absolute; right:-10px; bottom:-20px; font-size:8rem; opacity:0.05; color:white;"></i>
         </div>
 
-        <div class="section-title">
-            <div><i class="ri-fire-fill" style="color:orange"></i> Trending</div>
-        </div>
+        <div class="section-title"><i class="ri-fire-fill text-gold"></i> Trending Now</div>
         <div id="hotList">
-            <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
+            <div style="text-align:center; padding:20px; color:#555;">Loading...</div>
         </div>
     </div>
 
     <div id="store" class="page">
-        <div class="section-title" style="margin-top:20px;">Marketplace</div>
+        <div class="section-title" style="margin-top:20px;">Premium Store</div>
         <div class="tabs-container">
-            <div class="tab-chip active" onclick="filter('all', this)">All</div>
-            <div class="tab-chip" onclick="filter('script', this)">Scripts</div>
-            <div class="tab-chip" onclick="filter('bot', this)">Bots</div>
-            <div class="tab-chip" onclick="filter('api', this)">APIs</div>
-            <div class="tab-chip" onclick="filter('free', this)" style="color:var(--success); border-color:rgba(16,185,129,0.3);">Freebies 🎁</div>
+            <div class="tab-chip active" onclick="filterStore('all', this)">All</div>
+            <div class="tab-chip" onclick="filterStore('script', this)">Scripts</div>
+            <div class="tab-chip" onclick="filterStore('bot', this)">Bots</div>
+            <div class="tab-chip" onclick="filterStore('api', this)">APIs</div>
         </div>
+        <div id="itemList" style="margin-top:15px; padding-bottom: 20px;"></div>
+    </div>
 
-        <div id="itemList" style="margin-top:15px; padding-bottom:100px;">
-            <div style="padding:0 20px;"><div class="skeleton" style="height:80px; margin-bottom:10px;"></div></div>
+    <div id="freePage" class="page">
+        <div class="section-title" style="margin-top:20px; color:var(--success);"><i class="ri-gift-2-fill"></i> Free Resources</div>
+        <p style="padding: 0 20px 15px; color:var(--text-sec); font-size:0.85rem;">Access open-source scripts, bots, and free APIs instantly. No coins required!</p>
+        <div id="freeList" style="padding-bottom: 20px;">
+            <div style="text-align:center; padding:20px; color:#555;">Loading Freebies...</div>
         </div>
     </div>
 
     <div id="refer" class="page">
         <div style="margin:20px; padding:30px 20px; background:var(--card-bg); border-radius:24px; text-align:center; border:1px solid var(--border);">
             <div style="width:60px; height:60px; background:rgba(251, 191, 36, 0.1); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold);">
-                <i class="ri-gift-fill"></i>
+                <i class="ri-money-dollar-circle-fill"></i>
             </div>
             <h2 style="font-size:1.8rem; font-weight:800; color:white;">Invite & Earn</h2>
-            <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of deposits.</p>
+            <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of their deposits.</p>
             
             <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                 <span id="refLink" style="color:var(--text-sec); font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
-                <button onclick="shareReferral()" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px;"><i class="ri-file-copy-line"></i></button>
+                <button onclick="copyText(document.getElementById('refLink').innerText, event)" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;"><i class="ri-file-copy-line"></i></button>
             </div>
         </div>
-
-        <div class="section-title">History</div>
-        <div id="referHistory" style="padding:0 20px 100px;">
-            <div style="text-align:center; color:#555; padding:20px;">No referrals yet.</div>
-        </div>
+        <div class="section-title">My Referrals</div>
+        <div id="referHistory" style="padding:0 20px 20px;"></div>
     </div>
 
     <div id="profile" class="page">
@@ -250,39 +248,36 @@
             
             <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">BALANCE</div>
+                    <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">WALLET BALANCE</div>
                     <div style="font-size:1.8rem; font-weight:900;">🦁 <span id="profileBal">0</span></div>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <button onclick="showAlert('deposit')" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700;">Deposit</button>
-                    <button onclick="showAlert('payout')" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700;">Payout</button>
+                    <button onclick="showAlert('deposit')" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Deposit</button>
+                    <button onclick="showAlert('payout')" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Payout</button>
                 </div>
             </div>
         </div>
 
-        <div class="section-title">
-            <div>My Collection</div>
-            <div style="font-size:0.75rem; font-weight:normal; color:var(--text-sec);">Secured Vault 🔒</div>
-        </div>
-        <div id="myHistory" style="padding:0 20px 100px;">
-            <div class="skeleton" style="height:80px;"></div>
-        </div>
+        <div class="section-title">My Collection</div>
+        <p style="padding: 0 20px 5px; color:var(--text-sec); font-size:0.8rem;">Tap on the Eye icon to reveal your secret keys.</p>
+        <div id="myHistory" style="padding:0 20px 20px;"></div>
     </div>
 
 </div>
 
 <div class="modal-bg" id="alertModal">
     <div class="modal-card">
-        <div style="font-size:3rem; margin-bottom:15px;" id="modalIcon">🔔</div>
-        <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:10px;" id="modalTitle">Alert</h3>
+        <div style="font-size:3.5rem; margin-bottom:10px;" id="modalIcon">🔔</div>
+        <h3 style="font-size:1.5rem; font-weight:800; margin-bottom:10px;" id="modalTitle">Alert</h3>
         <p style="color:var(--text-sec); line-height:1.5; margin-bottom:25px;" id="modalMsg">Message here</p>
-        <button onclick="closeModal()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:14px; font-weight:700;">Okay</button>
+        <button onclick="closeModal()" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer;">Got it!</button>
     </div>
 </div>
 
 <div class="nav">
     <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('store', this)"><i class="ri-dashboard-line"></i><div class="dot"></div></div>
+    <div class="nav-item" onclick="nav('store', this)"><i class="ri-shopping-bag-3-line"></i><div class="dot"></div></div>
+    <div class="nav-item" onclick="nav('freePage', this)"><i class="ri-gift-line"></i><div class="dot"></div></div>
     <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
     <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-3-line"></i><div class="dot"></div></div>
 </div>
@@ -290,35 +285,35 @@
 <script>
     // --- ⚙️ CONFIGURATION ---
     const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; 
-    const JSON_URL = "data.json"; // PREMIUM ITEMS
-    const FREE_JSON_URL = "sheru.json"; // 🆓 NEW FREE ITEMS JSON
-    const BOT_USERNAME = "SheruApiBot"; 
+    const JSON_URL_PREMIUM = "data.json"; // ⚠️ MUST REPLACE WITH YOUR RAW GITHUB LINK
+    const JSON_URL_FREE = "sheru.json";   // ⚠️ MUST REPLACE WITH YOUR RAW GITHUB LINK
+    const BOT_USERNAME = "SheruApiBot";
 
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    let state = { user: null, catalog: [], freeCatalog: [], keys: [] };
+    let state = { user: null, catalog: [], freeCatalog: [], keys: [], referrals: [] };
 
-    // --- 🚀 INIT ---
+    // --- 🚀 INITIALIZATION ---
     async function init() {
         try {
-            // 1. Fetch Premium Catalog
-            try {
-                let jsonRes = await fetch(JSON_URL);
-                if(jsonRes.ok) state.catalog = await jsonRes.json();
-            } catch(e) { console.error("Premium JSON Error"); }
+            // 1. Fetch Premium Data
+            fetch(JSON_URL_PREMIUM).then(r => r.json()).then(data => {
+                state.catalog = data;
+                renderStoreList(state.catalog, 'itemList', 'store');
+                renderStoreList(state.catalog.slice(0, 3), 'hotList', 'home');
+                renderCollection(); // Refresh collection once data loads
+            }).catch(e => console.log("Premium JSON Load Error", e));
 
-            // 2. Fetch Free Catalog (No DB tracking for these)
-            try {
-                let freeRes = await fetch(FREE_JSON_URL);
-                if(freeRes.ok) {
-                    let freeData = await freeRes.json();
-                    // Inject a flag so renderer knows they are free
-                    state.freeCatalog = freeData.map(item => ({...item, is_free: true}));
-                }
-            } catch(e) { console.error("Free JSON Error"); }
+            // 2. Fetch Free Data (sheru.json)
+            fetch(JSON_URL_FREE).then(r => r.json()).then(data => {
+                state.freeCatalog = data;
+                renderFreeList();
+            }).catch(e => {
+                document.getElementById('freeList').innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Currently no free items available.</div>`;
+            });
 
-            // 3. Auth & User Data
+            // 3. Auth with Backend
             let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ initData: tg.initData })
@@ -326,92 +321,82 @@
             let authData = await authRes.json();
             state.user = authData.user;
 
-            // 4. Fetch Dashboard (Purchased Keys)
+            // 4. Fetch Dashboard (Purchases & Referrals)
             let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
                 headers: { 'Authorization': tg.initData }
             });
             let dashData = await dashRes.json();
             if(dashData.success) {
-                state.keys = dashData.my_keys; 
+                state.keys = dashData.my_keys || [];
+                state.referrals = dashData.referrals || [];
             }
 
-            renderUI();
+            // Deep Link Handler
+            if(tg.initDataUnsafe.start_param && tg.initDataUnsafe.start_param.startsWith('item_')) {
+                const id = parseInt(tg.initDataUnsafe.start_param.split('_')[1]);
+                setTimeout(() => { nav('store', document.querySelectorAll('.nav-item')[1]); toggleDetails(`store-${id}`); }, 500);
+            }
+
+            renderUserUI();
 
         } catch(e) {
-            console.error(e);
+            console.error("Init Error:", e);
             state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
-            renderUI();
+            renderUserUI();
         }
     }
 
-    // --- 🎨 RENDER ---
-    function renderUI() {
+    // --- 🎨 RENDER FUNCTIONS ---
+    function renderUserUI() {
         document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance);
         document.getElementById('profileName').innerText = state.user.first_name;
         document.getElementById('userId').innerText = state.user.tg_id;
         document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
-
-        // Initial Render
-        renderList(state.catalog, 'itemList', 'store');
-        renderList(state.catalog.slice(0, 3), 'hotList', 'home');
-        renderCollection(); 
+        
+        renderCollection();
+        renderReferrals();
     }
 
-    // Smart Render for Premium & Free Items
-    function renderList(list, containerId, ctx) {
+    // 1. Render Premium Store
+    function renderStoreList(list, containerId, ctx) {
         const container = document.getElementById(containerId);
         container.innerHTML = "";
         
-        if(!list || list.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Items coming soon.</div>`;
-            return;
-        }
+        if(!list || list.length === 0) return;
 
         list.forEach(item => {
-            const isFree = item.is_free;
-            const ownedItem = state.keys.find(k => k.item_id === item.id);
+            const isOwned = state.keys.find(k => k.item_id === item.id);
             const uid = `${ctx}-${item.id}`;
+            const badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
             
-            // Badge Logic
-            let badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
-            if (isFree) badgeClass = 'b-free';
+            const btnHtml = isOwned 
+                ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-double-line"></i></button>`
+                : `<button class="btn-price" onclick="buyItem(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
 
-            // Button Logic
-            let btnHtml = "";
-            if (isFree) {
-                btnHtml = `<button class="btn-price btn-free" onclick="openExternal('${item.link}', event)">Get Free 🎁</button>`;
-            } else if (ownedItem) {
-                btnHtml = `<button class="btn-price btn-owned">Owned <i class="ri-check-line"></i></button>`;
-            } else {
-                btnHtml = `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
-            }
-
-            // Dropdown Content Logic based on Type
-            let dropdownContent = "";
-            
+            // Dynamic Body Logic based on Type
+            let dynamicBody = '';
             if (item.type === 'API') {
-                dropdownContent = `
-                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">ENDPOINT</div>
+                dynamicBody = `
+                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">API ENDPOINT</div>
                     <div class="console">
-                        <span style="padding-right:30px; display:block;">${item.demo || 'Hidden'}</span>
-                        <i class="ri-file-copy-line copy-icon" onclick="copyTxt('${item.demo}', event)"></i>
+                        <span style="opacity:0.8">${item.demo || 'No endpoint provided'}</span> 
+                        <i class="ri-file-copy-line icon-btn" onclick="copyText('${item.demo}', event)"></i>
                     </div>
                     <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">RESPONSE PREVIEW</div>
-                    <div class="console" style="color:#4ade80;">${item.res || '{...}'}</div>
+                    <div class="console" style="color:var(--success);">${item.res || '{}'}</div>
                 `;
             } else if (item.type === 'BOT') {
-                dropdownContent = `
-                    <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
-                    <button class="btn-demo" onclick="openExternal('${item.demo}', event)">
-                        <i class="ri-rocket-2-line"></i> View Demo Bot
-                    </button>
+                dynamicBody = `
+                    <div style="margin-top:15px;">
+                        <button class="hero-btn" style="width:100%; justify-content:center; background:var(--primary); color:white;" onclick="openExternal('${item.demo}', event)">
+                            <i class="ri-robot-2-fill"></i> Test Demo Bot Now
+                        </button>
+                    </div>
                 `;
-            } else {
-                // SCRIPT
-                dropdownContent = `
-                    <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">SCRIPT DETAILS</div>
-                    <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5; margin-top:5px;">${item.desc}</p>
-                    <div class="console" style="color:#fcd34d;">${item.res || 'No preview available.'}</div>
+            } else if (item.type === 'SCRIPT') {
+                dynamicBody = `
+                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">DOCUMENTATION / DETAILS</div>
+                    <div class="console" style="color:var(--success); white-space: pre-wrap;">${item.res || 'No extra details provided.'}</div>
                 `;
             }
 
@@ -419,11 +404,11 @@
             <div class="list-item">
                 <div class="item-main" onclick="toggleDetails('${uid}')">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
+                        <div class="item-icon"><i class="${item.icon || 'ri-box-3-line'}"></i></div>
                         <div>
-                            <div style="display:flex; align-items:center; gap:5px;">
+                            <div style="display:flex; align-items:center;">
                                 <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
-                                <span class="badge ${badgeClass}">${isFree ? 'FREE' : item.type}</span>
+                                <span class="badge ${badgeClass} ml-2">${item.type}</span>
                             </div>
                             <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
                         </div>
@@ -435,20 +420,12 @@
                 </div>
                 
                 <div id="body-${uid}" class="item-body">
-                    <div class="body-pad" style="padding-top:0;">
-                        ${isFree ? '' : `
-                        <div class="info-grid" style="margin-top:15px;">
-                            <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
-                            <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
-                            <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
-                        </div>
-                        `}
-                        
-                        ${dropdownContent}
-
+                    <div class="body-pad">
+                        <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                        ${dynamicBody}
                         <div style="text-align:right; margin-top:15px;">
-                            <button onclick="shareItem('${isFree ? 'free_' : ''}${item.id}', event)" style="background:transparent; color:var(--text-sec); border:none; display:flex; align-items:center; gap:5px; margin-left:auto;">
-                                <i class="ri-share-forward-line"></i> Share
+                            <button onclick="shareItem(${item.id})" style="background:transparent; color:var(--text-sec); border:none; display:inline-flex; align-items:center; gap:5px; cursor:pointer;">
+                                <i class="ri-share-forward-line"></i> Share Link
                             </button>
                         </div>
                     </div>
@@ -457,61 +434,157 @@
         });
     }
 
-    // Secured Collection Render
-    function renderCollection() {
-        const div = document.getElementById('myHistory');
-        if(state.keys.length === 0) { 
-            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">Your vault is empty.</div>`; 
-            return; 
+    // 2. Render Freebies (From sheru.json)
+    function renderFreeList() {
+        const container = document.getElementById('freeList');
+        container.innerHTML = "";
+        
+        if(!state.freeCatalog || state.freeCatalog.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Check back later for freebies!</div>`;
+            return;
         }
 
-        div.innerHTML = "";
-        state.keys.forEach(key => {
-            const item = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-key-2-line", type: "API" };
+        state.freeCatalog.forEach(item => {
+            const uid = `free-${item.id}`;
+            const badgeClass = 'b-free'; // Green badge for free
             
-            let expiryHtml = `<span style="color:#4ade80">Lifetime</span>`;
-            let actionBtn = "";
-            
-            if(key.expiry_date && key.expiry_date !== 'Lifetime') {
-                const exp = new Date(key.expiry_date);
-                const isExpired = new Date() > exp;
-                expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
-                
-                if(isExpired) actionBtn = `<button class="btn-price btn-renew" onclick="renew(${key.item_id})">Renew 🔄</button>`;
+            // For free items, button directly opens the link
+            const btnHtml = `<button class="btn-price btn-free" onclick="openExternal('${item.link}', event)">Get Free <i class="ri-download-cloud-2-line"></i></button>`;
+
+            let dynamicBody = '';
+            if (item.type === 'API') {
+                dynamicBody = `
+                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">API ENDPOINT</div>
+                    <div class="console">
+                        <span style="opacity:0.8">${item.demo || 'No endpoint provided'}</span> 
+                        <i class="ri-file-copy-line icon-btn" onclick="copyText('${item.demo}', event)"></i>
+                    </div>
+                `;
+            } else if (item.type === 'BOT') {
+                dynamicBody = `
+                    <div style="margin-top:15px;">
+                        <button class="hero-btn" style="width:100%; justify-content:center; background:var(--success); color:black;" onclick="openExternal('${item.demo}', event)">
+                            <i class="ri-robot-2-fill"></i> Try Demo Bot
+                        </button>
+                    </div>
+                `;
             }
 
-            // Hidden Key Logic for APIs. For files, show "File Access" text.
-            const isApi = item.type === 'API';
-            const displayVal = isApi ? "••••••••••••••••" : "File Access Granted";
-            const realVal = key.key_value;
-
-            div.innerHTML += `
-            <div class="list-item" style="border-color:rgba(16, 185, 129, 0.2);">
-                <div class="item-main" style="cursor:default;">
+            container.innerHTML += `
+            <div class="list-item" style="border-left: 2px solid var(--success);">
+                <div class="item-main" onclick="toggleDetails('${uid}')">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon" style="color:var(--success)"><i class="${item.icon}"></i></div>
+                        <div class="item-icon" style="color:var(--success);"><i class="${item.icon || 'ri-gift-line'}"></i></div>
                         <div>
-                            <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
-                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
+                            <div style="display:flex; align-items:center;">
+                                <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                                <span class="badge ${badgeClass} ml-2">${item.type}</span>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Free Resource</div>
                         </div>
                     </div>
-                    ${actionBtn}
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        ${btnHtml}
+                        <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
+                    </div>
                 </div>
-                <div style="padding:0 15px 15px;">
-                    <div class="hidden-key-box">
-                        <span class="hidden-key-text" id="sec-key-${key.id}" data-real="${realVal}">${displayVal}</span>
-                        <div class="key-actions">
-                            ${isApi ? `<i class="ri-eye-line" onclick="toggleSecKey('sec-key-${key.id}', this, event)"></i>` : ''}
-                            <i class="ri-file-copy-line" onclick="copyTxt('${realVal}', event)"></i>
-                        </div>
+                <div id="body-${uid}" class="item-body">
+                    <div class="body-pad">
+                        <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                        ${dynamicBody}
                     </div>
                 </div>
             </div>`;
         });
     }
 
-    // --- ACTIONS ---
+    // 3. Render My Collection (Secure Visibility)
+    function renderCollection() {
+        const div = document.getElementById('myHistory');
+        if(!state.keys || state.keys.length === 0) { 
+            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">No purchases yet.</div>`; 
+            return; 
+        }
+
+        div.innerHTML = "";
+        state.keys.forEach(key => {
+            const item = state.catalog.find(i => i.id === key.item_id) || { name: "Archived Item", icon: "ri-archive-line", type: "UNKNOWN" };
+            
+            // Check Expiry
+            let expiryHtml = `<span style="color:var(--success)">Lifetime Access</span>`;
+            let isExpired = false;
+            
+            if(key.expiry_date && key.expiry_date !== 'Lifetime') {
+                const exp = new Date(key.expiry_date);
+                isExpired = new Date() > exp;
+                expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
+            }
+
+            const renewBtn = isExpired ? `<button class="btn-price btn-renew" onclick="renewItem(${key.item_id})">Renew 🔄</button>` : ``;
+
+            // Logic for API Keys vs Files
+            let secretBoxHtml = '';
+            if(key.key_value === 'FILE_ACCESS' || item.type === 'SCRIPT' || item.type === 'BOT') {
+                secretBoxHtml = `
+                    <div style="font-size:0.8rem; color:var(--text-sec); padding:10px; text-align:center; background:rgba(255,255,255,0.02); border-radius:10px;">
+                        <i class="ri-folder-zip-line text-accent" style="font-size:1.2rem;"></i><br>
+                        This item is a File/Script. It was delivered directly to your Bot Chat.
+                        <br><button onclick="tg.openTelegramLink('https://t.me/${BOT_USERNAME}')" style="margin-top:8px; padding:5px 12px; border-radius:6px; background:#222; color:white; border:1px solid #333; cursor:pointer;">Open Chat</button>
+                    </div>`;
+            } else {
+                // IT IS AN API KEY - Hide by default!
+                secretBoxHtml = `
+                    <div class="key-box">
+                        <span class="key-text hidden-mode" id="keyval-${key.id}" data-real="${key.key_value}">••••••••••••••••••••</span>
+                        <div style="display:flex; gap:10px;">
+                            <i class="ri-eye-line icon-btn" id="eye-${key.id}" onclick="toggleKey('${key.id}')"></i>
+                            <i class="ri-file-copy-line icon-btn text-primary" onclick="copyText('${key.key_value}', event)"></i>
+                        </div>
+                    </div>`;
+            }
+
+            div.innerHTML += `
+            <div class="list-item" style="border-color: ${isExpired ? 'var(--danger)' : 'var(--border)'};">
+                <div class="item-main" style="cursor:default; padding-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="item-icon"><i class="${item.icon}"></i></div>
+                        <div>
+                            <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                            <div style="font-size:0.75rem; margin-top:2px;">${expiryHtml}</div>
+                        </div>
+                    </div>
+                    ${renewBtn}
+                </div>
+                <div style="padding:0 15px 15px;">
+                    ${secretBoxHtml}
+                </div>
+            </div>`;
+        });
+    }
+
+    function renderReferrals() {
+        const div = document.getElementById('referHistory');
+        if(!state.referrals || state.referrals.length === 0) {
+            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">No one has joined using your link yet.</div>`;
+            return;
+        }
+        div.innerHTML = "";
+        state.referrals.forEach(ref => {
+            const d = new Date(ref.created_at).toLocaleDateString();
+            div.innerHTML += `
+            <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid var(--border);">
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <div style="width:30px; height:30px; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">👤</div>
+                    <div><div style="font-weight:700;">${ref.first_name}</div><div style="font-size:0.7rem; color:#666;">${d}</div></div>
+                </div>
+                <div style="color:var(--gold); font-weight:800;">+1 🦁</div>
+            </div>`;
+        });
+    }
+
+    // --- ⚡ ACTIONS & LOGIC ---
     
+    // Toggle Dropdown
     function toggleDetails(uid) {
         const body = document.getElementById(`body-${uid}`);
         const arrow = document.getElementById(`arrow-${uid}`);
@@ -526,44 +599,62 @@
         }
     }
 
-    function toggleSecKey(id, icon, event) {
-        event.stopPropagation();
-        const el = document.getElementById(id);
-        if (el.innerText.includes('•')) {
-            el.innerText = el.getAttribute('data-real');
-            icon.className = 'ri-eye-off-line text-danger';
-        } else {
-            el.innerText = '••••••••••••••••';
-            icon.className = 'ri-eye-line';
-        }
-        tg.HapticFeedback.selectionChanged();
-    }
-
-    function buy(id, price, event) {
+    // Buy / Renew Item (Sends user to Bot)
+    function buyItem(id, price, event) {
         event.stopPropagation();
         if(state.user.balance < price) { showAlert('deposit'); return; }
         tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
         tg.close();
     }
-
-    function renew(id) {
+    function renewItem(id) {
         tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`);
         tg.close();
     }
 
-    function filter(type, btn) {
-        document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        
-        if (type === 'free') {
-            renderList(state.freeCatalog, 'itemList', 'free');
+    // Eye Icon Logic (Hide/Show API Key)
+    function toggleKey(id) {
+        const span = document.getElementById(`keyval-${id}`);
+        const eye = document.getElementById(`eye-${id}`);
+        if (span.classList.contains('hidden-mode')) {
+            span.innerText = span.getAttribute('data-real');
+            span.classList.remove('hidden-mode');
+            eye.classList.replace('ri-eye-line', 'ri-eye-off-line');
+            eye.style.color = "var(--primary)";
         } else {
-            const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
-            renderList(list, 'itemList', 'store');
+            span.innerText = '••••••••••••••••••••';
+            span.classList.add('hidden-mode');
+            eye.classList.replace('ri-eye-off-line', 'ri-eye-line');
+            eye.style.color = "var(--text-sec)";
         }
-        tg.HapticFeedback.selectionChanged();
     }
 
+    // Copy Function (Fixed Bug)
+    function copyText(txt, event) {
+        if(event) event.stopPropagation(); // Stops dropdown from closing
+        if(!txt) return;
+        navigator.clipboard.writeText(txt).then(() => {
+            tg.HapticFeedback.notificationOccurred('success');
+            showToast("Copied to clipboard!");
+        });
+    }
+
+    // Open External Links (Demo bots / Free Zips)
+    function openExternal(url, event) {
+        if(event) event.stopPropagation();
+        if(!url) return;
+        if(url.includes('t.me')) tg.openTelegramLink(url);
+        else tg.openLink(url);
+    }
+
+    // Filter Premium Store Tabs
+    function filterStore(type, btn) {
+        document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
+        renderStoreList(list, 'itemList', 'store');
+    }
+
+    // Bottom Navigation Logic
     function nav(page, btn) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(page).classList.add('active');
@@ -572,39 +663,45 @@
         tg.HapticFeedback.impactOccurred('light');
     }
 
-    function copyTxt(txt, event) {
-        if(event) event.stopPropagation();
-        navigator.clipboard.writeText(txt);
-        tg.HapticFeedback.notificationOccurred('success');
-    }
-
-    function openExternal(url, event) {
-        if(event) event.stopPropagation();
-        if(url.includes("t.me")) {
-            tg.openTelegramLink(url);
-        } else {
-            tg.openLink(url);
-        }
-    }
-
-    function shareItem(id, event) {
-        if(event) event.stopPropagation();
-        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`);
-    }
-
-    function shareReferral() { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=Join & Earn!`); }
-
+    // Alerts & Modals
     function showAlert(type) {
         const m = document.getElementById('alertModal');
         const t = document.getElementById('modalTitle');
         const msg = document.getElementById('modalMsg');
-        m.style.display = "flex";
-        if(type === 'deposit') { t.innerText = "Add Funds"; msg.innerHTML = "To add funds, send <b style='color:var(--accent)'>/deposit</b> in the bot."; }
-        else if(type === 'payout') { t.innerText = "Withdraw"; msg.innerHTML = "To withdraw, send <b style='color:var(--gold)'>/payout</b> in the bot."; }
+        const icon = document.getElementById('modalIcon');
+        
+        if(type === 'deposit') {
+            icon.innerText = "💎"; t.innerText = "Add Funds";
+            msg.innerHTML = "To add funds securely, please go to the Bot and send <br><b style='color:var(--accent); font-size:1.1rem;'>/deposit</b>";
+        } else if(type === 'payout') {
+            icon.innerText = "🏦"; t.innerText = "Withdraw";
+            msg.innerHTML = "To withdraw your earnings, go to the Bot and send <br><b style='color:var(--gold); font-size:1.1rem;'>/payout</b>";
+        }
+        m.classList.add('show');
     }
-    function closeModal() { document.getElementById('alertModal').style.display = "none"; }
+    
+    function showToast(text) {
+        // Reusing the modal structure for a quick toast
+        const m = document.getElementById('alertModal');
+        document.getElementById('modalIcon').innerText = "✅";
+        document.getElementById('modalTitle').innerText = "Success";
+        document.getElementById('modalMsg').innerText = text;
+        m.classList.add('show');
+        setTimeout(() => closeModal(), 1500); // Auto close toast
+    }
+
+    function closeModal() { document.getElementById('alertModal').classList.remove('show'); }
+
+    // Sharing Functions
+    function shareItem(id) { 
+        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}&text=Check out this Premium tool on Sheru Nexus!`); 
+    }
+    function shareReferral() { 
+        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=Join Sheru Nexus Store & get Premium Bots/APIs!`); 
+    }
 
     window.onload = init;
+
 </script>
 </body>
 </html>
