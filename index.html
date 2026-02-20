@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Sheru Nexus God Mode — Fixed</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sheru Nexus God Mode</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+
     <style>
         /* --- THEME VARS --- */
         :root {
@@ -17,449 +18,154 @@
             --accent: #22d3ee;
             --gold: #fbbf24;
             --danger: #ef4444;
-            --success: #4ade80;
+            --free: #10b981;
             --text: #ffffff;
             --text-sec: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
-            --nav-glass: rgba(10, 10, 12, 0.95);
+            --nav-glass: rgba(10, 10, 12, 0.9);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            font-size: 14px;
+            background-color: var(--bg-color); color: var(--text);
+            font-family: 'Outfit', sans-serif; overflow-x: hidden; font-size: 14px;
         }
 
         /* --- CONTAINER --- */
         .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--bg-color);
-            min-height: 100vh;
-            padding-bottom: 100px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            max-width: 480px; margin: 0 auto; background: var(--bg-color);
+            min-height: 100vh; padding-bottom: 100px; position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
         /* --- HEADER --- */
         .header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(3, 3, 4, 0.85);
-            backdrop-filter: blur(20px);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(3, 3, 4, 0.85); backdrop-filter: blur(20px);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
         }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.3rem;
-            letter-spacing: -0.5px;
-        }
-
+        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
         .balance-pill {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-weight: 700;
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            font-size: 0.9rem;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 6px 14px; border-radius: 50px; font-weight: 700;
+            display: flex; gap: 6px; align-items: center; font-size: 0.9rem;
         }
 
-        /* --- CARDS & LISTS --- */
+        /* --- HERO --- */
         .hero-card {
             background: linear-gradient(135deg, #4f46e5, #0f0f11 90%);
-            border-radius: 24px;
-            padding: 25px;
-            margin: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
+            border-radius: 24px; padding: 25px; margin: 20px; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25);
         }
-
         .hero-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            margin-top: 15px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-        }
-
-        .hero-btn:active {
-            transform: scale(0.95);
+            background: #fff; color: #000; border: none; padding: 10px 20px;
+            border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-top: 15px; cursor: pointer;
         }
 
         .section-title {
-            padding: 0 20px;
-            margin: 25px 0 12px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text);
+            padding: 0 20px; margin: 25px 0 12px; font-size: 1.1rem; font-weight: 800;
+            display: flex; align-items: center; gap: 8px; color: var(--text);
         }
 
-        /* --- ITEM CARD --- */
+        /* --- CARDS --- */
         .list-item {
-            background: var(--card-bg);
-            border-radius: 18px;
-            margin: 0 20px 12px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: 0.2s;
+            background: var(--card-bg); border-radius: 18px; margin: 0 20px 12px;
+            border: 1px solid var(--border); overflow: hidden; transition: 0.2s;
         }
+        .list-item:active { transform: scale(0.98); }
 
-        .list-item:active {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .item-main {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
+        .item-main { padding: 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        
         .item-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: var(--text);
+            width: 45px; height: 45px; border-radius: 14px; background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text); flex-shrink: 0;
         }
-
-        .badge {
-            font-size: 0.6rem;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .b-api {
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .b-script {
-            background: rgba(34, 211, 238, 0.15);
-            color: #67e8f9;
-            border: 1px solid rgba(34, 211, 238, 0.2);
-        }
-
-        .b-bot {
-            background: rgba(251, 191, 36, 0.15);
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, 0.2);
-        }
-
-        .b-free {
-            background: rgba(74, 222, 128, 0.15);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.2);
-        }
+        
+        .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; }
+        .b-api { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
+        .b-script { background: rgba(34, 211, 238, 0.15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.2); }
+        .b-bot { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.2); }
+        .b-free { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
 
         .btn-price {
-            background: var(--text);
-            color: #000;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            border: none;
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            transition: 0.2s;
-            cursor: pointer;
+            background: var(--text); color: #000; padding: 8px 14px; border-radius: 10px;
+            font-weight: 800; font-size: 0.85rem; border:none; display: flex; gap: 4px; align-items: center; cursor: pointer;
         }
+        .btn-owned { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); pointer-events: none; }
+        .btn-free { background: var(--free); color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
 
-        .btn-price:active {
-            transform: scale(0.95);
-        }
-
-        .btn-owned {
-            background: rgba(34, 197, 94, 0.1);
-            color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            pointer-events: none;
-        }
-
-        .btn-renew {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-free {
-            background: rgba(74, 222, 128, 0.1);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.4);
-        }
-
-        /* --- DROPDOWN --- */
+        /* --- DROPDOWN DETAILS --- */
         .item-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-            background: #0a0a0c;
-            border-top: 1px solid var(--border);
+            max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            background: #0a0a0c; border-top: 1px solid var(--border);
         }
-
-        .body-pad {
-            padding: 20px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .info-box {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .info-lbl {
-            font-size: 0.65rem;
-            color: var(--text-sec);
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .info-val {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
+        .body-pad { padding: 20px; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .info-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 10px; text-align: center; }
+        .info-lbl { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; margin-bottom: 4px; }
+        .info-val { font-weight: 700; font-size: 0.85rem; }
 
         .console {
-            background: #000;
-            border: 1px dashed #333;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-top: 5px;
-            word-break: break-all;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #000; border: 1px dashed #333; padding: 12px; border-radius: 10px;
+            font-family: monospace; font-size: 0.8rem; color: var(--accent); margin-top: 10px;
+            position: relative; word-break: break-all;
         }
+        
+        .action-btn {
+            width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border);
+            padding: 12px; border-radius: 10px; font-weight: 700; margin-top: 15px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;
+        }
+        .action-btn:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
 
-        .icon-btn {
-            font-size: 1.1rem;
-            color: var(--text-sec);
-            cursor: pointer;
-            transition: 0.2s;
-            padding: 5px;
+        /* --- SECURE KEY BOX (COLLECTION) --- */
+        .secure-box {
+            background: #000; border: 1px solid #222; border-radius: 10px; padding: 10px 15px;
+            display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
         }
-
-        .icon-btn:active {
-            color: var(--primary);
-            transform: scale(0.9);
+        .secure-input {
+            background: transparent; border: none; color: var(--accent); font-family: monospace;
+            font-size: 0.9rem; font-weight: 700; outline: none; width: 100%; pointer-events: none;
         }
-
-        /* Secret Key Box */
-        .key-box {
-            background: #050505;
-            border: 1px solid var(--primary);
-            padding: 12px 15px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .key-text {
-            font-family: monospace;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--text);
-            letter-spacing: 1px;
-        }
+        .icon-btn { color: var(--text-sec); font-size: 1.2rem; cursor: pointer; margin-left: 15px; transition: 0.2s; }
+        .icon-btn:active { color: var(--primary); transform: scale(0.9); }
 
         /* --- TABS --- */
-        .tabs-container {
-            padding: 0 20px 10px;
-            overflow-x: auto;
-            display: flex;
-            gap: 10px;
-            scrollbar-width: none;
-        }
-
+        .tabs-container { padding: 0 20px 10px; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; }
         .tab-chip {
-            padding: 10px 20px;
-            border-radius: 14px;
-            background: var(--card-bg);
-            cursor: pointer;
-            border: 1px solid var(--border);
-            color: var(--text-sec);
-            font-weight: 600;
-            white-space: nowrap;
-            transition: 0.3s;
+            padding: 10px 20px; border-radius: 14px; background: var(--card-bg);
+            border: 1px solid var(--border); color: var(--text-sec); font-weight: 600; white-space: nowrap; transition: 0.3s;
         }
+        .tab-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 5px 15px var(--primary-glow); }
 
-        .tab-chip.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px var(--primary-glow);
-        }
-
-        /* --- BOTTOM NAV (5 Items now) --- */
+        /* --- NAV --- */
         .nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 460px;
-            z-index: 100;
-            background: var(--nav-glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 5px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 440px; z-index: 100;
+            background: var(--nav-glass); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+            display: flex; justify-content: space-around; padding: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
+        .nav-item { color: #555; font-size: 1.5rem; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        .nav-item.active { color: var(--text); transform: translateY(-4px); }
+        .dot { width: 4px; height: 4px; background: var(--primary); border-radius: 50%; margin-top: 4px; opacity: 0; }
+        .nav-item.active .dot { opacity: 1; }
 
-        .nav-item {
-            color: #555;
-            font-size: 1.4rem;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            padding: 5px 15px;
-        }
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-item.active {
-            color: var(--text);
-            transform: translateY(-4px);
-        }
-
-        .nav-item.active i {
-            color: var(--primary);
-            text-shadow: 0 0 15px var(--primary);
-        }
-
-        .dot {
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            margin-top: 4px;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .nav-item.active .dot {
-            opacity: 1;
-        }
-
-        /* --- PAGE LOGIC --- */
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* --- MODAL --- */
-        .modal-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 200;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: 0.2s;
-        }
-
-        .modal-bg.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-card {
-            background: #121214;
-            border: 1px solid var(--border);
-            width: 85%;
-            max-width: 350px;
-            padding: 30px 20px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            transform: scale(0.9);
-            transition: 0.2s;
-        }
-
-        .modal-bg.show .modal-card {
-            transform: scale(1);
-        }
+        .skeleton { background: linear-gradient(90deg, #121214 25%, #1c1c1f 50%, #121214 75%); background-size: 200% 100%; animation: shine 1.5s infinite; border-radius: 12px; }
+        @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body>
+
 <div class="app-container">
+
     <div class="header">
         <div class="logo">Sheru<span style="color:var(--primary)">Nexus</span></div>
         <div class="balance-pill">
@@ -470,54 +176,46 @@
 
     <div id="home" class="page active">
         <div class="hero-card">
-            <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Welcome to <br><span style="color:#a5b4fc">God Mode</span></h2>
-            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">The Ultimate Digital Store.</p>
-            <button id="startSellBtn" class="hero-btn">
-                <i class="ri-rocket-fill"></i> Start Selling
-            </button>
-            <i class="ri-vip-crown-fill" style="position:absolute; right:-10px; bottom:-20px; font-size:8rem; opacity:0.05; color:white;"></i>
+            <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2; color:white;">Ultimate Digital <br><span style="color:#a5b4fc">Marketplace</span></h2>
+            <p style="color:rgba(255,255,255,0.7); margin-top:8px; font-size:0.9rem;">Scripts, Bots, APIs & Freebies.</p>
+            <button onclick="tg.openTelegramLink('https://t.me/SheruSellBot')" class="hero-btn">Start Selling</button>
+            <i class="ri-rocket-2-fill" style="position:absolute; right:-20px; bottom:-20px; font-size:8rem; opacity:0.1; color:white;"></i>
         </div>
 
-        <div class="section-title"><i class="ri-fire-fill text-gold"></i> Trending Now</div>
+        <div class="section-title"><i class="ri-fire-fill" style="color:orange"></i> Trending</div>
         <div id="hotList">
-            <div style="text-align:center; padding:20px; color:#555;">Loading...</div>
+            <div style="padding:0 20px;"><div class="skeleton" style="height:70px;"></div></div>
         </div>
     </div>
 
     <div id="store" class="page">
-        <div class="section-title" style="margin-top:20px;">Premium Store</div>
+        <div class="section-title" style="margin-top:20px;">Store</div>
         <div class="tabs-container">
             <div class="tab-chip active" onclick="filterStore('all', this)">All</div>
             <div class="tab-chip" onclick="filterStore('script', this)">Scripts</div>
             <div class="tab-chip" onclick="filterStore('bot', this)">Bots</div>
             <div class="tab-chip" onclick="filterStore('api', this)">APIs</div>
+            <div class="tab-chip" style="color:var(--free); border-color:rgba(16,185,129,0.3);" onclick="filterStore('free', this)"><i class="ri-gift-line"></i> Freebies</div>
         </div>
-        <div id="itemList" style="margin-top:15px; padding-bottom: 20px;"></div>
-    </div>
 
-    <div id="freePage" class="page">
-        <div class="section-title" style="margin-top:20px; color:var(--success);"><i class="ri-gift-2-fill"></i> Free Resources</div>
-        <p style="padding: 0 20px 15px; color:var(--text-sec); font-size:0.85rem;">Access open-source scripts, bots, and free APIs instantly. No coins required!</p>
-        <div id="freeList" style="padding-bottom: 20px;">
-            <div style="text-align:center; padding:20px; color:#555;">Loading Freebies...</div>
+        <div id="itemList" style="margin-top:15px;">
+            <div style="padding:0 20px;"><div class="skeleton" style="height:80px; margin-bottom:10px;"></div></div>
         </div>
     </div>
 
     <div id="refer" class="page">
         <div style="margin:20px; padding:30px 20px; background:var(--card-bg); border-radius:24px; text-align:center; border:1px solid var(--border);">
             <div style="width:60px; height:60px; background:rgba(251, 191, 36, 0.1); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:var(--gold);">
-                <i class="ri-money-dollar-circle-fill"></i>
+                <i class="ri-gift-fill"></i>
             </div>
             <h2 style="font-size:1.8rem; font-weight:800; color:white;">Invite & Earn</h2>
-            <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of their deposits.</p>
-
+            <p style="color:var(--text-sec); margin-top:5px;">Get <b class="text-white">1 🦁</b> per invite + <b style="color:var(--accent)">25%</b> of deposits.</p>
+            
             <div style="margin-top:20px; background:#000; padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                 <span id="refLink" style="color:var(--text-sec); font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Loading...</span>
-                <button onclick="copyText(document.getElementById('refLink').innerText, event)" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;"><i class="ri-file-copy-line"></i></button>
+                <button onclick="copyRaw('refLink', event)" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px;"><i class="ri-file-copy-line"></i></button>
             </div>
         </div>
-        <div class="section-title">My Referrals</div>
-        <div id="referHistory" style="padding:0 20px 20px;"></div>
     </div>
 
     <div id="profile" class="page">
@@ -533,243 +231,160 @@
                     </div>
                 </div>
             </div>
-
+            
             <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">WALLET BALANCE</div>
+                    <div style="font-size:0.7rem; color:var(--text-sec); font-weight:700;">BALANCE</div>
                     <div style="font-size:1.8rem; font-weight:900;">🦁 <span id="profileBal">0</span></div>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <button id="depositBtn" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Deposit</button>
-                    <button id="payoutBtn" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer;">Payout</button>
+                    <button onclick="tg.openTelegramLink('https://t.me/'+BOT_USERNAME+'?start=deposit')" style="background:white; color:black; border:none; padding:10px 16px; border-radius:12px; font-weight:700;">Deposit</button>
+                    <button onclick="tg.openTelegramLink('https://t.me/'+BOT_USERNAME+'?start=payout')" style="background:transparent; color:white; border:1px solid var(--border); padding:10px 16px; border-radius:12px; font-weight:700;">Payout</button>
                 </div>
             </div>
         </div>
 
         <div class="section-title">My Collection</div>
-        <p style="padding: 0 20px 5px; color:var(--text-sec); font-size:0.8rem;">Tap on the Eye icon to reveal your secret keys.</p>
-        <div id="myHistory" style="padding:0 20px 20px;"></div>
+        <div id="myHistory" style="padding:0 20px 100px;">
+            <div class="skeleton" style="height:80px;"></div>
+        </div>
     </div>
-</div>
 
-<div class="modal-bg" id="alertModal">
-    <div class="modal-card">
-        <div style="font-size:3.5rem; margin-bottom:10px;" id="modalIcon">🔔</div>
-        <h3 style="font-size:1.5rem; font-weight:800; margin-bottom:10px;" id="modalTitle">Alert</h3>
-        <p style="color:var(--text-sec); line-height:1.5; margin-bottom:25px;" id="modalMsg">Message here</p>
-        <button id="modalCloseBtn" style="width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer;">Got it!</button>
-    </div>
 </div>
 
 <div class="nav">
     <div class="nav-item active" onclick="nav('home', this)"><i class="ri-home-5-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('store', this)"><i class="ri-shopping-bag-3-line"></i><div class="dot"></div></div>
-    <div class="nav-item" onclick="nav('freePage', this)"><i class="ri-gift-line"></i><div class="dot"></div></div>
+    <div class="nav-item" onclick="nav('store', this)"><i class="ri-dashboard-line"></i><div class="dot"></div></div>
     <div class="nav-item" onclick="nav('refer', this)"><i class="ri-group-line"></i><div class="dot"></div></div>
     <div class="nav-item" onclick="nav('profile', this)"><i class="ri-user-3-line"></i><div class="dot"></div></div>
 </div>
 
 <script>
     // --- ⚙️ CONFIGURATION ---
-    const BACKEND_URL = "https://sheru-api.amritw1.workers.dev";
-    const JSON_URL_PREMIUM = "data.json"; // replace with raw github url
-    const JSON_URL_FREE = "sheru.json";   // replace with raw github url
-    const BOT_USERNAME = "SheruApiBot";
+    const BACKEND_URL = "https://sheru-api.amritw1.workers.dev"; 
+    const JSON_URL = "data.json";        // Main Store Data
+    const FREE_JSON_URL = "sheru.json";  // Freebies Data
+    const BOT_USERNAME = "SheruApiBot"; 
 
-    // Safe Telegram WebApp wrapper (fallbacks for non-telegram contexts)
-    const _tgRaw = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    const tg = _tgRaw || {
-        initData: '',
-        initDataUnsafe: {},
-        openTelegramLink: (url) => window.open(url, '_blank'),
-        openLink: (url) => window.open(url, '_blank'),
-        HapticFeedback: { notificationOccurred: () => {}, impactOccurred: () => {} },
-        close: () => {}
-    };
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    // Try to expand (guarded)
-    try { if (tg && typeof tg.expand === 'function') tg.expand(); } catch(e) { /* ignore */ }
+    let state = { user: null, catalog: [], freeCatalog: [], keys: [] };
 
-    // App state
-    let state = { user: null, catalog: [], freeCatalog: [], keys: [], referrals: [] };
-
-    // --- Utility helpers ---
-    function jsEscape(s) {
-        if (s === null || s === undefined) return '';
-        return String(s)
-            .replace(/\\/g, '\\\\')
-            .replace(/'/g, "\\'")
-            .replace(/"/g, '\\"')
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '');
-    }
-
-    function htmlEscape(s) {
-        if (s === null || s === undefined) return '';
-        return String(s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-
-    function safeGet(obj, path, fallback = '') {
-        try {
-            const parts = path.split('.');
-            let cur = obj;
-            for (const p of parts) {
-                if (!cur) return fallback;
-                cur = cur[p];
-            }
-            return cur === undefined ? fallback : cur;
-        } catch (e) {
-            return fallback;
-        }
-    }
-
-    // --- 🚀 INITIALIZATION ---
+    // --- 🚀 INIT ---
     async function init() {
         try {
-            // 1. Fetch Premium Data (non-blocking)
-            fetch(JSON_URL_PREMIUM).then(r => r.json()).then(data => {
-                state.catalog = Array.isArray(data) ? data : (data.items || []);
-                renderStoreList(state.catalog, 'itemList', 'store');
-                renderStoreList(state.catalog.slice(0, 3), 'hotList', 'home');
-                renderCollection();
-            }).catch(e => {
-                console.warn("Premium JSON Load Error", e);
-                document.getElementById('hotList').innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No trending items.</div>`;
-            });
+            // 1. Fetch Paid Catalog
+            let jsonRes = await fetch(JSON_URL).catch(() => null);
+            if(jsonRes && jsonRes.ok) state.catalog = await jsonRes.json();
 
-            // 2. Fetch Free Data (sheru.json)
-            fetch(JSON_URL_FREE).then(r => r.json()).then(data => {
-                state.freeCatalog = Array.isArray(data) ? data : (data.items || []);
-                renderFreeList();
-            }).catch(e => {
-                document.getElementById('freeList').innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Currently no free items available.</div>`;
-            });
+            // 2. Fetch Free Catalog
+            let freeRes = await fetch(FREE_JSON_URL).catch(() => null);
+            if(freeRes && freeRes.ok) state.freeCatalog = await freeRes.json();
 
-            // 3. Auth with Backend (if available)
-            try {
-                const authRes = await fetch(`${BACKEND_URL}/api/auth`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ initData: tg.initData })
-                });
-                const authData = await authRes.json();
-                state.user = authData.user || null;
-            } catch (e) {
-                console.warn("Auth request failed:", e);
+            // 3. Auth & Dashboard via Backend
+            let authRes = await fetch(`${BACKEND_URL}/api/auth`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ initData: tg.initData })
+            });
+            let authData = await authRes.json();
+            state.user = authData.user;
+
+            let dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
+                headers: { 'Authorization': tg.initData }
+            });
+            let dashData = await dashRes.json();
+            if(dashData.success) {
+                state.keys = dashData.my_keys;
             }
 
-            // 4. Fetch Dashboard (Purchases & Referrals) — non-fatal
-            try {
-                const dashRes = await fetch(`${BACKEND_URL}/api/dashboard`, {
-                    headers: { 'Authorization': tg.initData }
-                });
-                const dashData = await dashRes.json();
-                if (dashData && dashData.success) {
-                    state.keys = dashData.my_keys || [];
-                    state.referrals = dashData.referrals || [];
-                }
-            } catch (e) {
-                console.warn("Dashboard fetch failed", e);
+            // Handle Deep Link Popups
+            const startParam = tg.initDataUnsafe.start_param;
+            if(startParam && startParam.startsWith('item_')) {
+                const id = parseInt(startParam.split('_')[1]);
+                setTimeout(() => {
+                    nav('store', document.querySelectorAll('.nav-item')[1]);
+                    toggleDetails(`store-${id}`);
+                }, 600);
             }
 
-            // Provide defaults if user missing
-            if (!state.user) state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
-
-            // Deep Link Handler (guarded)
-            try {
-                if (tg.initDataUnsafe && typeof tg.initDataUnsafe.start_param === 'string' && tg.initDataUnsafe.start_param.startsWith('item_')) {
-                    const id = parseInt(tg.initDataUnsafe.start_param.split('_')[1]);
-                    setTimeout(() => {
-                        const navBtn = document.querySelectorAll('.nav-item')[1];
-                        if (navBtn) nav('store', navBtn);
-                        toggleDetails(`store-${id}`);
-                    }, 500);
-                }
-            } catch (e) { /* ignore */ }
-
-            renderUserUI();
-
-        } catch (e) {
-            console.error("Init Error:", e);
+            renderUI();
+        } catch(e) {
+            console.error(e);
             state.user = { first_name: "Guest", balance: 0, tg_id: 0 };
-            renderUserUI();
+            renderUI();
         }
     }
 
-    // --- 🎨 RENDER FUNCTIONS ---
-    function renderUserUI() {
-        const balText = String(state.user && state.user.balance !== undefined ? state.user.balance : 0);
-        document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = balText);
-        document.getElementById('profileName').innerText = state.user && state.user.first_name ? state.user.first_name : 'User';
-        document.getElementById('userId').innerText = state.user && state.user.tg_id ? state.user.tg_id : '0';
-        document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user && state.user.tg_id ? state.user.tg_id : 0}`;
+    // --- 🎨 RENDER LOGIC ---
+    function renderUI() {
+        document.querySelectorAll('#userBal, #profileBal').forEach(e => e.innerText = state.user.balance);
+        document.getElementById('profileName').innerText = state.user.first_name;
+        document.getElementById('userId').innerText = state.user.tg_id;
+        document.getElementById('refLink').innerText = `https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`;
 
+        // Initial Render
+        renderStoreList(state.catalog, 'itemList', 'store');
+        renderStoreList(state.catalog.slice(0, 3), 'hotList', 'home');
         renderCollection();
-        renderReferrals();
     }
 
-    // 1. Render Premium Store
-    function renderStoreList(list, containerId, ctx) {
+    // 🔥 SMART RENDERER FOR STORE (Handles API, BOT, SCRIPT & FREE)
+    function renderStoreList(list, containerId, ctx, isFreeMode = false) {
         const container = document.getElementById(containerId);
-        if (!container) return;
         container.innerHTML = "";
-
-        if (!list || list.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No items found.</div>`;
+        
+        if(!list || list.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Nothing available right now.</div>`;
             return;
         }
 
         list.forEach(item => {
-            const isOwned = state.keys && state.keys.find(k => String(k.item_id) === String(item.id));
             const uid = `${ctx}-${item.id}`;
-            const typeUpper = (item.type || '').toString().toUpperCase();
-            const badgeClass = typeUpper === 'API' ? 'b-api' : (typeUpper === 'BOT' ? 'b-bot' : 'b-script');
+            let badgeClass = item.type === 'API' ? 'b-api' : (item.type === 'BOT' ? 'b-bot' : 'b-script');
+            if (isFreeMode) badgeClass = 'b-free';
 
-            const priceNum = Number(item.price || 0);
-            const btnHtml = isOwned
-                ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-double-line"></i></button>`
-                : `<button class="btn-price" onclick="buyItem('${jsEscape(item.id)}', ${priceNum}, event)">Get <span class="text-gold">🦁</span> ${priceNum}</button>`;
+            // Button Logic
+            let btnHtml = '';
+            if (isFreeMode) {
+                btnHtml = `<button class="btn-price btn-free" onclick="openLink('${item.link}', event)">Get Free <i class="ri-external-link-line"></i></button>`;
+            } else {
+                const ownedItem = state.keys.find(k => k.item_id === item.id);
+                btnHtml = ownedItem 
+                    ? `<button class="btn-price btn-owned" onclick="event.stopPropagation()">Owned <i class="ri-check-line"></i></button>`
+                    : `<button class="btn-price" onclick="buy(${item.id}, ${item.price}, event)">Get <span class="text-gold">🦁</span> ${item.price}</button>`;
+            }
 
-            // Dynamic Body Logic based on Type
-            let dynamicBody = '';
-            if (typeUpper === 'API') {
-                dynamicBody = `
-                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">API ENDPOINT</div>
-                    <div class="console">
-                        <span style="opacity:0.8">${htmlEscape(item.demo || 'No endpoint provided')}</span>
-                        <i class="ri-file-copy-line icon-btn" onclick="copyText(${JSON.stringify(item.demo || '')}, event)"></i>
-                    </div>
-                    <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">RESPONSE PREVIEW</div>
-                    <div class="console" style="color:var(--success); white-space:pre-wrap;">${htmlEscape(item.res || '{}')}</div>
-                `;
-            } else if (typeUpper === 'BOT') {
-                dynamicBody = `
-                    <div style="margin-top:15px;">
-                        <button class="hero-btn" style="width:100%; justify-content:center; background:var(--primary); color:white;" onclick="openExternal(${JSON.stringify(item.demo || '')}, event)">
-                            <i class="ri-robot-2-fill"></i> Test Demo Bot Now
-                        </button>
-                    </div>
-                `;
-            } else { // SCRIPT / default
-                dynamicBody = `
-                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">DOCUMENTATION / DETAILS</div>
-                    <div class="console" style="color:var(--success); white-space: pre-wrap;">${htmlEscape(item.res || 'No extra details provided.')}</div>
-                `;
+            // Expanded Body Logic based on Type
+            let expandedContent = '';
+            if (isFreeMode) {
+                expandedContent = `<p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                                   <button class="action-btn" onclick="openLink('${item.link}', event)">Download / Access Tool</button>`;
+            } else if (item.type === 'BOT') {
+                expandedContent = `<p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                                   <button class="action-btn" onclick="openLink('${item.demo}', event)"><i class="ri-robot-2-line"></i> View Demo Bot</button>`;
+            } else if (item.type === 'SCRIPT') {
+                expandedContent = `<p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                                   <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">HOW IT WORKS</div>
+                                   <div class="console" style="color:#a5b4fc;">${item.demo}</div>`;
+            } else {
+                // Default API Logic
+                expandedContent = `<p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${item.desc}</p>
+                                   <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">DEMO ENDPOINT</div>
+                                   <div class="console" style="cursor:pointer;" onclick="copyTxt('${item.demo}', event)">${item.demo} <i class="ri-file-copy-line" style="float:right;"></i></div>
+                                   <div style="margin-top:10px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">JSON RESPONSE</div>
+                                   <div class="console" style="color:#4ade80;">${item.res}</div>`;
             }
 
             container.innerHTML += `
             <div class="list-item">
                 <div class="item-main" onclick="toggleDetails('${uid}')">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon"><i class="${htmlEscape(item.icon || 'ri-box-3-line')}"></i></div>
+                        <div class="item-icon"><i class="${item.icon || 'ri-code-box-line'}"></i></div>
                         <div>
                             <div style="display:flex; align-items:center;">
-                                <div style="font-weight:700; font-size:0.95rem;">${htmlEscape(item.name)}</div>
-                                <span class="badge ${badgeClass} ml-2">${htmlEscape(item.type || '')}</span>
+                                <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                                <span class="badge ${badgeClass}">${isFreeMode ? 'FREE' : item.type}</span>
                             </div>
                             <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Tap for details</div>
                         </div>
@@ -782,346 +397,168 @@
                 
                 <div id="body-${uid}" class="item-body">
                     <div class="body-pad">
-                        <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${htmlEscape(item.desc || '')}</p>
-                        ${dynamicBody}
-                        <div style="text-align:right; margin-top:15px;">
-                            <button onclick="shareItem(${jsEscape(item.id)})" style="background:transparent; color:var(--text-sec); border:none; display:inline-flex; align-items:center; gap:5px; cursor:pointer;">
-                                <i class="ri-share-forward-line"></i> Share Link
-                            </button>
-                        </div>
+                        ${!isFreeMode ? `
+                        <div class="info-grid">
+                            <div class="info-box"><div class="info-lbl">TYPE</div><div class="info-val" style="color:var(--accent)">${item.type}</div></div>
+                            <div class="info-box"><div class="info-lbl">VALIDITY</div><div class="info-val">${item.validity || 'Lifetime'}</div></div>
+                            <div class="info-box"><div class="info-lbl">SUPPORT</div><div class="info-val" style="color:var(--gold)">24/7</div></div>
+                        </div>` : ''}
+                        
+                        ${expandedContent}
                     </div>
                 </div>
             </div>`;
         });
     }
 
-    // 2. Render Freebies (From sheru.json)
-    function renderFreeList() {
-        const container = document.getElementById('freeList');
-        container.innerHTML = "";
-
-        if (!state.freeCatalog || state.freeCatalog.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">Check back later for freebies!</div>`;
-            return;
-        }
-
-        state.freeCatalog.forEach(item => {
-            const uid = `free-${item.id}`;
-            const badgeClass = 'b-free';
-
-            // For free items, button directly opens the link
-            const btnHtml = `<button class="btn-price btn-free" onclick="openExternal(${JSON.stringify(item.link || '')}, event)">Get Free <i class="ri-download-cloud-2-line"></i></button>`;
-
-            let dynamicBody = '';
-            const typeUpper = (item.type || '').toString().toUpperCase();
-            if (typeUpper === 'API') {
-                dynamicBody = `
-                    <div style="margin-top:15px; font-size:0.7rem; font-weight:700; color:var(--text-sec);">API ENDPOINT</div>
-                    <div class="console">
-                        <span style="opacity:0.8">${htmlEscape(item.demo || 'No endpoint provided')}</span>
-                        <i class="ri-file-copy-line icon-btn" onclick="copyText(${JSON.stringify(item.demo || '')}, event)"></i>
-                    </div>
-                `;
-            } else if (typeUpper === 'BOT') {
-                dynamicBody = `
-                    <div style="margin-top:15px;">
-                        <button class="hero-btn" style="width:100%; justify-content:center; background:var(--success); color:black;" onclick="openExternal(${JSON.stringify(item.demo || '')}, event)">
-                            <i class="ri-robot-2-fill"></i> Try Demo Bot
-                        </button>
-                    </div>
-                `;
-            }
-
-            container.innerHTML += `
-            <div class="list-item" style="border-left: 2px solid var(--success);">
-                <div class="item-main" onclick="toggleDetails('${uid}')">
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon" style="color:var(--success);"><i class="${htmlEscape(item.icon || 'ri-gift-line')}"></i></div>
-                        <div>
-                            <div style="display:flex; align-items:center;">
-                                <div style="font-weight:700; font-size:0.95rem;">${htmlEscape(item.name)}</div>
-                                <span class="badge ${badgeClass} ml-2">${htmlEscape(item.type || '')}</span>
-                            </div>
-                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">Free Resource</div>
-                        </div>
-                    </div>
-                    <div style="display:flex; gap:10px; align-items:center;">
-                        ${btnHtml}
-                        <div id="arrow-${uid}" style="transition:0.3s"><i class="ri-arrow-down-s-line" style="font-size:1.2rem; color:#666;"></i></div>
-                    </div>
-                </div>
-                <div id="body-${uid}" class="item-body">
-                    <div class="body-pad">
-                        <p style="color:var(--text-sec); font-size:0.85rem; line-height:1.5;">${htmlEscape(item.desc || '')}</p>
-                        ${dynamicBody}
-                    </div>
-                </div>
-            </div>`;
-        });
-    }
-
-    // 3. Render My Collection (Secure Visibility)
+    // 🔥 SMART COLLECTION RENDERER (Secure Hidden Keys)
     function renderCollection() {
         const div = document.getElementById('myHistory');
-        if (!div) return;
-
-        if (!state.keys || state.keys.length === 0) {
-            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">No purchases yet.</div>`;
-            return;
+        if(state.keys.length === 0) { 
+            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">Your bag is empty.</div>`; 
+            return; 
         }
 
         div.innerHTML = "";
         state.keys.forEach(key => {
-            const item = (state.catalog || []).find(i => String(i.id) === String(key.item_id)) || { name: "Archived Item", icon: "ri-archive-line", type: "UNKNOWN" };
+            const item = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
+            
+            // Unique ID for inputs so visibility toggle works perfectly
+            const uniqueInputId = `secret_${key.id}_${Math.floor(Math.random()*1000)}`;
 
-            // Check Expiry
-            let expiryHtml = `<span style="color:var(--success)">Lifetime Access</span>`;
-            let isExpired = false;
-
-            if (key.expiry_date && key.expiry_date !== 'Lifetime') {
+            let expiryHtml = `<span style="color:#4ade80">Lifetime</span>`;
+            if(key.expiry_date && key.expiry_date !== 'Lifetime') {
                 const exp = new Date(key.expiry_date);
-                if (!isNaN(exp.getTime())) {
-                    isExpired = new Date() > exp;
-                    expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
-                }
-            }
-
-            const renewBtn = isExpired ? `<button class="btn-price btn-renew" onclick="renewItem('${jsEscape(key.item_id)}')">Renew 🔄</button>` : ``;
-
-            // Logic for API Keys vs Files
-            let secretBoxHtml = '';
-            if (key.key_value === 'FILE_ACCESS' || (item.type || '').toString().toUpperCase() === 'SCRIPT' || (item.type || '').toString().toUpperCase() === 'BOT') {
-                secretBoxHtml = `
-                    <div style="font-size:0.8rem; color:var(--text-sec); padding:10px; text-align:center; background:rgba(255,255,255,0.02); border-radius:10px;">
-                        <i class="ri-folder-zip-line text-accent" style="font-size:1.2rem;"></i><br>
-                        This item is a File/Script. It was delivered directly to your Bot Chat.
-                        <br><button onclick="tg.openTelegramLink('https://t.me/${BOT_USERNAME}')" style="margin-top:8px; padding:5px 12px; border-radius:6px; background:#222; color:white; border:1px solid #333; cursor:pointer;">Open Chat</button>
-                    </div>`;
-            } else {
-                // IT IS AN API KEY - Hide by default!
-                secretBoxHtml = `
-                    <div class="key-box">
-                        <span class="key-text hidden-mode" id="keyval-${htmlEscape(String(key.id))}" data-real="${htmlEscape(String(key.key_value || ''))}">••••••••••••••••••••</span>
-                        <div style="display:flex; gap:10px;">
-                            <i class="ri-eye-line icon-btn" id="eye-${htmlEscape(String(key.id))}" onclick="toggleKey('${htmlEscape(String(key.id))}')"></i>
-                            <i class="ri-file-copy-line icon-btn text-primary" onclick="copyText(${JSON.stringify(key.key_value || '')}, event)"></i>
-                        </div>
-                    </div>`;
+                const isExpired = new Date() > exp;
+                expiryHtml = `<span style="color:${isExpired ? 'var(--danger)' : 'var(--gold)'}">${isExpired ? 'Expired' : `Expires: ${exp.toLocaleDateString()}`}</span>`;
             }
 
             div.innerHTML += `
-            <div class="list-item" style="border-color: ${isExpired ? 'var(--danger)' : 'var(--border)'};">
-                <div class="item-main" style="cursor:default; padding-bottom:10px;">
+            <div class="list-item" style="cursor:default;">
+                <div class="item-main">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="item-icon"><i class="${htmlEscape(item.icon)}"></i></div>
+                        <div class="item-icon"><i class="${item.icon}"></i></div>
                         <div>
-                            <div style="font-weight:700; font-size:0.95rem;">${htmlEscape(item.name)}</div>
-                            <div style="font-size:0.75rem; margin-top:2px;">${expiryHtml}</div>
+                            <div style="font-weight:700; font-size:0.95rem;">${item.name}</div>
+                            <div style="font-size:0.75rem; color:var(--text-sec); margin-top:2px;">${expiryHtml}</div>
                         </div>
                     </div>
-                    ${renewBtn}
                 </div>
                 <div style="padding:0 15px 15px;">
-                    ${secretBoxHtml}
+                    <div class="secure-box">
+                        <input type="password" id="${uniqueInputId}" value="${key.key_value}" class="secure-input" readonly>
+                        <div style="display:flex; flex-shrink:0;">
+                            <i class="ri-eye-line icon-btn" onclick="toggleVisibility('${uniqueInputId}', this, event)"></i>
+                            <i class="ri-file-copy-line icon-btn" onclick="copyInput('${uniqueInputId}', event)"></i>
+                        </div>
+                    </div>
                 </div>
             </div>`;
         });
     }
 
-    function renderReferrals() {
-        const div = document.getElementById('referHistory');
-        if (!div) return;
-        if (!state.referrals || state.referrals.length === 0) {
-            div.innerHTML = `<div style="text-align:center; color:#555; padding:20px;">No one has joined using your link yet.</div>`;
-            return;
-        }
-        div.innerHTML = "";
-        state.referrals.forEach(ref => {
-            let d = 'Unknown';
-            try { d = new Date(ref.created_at).toLocaleDateString(); } catch (e) {}
-            div.innerHTML += `
-            <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid var(--border);">
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <div style="width:30px; height:30px; background:#222; border-radius:50%; display:flex; align-items:center; justify-content:center;">👤</div>
-                    <div><div style="font-weight:700;">${htmlEscape(ref.first_name || 'Unknown')}</div><div style="font-size:0.7rem; color:#666;">${htmlEscape(d)}</div></div>
-                </div>
-                <div style="color:var(--gold); font-weight:800;">+1 🦁</div>
-            </div>`;
-        });
-    }
+    // --- ⚡ ACTIONS & LOGICS ---
 
-    // --- ⚡ ACTIONS & LOGIC ---
-
-    // Toggle Dropdown
+    // Toggle Details Dropdown
     function toggleDetails(uid) {
-        try {
-            const body = document.getElementById(`body-${uid}`);
-            const arrow = document.getElementById(`arrow-${uid}`);
-            if (!body || !arrow) return;
-            if (body.style.maxHeight) {
-                body.style.maxHeight = null;
-                arrow.style.transform = "rotate(0deg)";
-            } else {
-                document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
-                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.style.transform = "rotate(0deg)");
-                body.style.maxHeight = body.scrollHeight + "px";
-                arrow.style.transform = "rotate(180deg)";
-            }
-        } catch (e) { console.warn("toggleDetails error", e); }
-    }
-
-    // Buy / Renew Item (Sends user to Bot)
-    function buyItem(id, price, event) {
-        if (event) event.stopPropagation();
-        const userBal = Number(state.user && state.user.balance ? state.user.balance : 0);
-        const priceNum = Number(price || 0);
-        if (isNaN(userBal) || userBal < priceNum) { showAlert('deposit'); return; }
-        try { tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`); } catch (e) { window.open(`https://t.me/${BOT_USERNAME}?start=buy_${id}`, '_blank'); }
-        try { if (typeof tg.close === 'function') tg.close(); } catch (e) {}
-    }
-    function renewItem(id) {
-        try { tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=renew_${id}`); } catch (e) { window.open(`https://t.me/${BOT_USERNAME}?start=renew_${id}`, '_blank'); }
-        try { if (typeof tg.close === 'function') tg.close(); } catch (e) {}
-    }
-
-    // Eye Icon Logic (Hide/Show API Key)
-    function toggleKey(id) {
-        try {
-            const span = document.getElementById(`keyval-${id}`);
-            const eye = document.getElementById(`eye-${id}`);
-            if (!span || !eye) return;
-            if (span.classList.contains('hidden-mode')) {
-                const real = span.getAttribute('data-real') || '';
-                span.innerText = real;
-                span.classList.remove('hidden-mode');
-                eye.classList.replace('ri-eye-line', 'ri-eye-off-line');
-                eye.style.color = "var(--primary)";
-            } else {
-                span.innerText = '••••••••••••••••••••';
-                span.classList.add('hidden-mode');
-                eye.classList.replace('ri-eye-off-line', 'ri-eye-line');
-                eye.style.color = "var(--text-sec)";
-            }
-        } catch (e) { console.warn("toggleKey error", e); }
-    }
-
-    // Copy Function (Fixed Bug)
-    function copyText(txt, event) {
-        try {
-            if (event) event.stopPropagation();
-            if (!txt && txt !== 0) return;
-            // navigator.clipboard may require https
-            if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(String(txt)).then(() => {
-                    if (tg && tg.HapticFeedback && typeof tg.HapticFeedback.notificationOccurred === 'function') {
-                        try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
-                    }
-                    showToast("Copied to clipboard!");
-                }).catch(err => {
-                    // fallback: select-invisible textarea
-                    fallbackCopy(String(txt));
-                });
-            } else {
-                fallbackCopy(String(txt));
-            }
-        } catch (e) { console.warn("copyText error", e); }
-    }
-
-    function fallbackCopy(text) {
-        try {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast("Copied to clipboard!");
-        } catch (e) { console.warn("fallback copy failed", e); }
-    }
-
-    // Open External Links (Demo bots / Free Zips)
-    function openExternal(url, event) {
-        if (event) event.stopPropagation();
-        if (!url) return;
-        try {
-            if (String(url).includes('t.me')) tg.openTelegramLink(String(url));
-            else tg.openLink(String(url));
-        } catch (e) {
-            window.open(String(url), '_blank');
+        const body = document.getElementById(`body-${uid}`);
+        const arrow = document.getElementById(`arrow-${uid}`);
+        
+        if(body.style.maxHeight) {
+            body.style.maxHeight = null;
+            arrow.style.transform = "rotate(0deg)";
+            arrow.style.color = "#666";
+        } else {
+            // Close all others first
+            document.querySelectorAll('.item-body').forEach(el => el.style.maxHeight = null);
+            document.querySelectorAll('[id^="arrow-"]').forEach(el => { el.style.transform = "rotate(0deg)"; el.style.color = "#666"; });
+            
+            body.style.maxHeight = body.scrollHeight + "px";
+            arrow.style.transform = "rotate(180deg)";
+            arrow.style.color = "var(--primary)";
         }
     }
 
-    // Filter Premium Store Tabs
+    // Filter Store Tabs
     function filterStore(type, btn) {
         document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
-        const list = type === 'all' ? state.catalog : (state.catalog || []).filter(i => ((i.type || '') + '').toLowerCase() === (type || '').toLowerCase());
-        renderStoreList(list, 'itemList', 'store');
+        tg.HapticFeedback.impactOccurred('light');
+
+        if (type === 'free') {
+            renderStoreList(state.freeCatalog, 'itemList', 'free', true);
+        } else {
+            const list = type === 'all' ? state.catalog : state.catalog.filter(i => i.type.toLowerCase() === type);
+            renderStoreList(list, 'itemList', 'store', false);
+        }
     }
 
-    // Bottom Navigation Logic
+    // Copy Functions (Fixed Bugs)
+    function copyTxt(text, event) {
+        event.stopPropagation(); // Prevents accordion from closing
+        navigator.clipboard.writeText(text);
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function copyInput(inputId, event) {
+        event.stopPropagation();
+        const val = document.getElementById(inputId).value;
+        navigator.clipboard.writeText(val);
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function copyRaw(elementId, event) {
+        event.stopPropagation();
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text);
+        tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    // Eye Icon Toggle (Fixed Collision Bug)
+    function toggleVisibility(inputId, iconElement, event) {
+        event.stopPropagation();
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+            iconElement.classList.replace('ri-eye-line', 'ri-eye-off-line');
+            iconElement.style.color = "var(--primary)";
+        } else {
+            input.type = "password";
+            iconElement.classList.replace('ri-eye-off-line', 'ri-eye-line');
+            iconElement.style.color = "var(--text-sec)";
+        }
+    }
+
+    // External Link / Demo Opener
+    function openLink(url, event) {
+        event.stopPropagation();
+        if(url.includes('t.me')) tg.openTelegramLink(url);
+        else tg.openLink(url);
+    }
+
+    // Buy Action
+    function buy(id, price, event) {
+        event.stopPropagation();
+        if(state.user.balance < price) { 
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=deposit`); 
+            tg.close();
+            return; 
+        }
+        tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${id}`);
+        tg.close();
+    }
+
+    // Navigation
     function nav(page, btn) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const el = document.getElementById(page);
-        if (el) el.classList.add('active');
+        document.getElementById(page).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-        if (tg && tg.HapticFeedback && typeof tg.HapticFeedback.impactOccurred === 'function') {
-            try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
-        }
+        btn.classList.add('active');
+        tg.HapticFeedback.impactOccurred('light');
     }
-
-    // Alerts & Modals
-    function showAlert(type) {
-        const m = document.getElementById('alertModal');
-        const t = document.getElementById('modalTitle');
-        const msg = document.getElementById('modalMsg');
-        const icon = document.getElementById('modalIcon');
-
-        if (type === 'deposit') {
-            icon.innerText = "💎"; t.innerText = "Add Funds";
-            msg.innerHTML = "To add funds securely, please go to the Bot and send <br><b style='color:var(--accent); font-size:1.1rem;'>/deposit</b>";
-        } else if (type === 'payout') {
-            icon.innerText = "🏦"; t.innerText = "Withdraw";
-            msg.innerHTML = "To withdraw your earnings, go to the Bot and send <br><b style='color:var(--gold); font-size:1.1rem;'>/payout</b>";
-        } else {
-            icon.innerText = "ℹ️"; t.innerText = "Info";
-            msg.innerHTML = htmlEscape(String(type || ''));
-        }
-        m.classList.add('show');
-    }
-
-    function showToast(text) {
-        const m = document.getElementById('alertModal');
-        document.getElementById('modalIcon').innerText = "✅";
-        document.getElementById('modalTitle').innerText = "Success";
-        document.getElementById('modalMsg').innerText = text;
-        m.classList.add('show');
-        setTimeout(() => closeModal(), 1500);
-    }
-
-    function closeModal() { document.getElementById('alertModal').classList.remove('show'); }
-
-    // Sharing Functions
-    function shareItem(id) {
-        try { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}&text=${encodeURIComponent('Check out this Premium tool on Sheru Nexus!')}`); } catch (e) { window.open(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}/app?startapp=item_${id}`, '_blank'); }
-    }
-
-    function shareReferral() {
-        try { tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}&text=${encodeURIComponent('Join Sheru Nexus Store & get Premium Bots/APIs!')}`); } catch (e) { window.open(`https://t.me/${BOT_USERNAME}?start=${state.user.tg_id}`, '_blank'); }
-    }
-
-    // wire simple buttons (deposit/payout/startSell)
-    document.addEventListener('click', function (ev) {
-        if (ev.target && ev.target.id === 'depositBtn') { showAlert('deposit'); }
-        if (ev.target && ev.target.id === 'payoutBtn') { showAlert('payout'); }
-        if (ev.target && ev.target.id === 'startSellBtn') { openExternal(`https://t.me/${BOT_USERNAME}`, ev); }
-        if (ev.target && ev.target.id === 'modalCloseBtn') { closeModal(); }
-    });
 
     window.onload = init;
+
 </script>
 </body>
 </html>
