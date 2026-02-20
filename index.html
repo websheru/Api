@@ -885,6 +885,8 @@ function renderFreeList(list, containerId, ctx) {
 }
 
 // Render Secured Collection
+
+// Render Secured Collection
 function renderCollection() {
     const div = document.getElementById('myHistory');
     
@@ -895,8 +897,8 @@ function renderCollection() {
     
     div.innerHTML = "";
     state.keys.forEach((key, index) => {
-        const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line" };
-        const uid = `col-${key.item_id}-${index}`; // Unique ID fixes the toggle bug
+        const itemDetails = state.catalog.find(i => i.id === key.item_id) || { name: "Unknown Item", icon: "ri-question-line", type: "UNKNOWN" };
+        const uid = `col-${key.item_id}-${index}`; 
         
         let expiryHtml = `<span style="color:var(--success)">Lifetime</span>`;
         let actionBtn = "";
@@ -911,6 +913,40 @@ function renderCollection() {
             }
         }
 
+        // --- NEW LOGIC: Check item type for Hide/Show functionality ---
+        let bottomSection = "";
+        if (itemDetails.type === 'API') {
+            bottomSection = `
+            <div style="padding:0 15px 15px;">
+                <div style="font-size:0.7rem; font-weight:700; color:var(--text-sec); margin-left:5px;">ACCESS KEY</div>
+                <div class="secure-key-box">
+                    <div class="key-content key-hidden" id="key-val-${uid}">${key.key_value}</div>
+                    <div class="key-actions">
+                        <button class="action-icon" onclick="toggleVisibility('${uid}')">
+                            <i class="ri-eye-off-line" id="eye-icon-${uid}"></i>
+                        </button>
+                        <button class="action-icon" onclick="copyText('${key.key_value}', event)">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        } else {
+            // For Bots & Scripts (No eye icon, data is visible by default)
+            bottomSection = `
+            <div style="padding:0 15px 15px;">
+                <div style="font-size:0.7rem; font-weight:700; color:var(--text-sec); margin-left:5px;">ACCESS DATA / LINK</div>
+                <div class="secure-key-box">
+                    <div class="key-content" style="color:var(--accent);">${key.key_value}</div>
+                    <div class="key-actions">
+                        <button class="action-icon" onclick="copyText('${key.key_value}', event)">
+                            <i class="ri-file-copy-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
         div.innerHTML += `
         <div class="list-item">
             <div class="item-main" style="cursor:default;">
@@ -923,20 +959,7 @@ function renderCollection() {
                 </div>
                 ${actionBtn}
             </div>
-            <div style="padding:0 15px 15px;">
-                <div style="font-size:0.7rem; font-weight:700; color:var(--text-sec); margin-left:5px;">ACCESS KEY / DATA</div>
-                <div class="secure-key-box">
-                    <div class="key-content key-hidden" id="key-val-${uid}">${key.key_value}</div>
-                    <div class="key-actions">
-                        <button class="action-icon" onclick="toggleVisibility('${uid}')">
-                            <i class="ri-eye-off-line" id="eye-icon-${uid}"></i>
-                        </button>
-                        <button class="action-icon" onclick="copyText('${key.key_value}', event)">
-                            <i class="ri-file-copy-line"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            ${bottomSection}
         </div>`;
     });
 }
